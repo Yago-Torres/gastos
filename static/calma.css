@@ -1,0 +1,293 @@
+/* Calma — estilo común de las apps de yagotg.dev (todo, comida, limpiar, gastos).
+   Fuente única: ~/estilo/calma.css en la Pi. ~/estilo/aplica.sh la copia a cada static/.
+   No edites la copia de una app: se pisa en el siguiente aplica.sh. Lo propio de cada
+   app va en su <style>, usando SOLO estos tokens. */
+
+:root {
+  color-scheme: light dark;
+  --fondo:        #F4F5F0;
+  --carta:        #FFFFFF;
+  --carta-2:      #ECEEE6;
+  --texto:        #1E211C;
+  --suave:        #686D60;
+  --tenue:        #A0A595;
+  --linea:        #E2E5DB;
+  --acento:       #5E7A1E;
+  --acento-texto: #FFFFFF;
+  --acento-suave: #EBF3D6;
+  --peligro:      #D64545;
+  --peligro-suave:#FBE9E9;
+  --aviso:        #B97A0E;
+  --aviso-suave:  #FBF1DD;
+  --franja:       #1E211C;   /* detrás de la hora en la app instalada: iOS la pinta en blanco */
+  --carta-luz:    #FFFFFF;   /* arriba de la carta: un degradado mínimo le da volumen */
+  --borde:        rgba(24, 28, 20, .06);
+  --dock:         #2E342B;   /* la barra de abajo: grafito en los dos temas, como en el reel */
+  --dock-texto:   #B5BAA6;
+  --ascii:        rgba(44, 50, 38, .26);    /* los caracteres del fondo */
+  --ascii-vivo:   rgba(94, 122, 30, .7);   /* los más densos, y bajo el dedo */
+  --velo:         90%;                      /* opacidad de las cartas: el fondo se intuye debajo */
+
+  --r:    18px;   /* cartas */
+  --r-s:  12px;   /* botones y campos */
+  --r-xs: 8px;    /* celdas, etiquetas */
+  --sombra: 0 1px 2px rgba(16, 16, 12, .04), 0 8px 24px rgba(16, 16, 12, .06);
+  --fuente: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  /* series de gráficas: orden fijo, validado para daltonismo (dataviz). Color = identidad, nunca rango. */
+  --serie-1: #2a78d6; --serie-2: #eb6834; --serie-3: #1baf7a; --serie-4: #eda100;
+  --serie-5: #e87ba4; --serie-6: #008300; --serie-7: #6250d6; --serie-8: #e34948;
+
+  /* nombres de antes: los usa JS que pinta estilos en línea */
+  --ink: var(--texto); --bg: var(--carta); --acid: var(--acento); --red: var(--peligro);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* grafito con un punto oliva, no negro: menos duro y con más profundidad entre capas */
+    --fondo:        #171A16;
+    --carta:        #21251F;
+    --carta-luz:    #282D26;
+    --carta-2:      #2B3028;
+    --texto:        #EEF0E8;
+    --suave:        #A3A892;
+    --tenue:        #737865;
+    --linea:        #363C31;
+    --acento:       #CDE77F;
+    --acento-texto: #26300A;
+    --acento-suave: #333D22;
+    --peligro:      #F2726B;
+    --peligro-suave:#3F2624;
+    --aviso:        #E8B04A;
+    --aviso-suave:  #3D3119;
+    --franja:       #171A16;
+    --borde:        rgba(255, 255, 255, .06);
+    --dock:         #2E342B;
+    --ascii:        rgba(214, 222, 196, .2);
+    --ascii-vivo:   rgba(205, 231, 127, .65);
+    --velo:         88%;
+    --sombra: inset 0 1px 0 rgba(255, 255, 255, .04), 0 10px 30px rgba(0, 0, 0, .25);
+    --serie-1: #3987e5; --serie-2: #d95926; --serie-3: #199e70; --serie-4: #c98500;
+    --serie-5: #d55181; --serie-6: #008300; --serie-7: #9085e9; --serie-8: #e66767;
+  }
+}
+
+/* transiciones de vista (calma.js → transicion()): un fundido corto, nada más */
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: .18s; }
+
+/* ---------- base ---------- */
+* { box-sizing: border-box; overscroll-behavior: contain; }
+/* Sin rebote elástico de la página entera: en las de una pantalla (hábitos, comida) el scroll es de
+   los paneles, y al llegar al final iOS estiraba toda la página, menú de abajo incluido. */
+html, body { overscroll-behavior: none; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--fondo); color: var(--texto);
+  font: 400 15px/1.45 var(--fuente);
+  -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: transparent;
+}
+/* mientras llegan los datos (calma.js → c-cargando): nada a medias; el fondo y el menú sí se ven */
+.c-cargando .app { opacity: 0; }
+/* al irse a otra página (calma.js → vete()): baja y se desvanece; el menú y el fondo, quietos */
+.c-saliendo .app { opacity: 0; transform: translateY(22px); transition: opacity .23s ease-in, transform .23s cubic-bezier(.5, 0, .75, 0); }
+/* fondo: un «shader» de caracteres ASCII que ondula despacio (calma.js → fondo()). Detrás de todo. */
+#c-fondo { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 2px solid var(--acento); outline-offset: 2px; }
+::selection { background: var(--acento-suave); }
+
+/* ---------- componentes (prefijo c- para no chocar con las clases de cada app) ---------- */
+.c-carta { background: linear-gradient(180deg, color-mix(in srgb, var(--carta-luz) var(--velo), transparent),
+                                        color-mix(in srgb, var(--carta) var(--velo), transparent) 120px); border: 1px solid var(--borde);
+           border-radius: var(--r); box-shadow: var(--sombra); }
+.c-muted { color: var(--suave); }
+.c-num { font-variant-numeric: tabular-nums; }
+.c-eti { font-size: 12px; font-weight: 500; color: var(--suave); }
+
+.c-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  min-height: 40px; padding: 0 16px; border-radius: var(--r-s);
+  border: 1px solid var(--linea); background: var(--carta); color: var(--texto);
+  font-weight: 500; white-space: nowrap;
+}
+.c-btn:hover:not(:disabled) { background: var(--carta-2); }
+.c-btn:disabled { opacity: .45; cursor: default; }
+.c-btn.pri { background: var(--acento); border-color: var(--acento); color: var(--acento-texto); font-weight: 600; }
+.c-btn.pri:hover:not(:disabled) { filter: brightness(1.06); background: var(--acento); }
+.c-btn.peligro { color: var(--peligro); }
+.c-btn.mini { min-height: 30px; padding: 0 10px; font-size: 13px; border-radius: 999px; }
+
+/* 16px exactos en campos: por debajo iOS hace zoom al enfocar */
+.c-campo {
+  min-height: 44px; padding: 0 12px; border-radius: var(--r-s);
+  border: 1px solid var(--linea); background: var(--carta-2); color: var(--texto);
+  font-size: 16px; min-width: 0;
+}
+.c-campo::placeholder { color: var(--tenue); }
+.c-campo:focus { outline: none; border-color: var(--acento); background: var(--carta); }
+
+.c-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 3px 10px; border-radius: 999px; font-size: 13px; font-weight: 500;
+  background: var(--carta-2); color: var(--suave);
+}
+.c-chip.ok { background: var(--acento-suave); color: var(--acento); }
+.c-chip.mal { background: var(--peligro-suave); color: var(--peligro); }
+.c-chip.ojo { background: var(--aviso-suave); color: var(--aviso); }
+
+/* control segmentado: pestañas de móvil */
+.c-seg { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 4px; padding: 4px; border-radius: 12px; background: var(--carta-2); }
+.c-seg button { border: 0; background: none; border-radius: 9px; padding: 8px 4px; font-size: 14px; font-weight: 500; color: var(--suave); }
+.c-seg button[aria-selected="true"], .c-seg button[aria-current="true"] { background: var(--carta); color: var(--texto); box-shadow: var(--sombra); }
+
+/* barra de progreso: style="--p: 40%" */
+.c-barra { height: 8px; border-radius: 99px; background: var(--carta-2); overflow: hidden; }
+.c-barra > i { display: block; height: 100%; width: var(--p, 0%); background: var(--acento); border-radius: inherit; }
+.c-barra.pasada > i { background: var(--peligro); }
+
+/* pantalla de contraseña */
+.c-puerta { position: fixed; inset: 0; z-index: 200; display: none; place-items: center; padding: 24px; background: var(--fondo); }
+.c-puerta[data-on], .c-puerta.abierta { display: grid; }
+.c-puerta > form, .c-puerta.form {
+  width: min(380px, 100%); display: flex; flex-direction: column; gap: 12px;
+  background: var(--carta); border-radius: 20px; box-shadow: var(--sombra); padding: 28px;
+}
+.c-puerta h2 { margin: 0; font-size: 26px; font-weight: 700; letter-spacing: -.02em; }
+.c-puerta p { margin: 0; color: var(--suave); font-size: 14px; }
+.c-puerta .mal { color: var(--peligro); }
+
+/* aviso flotante (deshacer, guardado…): una isla dinámica arriba, negra en los dos temas, que se estira al salir */
+.c-toast {
+  position: fixed; top: calc(10px + env(safe-area-inset-top, 0px)); left: 50%; transform: translateX(-50%); z-index: 180;
+  width: max-content; max-width: min(460px, calc(100% - 32px)); min-height: 48px; display: none; align-items: center; gap: 12px;
+  padding: 7px 7px 7px 18px; border-radius: 999px; overflow: hidden;
+  background: #000; color: #fff; box-shadow: 0 10px 30px rgba(0, 0, 0, .25), 0 0 0 1px rgba(255, 255, 255, .12);
+}
+.c-toast[data-on] { display: flex; }
+.c-toast b { flex: 1; min-width: 0; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.c-toast button { border: 0; border-radius: 999px; background: var(--acento); color: var(--acento-texto); padding: 8px 14px; font-weight: 600; }
+.c-toast button[hidden] { display: none; }
+
+/* En la app instalada de todo la barra de estado es translúcida (para que la isla salga de la del
+   iPhone): el contenido baja lo que ocupa, y la franja de arriba se pinta. iOS pone la hora en blanco,
+   así que en claro la franja es oscura. Fuera de la app instalada la franja mide 0 y no cambia nada. */
+html { padding-top: env(safe-area-inset-top, 0px); }
+html::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 190;
+               background: var(--franja); pointer-events: none; }
+/* con isla de verdad (calma.js pone .c-isla-real): el aviso nace debajo de ella (11 pt, 126 × 37) y crece hacia abajo */
+.c-isla-real .c-toast { top: 11px; padding-top: 40px; max-height: 140px; border-radius: 36px; z-index: 200; }
+@media (prefers-reduced-motion: no-preference) { .c-isla-real .c-toast[data-on] { animation-name: c-isla-real; } }
+@keyframes c-isla-real { from { max-width: 126px; max-height: 37px; } }
+
+/* Menú de abajo, el mismo y en el mismo sitio en todas las páginas (calma.js → menu()).
+   La sección actual es una gota que sale de la barra, y la barra se funde a su alrededor
+   (el reel «Meniscus»): un filtro SVG difumina y vuelve a endurecer los bordes. */
+nav.c-dock { position: fixed; z-index: 150; left: 50%; transform: translateX(-50%); bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+             width: min(560px, calc(100% - 16px)); height: 62px; margin: 0; padding: 0;
+             display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); }
+.c-goo { position: absolute; inset: -44px 0 0; pointer-events: none; filter: url(#c-goo) drop-shadow(0 10px 22px rgba(0, 0, 0, .2)); }
+.c-tira { position: absolute; left: 0; right: 0; bottom: 0; height: 62px; border-radius: 22px; background: var(--dock); }
+.c-gota { position: absolute; left: 0; bottom: 36px; width: 52px; height: 52px; border-radius: 50%; background: #CDE77F;
+          transition: transform .55s cubic-bezier(.45, 1.5, .4, 1); }
+.c-dock a { position: relative; z-index: 1; height: 62px; min-width: 0; display: grid; justify-items: center; align-content: center; gap: 3px;
+            text-decoration: none; color: var(--dock-texto); font-size: 10.5px; font-weight: 500; white-space: nowrap; }
+.c-dock a span { max-width: 100%; overflow: hidden; text-overflow: ellipsis; text-decoration: none; }
+@media (max-width: 400px) { .c-dock a { font-size: 9.5px; letter-spacing: -.02em; } }
+.c-dock a:hover, .c-dock a[aria-current="page"] { color: #FFFFFF; }
+.c-dock a[aria-current="page"] { font-weight: 600; }
+.c-dock svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+              transition: transform .5s cubic-bezier(.45, 1.5, .4, 1), color .3s; }
+.c-dock a[aria-current="page"] svg { transform: translateY(-23px); color: #26300A; }   /* sobre la gota lima, en los dos temas */
+/* hueco para la barra dentro de .app: también vale en las páginas de una pantalla (comida, hábitos) */
+body:has(nav.c-dock) .app { padding-bottom: calc(100px + env(safe-area-inset-bottom, 0px)) !important; }
+body:has(nav.c-dock):not(:has(.app)) { padding-bottom: calc(108px + env(safe-area-inset-bottom, 0px)) !important; }
+
+/* borde que sigue al dedo: class="c-foco" en una tarjeta (calma.js pone --x/--y) */
+.c-foco { position: relative; }
+.c-foco::before, .c-foco::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0; transition: opacity .3s; }
+.c-foco::before { padding: 1.5px; background: radial-gradient(180px circle at var(--x, 50%) var(--y, 50%), var(--acento), transparent 70%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude; }
+.c-foco::after { background: radial-gradient(240px circle at var(--x, 50%) var(--y, 50%), color-mix(in srgb, var(--acento) 10%, transparent), transparent 70%); }
+.c-foco:hover::before, .c-foco:hover::after { opacity: 1; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .c-btn, .c-seg button, .c-campo { transition: background .15s, border-color .15s, color .15s; }
+  .c-toast[data-on] { animation: c-isla .55s cubic-bezier(.3, 1.35, .45, 1) both; }
+  .c-toast[data-on] > * { animation: c-aparece .25s .2s both; }
+}
+@keyframes c-isla { from { max-width: 110px; min-height: 34px; } }
+@keyframes c-aparece { from { opacity: 0; } }
+
+/* ---------- hoja de cristal para una tarea (hoja.js): texto, día y hora ---------- */
+.c-velo { position: fixed; inset: 0; z-index: 170; background: rgba(10, 14, 12, .3); -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+        opacity: 0; pointer-events: none; transition: opacity .25s; }
+.c-velo.on { opacity: 1; pointer-events: auto; }
+.c-hoja { position: fixed; z-index: 171; left: 50%; bottom: calc(10px + env(safe-area-inset-bottom, 0px)); width: min(460px, calc(100% - 16px));
+        max-height: calc(100dvh - 30px - env(safe-area-inset-top, 0px)); overflow-y: auto; overscroll-behavior: contain;
+        display: grid; gap: 14px; padding: 18px; border-radius: 30px;
+        background: color-mix(in srgb, var(--carta) 60%, transparent);
+        -webkit-backdrop-filter: blur(28px) saturate(1.8); backdrop-filter: blur(28px) saturate(1.8);
+        border: 1px solid rgba(255, 255, 255, .28); box-shadow: inset 0 1px 1px rgba(255, 255, 255, .45), 0 24px 70px rgba(0, 0, 0, .35);
+        transform: translate(-50%, calc(100% + 30px)); visibility: hidden;
+        transition: transform .5s cubic-bezier(.3, 1.15, .4, 1), visibility 0s .5s; }
+.c-hoja.on { transform: translate(-50%, 0); visibility: visible; transition: transform .5s cubic-bezier(.3, 1.15, .4, 1); }
+.c-h-cab { display: flex; align-items: center; gap: 10px; }
+.c-h-cab h2 { margin: 0; font-size: 18px; font-weight: 700; letter-spacing: -.01em; }
+.c-h-cab span { margin-left: auto; font-size: 13px; font-weight: 600; color: var(--acento); text-align: right; }
+.c-h-eti { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--suave); margin-bottom: -6px; }
+.c-h-eti button { margin-left: auto; text-transform: none; letter-spacing: 0; }
+
+/* días: una tira que se desliza, como el calendario del iPhone */
+.c-dias { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; scroll-snap-type: x proximity; padding: 4px 2px 6px; margin-inline: -2px; }
+.c-dias::-webkit-scrollbar { display: none; }
+.c-pil { flex: none; scroll-snap-align: start; display: grid; justify-items: center; gap: 1px; min-width: 54px; padding: 8px 10px; border-radius: 16px;
+       border: 1px solid rgba(255, 255, 255, .18); background: color-mix(in srgb, var(--texto) 6%, transparent); color: var(--texto);
+       transition: background .2s, color .2s, transform .35s cubic-bezier(.3, 1.6, .4, 1); }
+.c-pil small { font-size: 11px; font-weight: 500; color: var(--suave); text-transform: capitalize; }
+.c-pil b { font-size: 17px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.c-pil.texto b { font-size: 14px; font-weight: 600; padding-block: 5px; }
+.c-pil[aria-pressed="true"] { background: var(--acento); color: var(--acento-texto); border-color: transparent; transform: scale(1.06);
+                            box-shadow: 0 6px 18px color-mix(in srgb, var(--acento) 40%, transparent); }
+.c-pil[aria-pressed="true"] small { color: inherit; opacity: .8; }
+
+/* otro día: el mes entero */
+.c-cal { display: grid; gap: 6px; padding: 10px; border-radius: 20px; background: color-mix(in srgb, var(--texto) 5%, transparent); }
+.c-cal[hidden] { display: none; }
+.c-cal-cab { display: flex; align-items: center; justify-content: space-between; font-weight: 600; text-transform: capitalize; }
+.c-cal-cab button { border: 0; background: none; width: 34px; height: 34px; border-radius: 50%; font-size: 18px; color: var(--suave); }
+.c-cal-cab button:hover { background: color-mix(in srgb, var(--texto) 8%, transparent); color: var(--texto); }
+.c-cal-rej { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 2px; text-align: center; }
+.c-cal-rej i { font-style: normal; font-size: 11px; font-weight: 600; color: var(--tenue); padding: 4px 0; }
+.c-cal-rej button { border: 0; background: none; aspect-ratio: 1; max-height: 40px; border-radius: 50%; font-size: 14px; font-weight: 500; font-variant-numeric: tabular-nums; }
+.c-cal-rej button:hover { background: color-mix(in srgb, var(--texto) 8%, transparent); }
+.c-cal-rej button.pasado { color: var(--tenue); }
+.c-cal-rej button.hoy { box-shadow: inset 0 0 0 1.5px var(--acento); color: var(--acento); font-weight: 700; }
+.c-cal-rej button[aria-pressed="true"] { background: var(--acento); color: var(--acento-texto); box-shadow: none; }
+
+/* la hora: dos ruedas con una lente de cristal en medio */
+.c-rueda { position: relative; display: flex; justify-content: center; align-items: center; gap: 2px; height: 180px; border-radius: 20px;
+         background: color-mix(in srgb, var(--texto) 5%, transparent); transition: opacity .25s; }
+.c-rueda::before { content: ""; position: absolute; left: 14px; right: 14px; top: 50%; height: 42px; transform: translateY(-50%); border-radius: 14px;
+                 background: color-mix(in srgb, var(--carta) 75%, transparent); border: 1px solid rgba(255, 255, 255, .3);
+                 box-shadow: inset 0 1px 1px rgba(255, 255, 255, .5), 0 4px 14px rgba(0, 0, 0, .1); }
+.c-rueda.apagada { opacity: .4; }
+.c-rueda .c-tambor { position: relative; z-index: 1; height: 100%; width: 76px; overflow-y: scroll; scroll-snap-type: y mandatory; scrollbar-width: none;
+              padding-block: 69px; perspective: 420px; overscroll-behavior: contain;
+              -webkit-mask-image: linear-gradient(transparent, #000 28%, #000 72%, transparent); mask-image: linear-gradient(transparent, #000 28%, #000 72%, transparent); }
+.c-rueda .c-tambor::-webkit-scrollbar { display: none; }
+.c-rueda .c-tambor div { height: 42px; display: grid; place-items: center; scroll-snap-align: center; font-size: 24px; font-weight: 600;
+                  font-variant-numeric: tabular-nums; color: var(--suave); cursor: pointer; }
+.c-rueda .c-tambor div.sel { color: var(--texto); }
+.c-rueda > b { position: relative; z-index: 1; font-size: 24px; padding-bottom: 3px; }
+.c-h-pie { display: flex; gap: 10px; }
+.c-h-pie .c-btn { min-height: 46px; border-radius: 16px; flex: 1; }
+.c-h-pie .c-btn.pri { flex: 1.4; }
+/* borrar: una papelera; el primer toque pregunta, el segundo borra */
+.c-h-pie .c-h-borrar { flex: none; width: 46px; padding: 0; color: var(--peligro); transition: width .3s, background .2s, color .2s; overflow: hidden; }
+.c-h-pie .c-h-borrar[hidden] { display: none; }
+.c-h-pie .c-h-borrar svg { width: 20px; height: 20px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.c-h-pie .c-h-borrar.seguro { width: 120px; background: var(--peligro); border-color: var(--peligro); color: #fff; }
+.c-h-pie .c-h-borrar span { display: none; white-space: nowrap; font-weight: 600; }
+.c-h-pie .c-h-borrar.seguro span { display: inline; }
+@media (prefers-reduced-motion: reduce) { .c-hoja, .c-hoja.on, .c-velo, .c-pil { transition: none; } }

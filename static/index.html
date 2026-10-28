@@ -1,0 +1,692 @@
+<!doctype html>
+<html lang="es">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="calma-datos" content="/api/estado">
+<meta name="calma-entrada" content="espera">
+<meta name="theme-color" content="#F4F5F0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#171A16" media="(prefers-color-scheme: dark)">
+<title>Gastos</title>
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Gastos">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="/calma.css?v=3006c142">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="/calma.js?v=3006c142"></script>
+<script src="/anime-4.5.0.min.js"></script>
+<script src="/anima.js?v=3006c142"></script>
+<style>
+  /* Estilo Calma: tokens y componentes en /calma.css (fuente: ~/estilo). Aquí solo lo de gastos. */
+  body { padding: 16px; padding-bottom: calc(28px + env(safe-area-inset-bottom, 0px)); }
+  .app { max-width: 1120px; margin: 0 auto; display: grid; gap: 14px; }
+  .col { display: grid; gap: 14px; align-content: start; min-width: 0; }
+  @media (min-width: 920px) { .app { grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); } }
+  .top { grid-column: 1 / -1; display: flex; align-items: center; flex-wrap: wrap; gap: 8px 12px; padding: 4px 2px 0; }
+  h1 { margin: 0; font-size: 26px; font-weight: 700; letter-spacing: -.02em; }
+  #estado { font-size: 13px; color: var(--suave); }
+  .ciclo { display: flex; align-items: center; gap: 6px; margin-left: auto; }
+  .ciclo b { min-width: 9.5em; text-align: center; font-weight: 600; font-size: 15px; }
+  .redondo { width: 36px; height: 36px; padding: 0; border-radius: 50%; border: 1px solid var(--linea); background: var(--carta); font-size: 18px; line-height: 1; }
+  .redondo:disabled { opacity: .35; cursor: default; }
+  .carta { padding: 16px; min-width: 0; }
+  .carta h2 { margin: 0 0 12px; font-size: 16px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+  .carta h2 .der { margin-left: auto; font-weight: 400; }
+  .vacio { margin: 0; padding: 8px 2px; font-size: 14px; color: var(--suave); }
+
+  /* ---------- cifra principal ---------- */
+  .eti-sup { font-size: 13px; color: var(--suave); }
+  .total { font-size: 42px; font-weight: 700; letter-spacing: -.03em; line-height: 1.1; margin: 2px 0; }
+  .bajo { margin: 0 0 12px; font-size: 14px; color: var(--suave); }
+  .bajo.mal { color: var(--peligro); }
+  .barra-ritmo { position: relative; }
+  .barra-ritmo .marca { position: absolute; top: -4px; bottom: -4px; width: 2px; border-radius: 1px; background: var(--texto); opacity: .45; }
+  .tres { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 14px; }
+  .tres div { background: var(--carta-2); border-radius: var(--r-s); padding: 10px; min-width: 0; }
+  .tres small { display: block; font-size: 12px; color: var(--suave); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .tres b { font-size: 17px; font-weight: 650; white-space: nowrap; }
+  .tres b.mal { color: var(--peligro); }
+
+  /* ---------- lo importante ---------- */
+  .ins { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .ins li { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; line-height: 1.45; }
+  .ins i { flex: none; width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center;
+           font-style: normal; font-size: 12px; font-weight: 700; margin-top: 1px; }
+  .ins .mal i { background: var(--peligro-suave); color: var(--peligro); }
+  .ins .ojo i { background: var(--aviso-suave); color: var(--aviso); }
+  .ins .ok i { background: var(--acento-suave); color: var(--acento); }
+  .ins .info i { background: var(--carta-2); color: var(--suave); }
+
+  /* ---------- categorías ---------- */
+  .cat { display: grid; grid-template-columns: 10px minmax(0, 1fr) auto; gap: 6px 10px; align-items: center;
+         width: 100%; text-align: left; background: none; border: 0; border-radius: var(--r-s); padding: 9px 8px; }
+  button.cat:hover { background: var(--carta-2); }
+  .cat[aria-pressed="true"] { background: var(--acento-suave); }
+  .cat > i { width: 10px; height: 10px; border-radius: 50%; background: var(--c); }
+  .cat .n { font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .cat .v { font-weight: 600; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .cat .v small, .cat .sub { font-weight: 400; color: var(--suave); }
+  .cat .sub { grid-column: 2 / -1; font-size: 12px; margin-top: -4px; }
+  .cat .barra-ritmo { grid-column: 2 / -1; }
+  .cat .c-barra { height: 6px; }
+  .cat .c-barra > i { background: var(--c); }
+  .cat .c-barra.pasada > i { background: var(--peligro); }
+  .cat .c-chip { font-size: 11px; padding: 1px 7px; margin-left: 6px; vertical-align: 1px; }
+  .cat input { width: 104px; min-height: 38px; text-align: right; }
+  .ajustes { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px; margin-bottom: 12px; }
+  .ajustes label { font-size: 13px; color: var(--suave); display: grid; gap: 4px; }
+  .ajustes .fila-btn { grid-column: 1 / -1; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .ajustes .fila-btn span { font-size: 14px; color: var(--suave); }
+
+  /* ---------- gráficas ---------- */
+  .lienzo { position: relative; height: 230px; }
+  .leyenda { display: flex; flex-wrap: wrap; gap: 4px 14px; margin: -4px 0 10px; font-size: 13px; color: var(--suave); }
+  .leyenda span { display: inline-flex; align-items: center; gap: 6px; }
+  .leyenda s { display: inline-block; width: 16px; height: 0; border-top: 2px solid var(--c); text-decoration: none; }
+  .leyenda s.raya { border-top-style: dashed; }
+  details.datos { margin-top: 8px; font-size: 13px; color: var(--suave); }
+  details.datos summary { cursor: pointer; width: max-content; }
+  details.datos table { width: 100%; border-collapse: collapse; margin-top: 6px; font-variant-numeric: tabular-nums; }
+  details.datos th, details.datos td { text-align: right; padding: 4px 6px; border-bottom: 1px solid var(--linea); font-weight: 400; }
+  details.datos th:first-child, details.datos td:first-child { text-align: left; }
+  details.datos .scroll { max-height: 220px; overflow: auto; }
+
+  /* ---------- apuntar ---------- */
+  form.nuevo { display: grid; gap: 10px; }
+  .importe { font-size: 28px; font-weight: 600; min-height: 58px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chips button { display: flex; align-items: center; gap: 6px; border: 1px solid var(--linea); background: var(--carta); border-radius: 999px; padding: 6px 12px; font-size: 14px; font-weight: 500; }
+  .chips button i { width: 8px; height: 8px; border-radius: 50%; background: var(--c); }
+  .chips button[aria-pressed="true"] { background: var(--acento-suave); border-color: var(--acento); color: var(--acento); }
+  .fila2 { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; }
+
+  /* ---------- movimientos ---------- */
+  .dia { display: flex; margin: 16px 8px 4px; font-size: 13px; font-weight: 600; color: var(--suave); }
+  .dia:first-child { margin-top: 2px; }
+  .dia span { margin-left: auto; font-variant-numeric: tabular-nums; }
+  .mov { display: flex; align-items: center; gap: 12px; width: 100%; text-align: left; background: none; border: 0; border-radius: var(--r-s); padding: 10px 8px; }
+  .mov:hover { background: var(--carta-2); }
+  .mov[aria-expanded="true"] { background: var(--carta-2); border-radius: var(--r-s) var(--r-s) 0 0; }
+  .mov > i { width: 10px; height: 10px; flex: none; border-radius: 50%; background: var(--c); }
+  .mov .t { flex: 1; min-width: 0; }
+  .mov .t b { display: block; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .mov .t small { font-size: 13px; color: var(--suave); }
+  .mov .v { font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .edita { display: grid; gap: 8px; padding: 4px 10px 12px; margin-bottom: 6px; background: var(--carta-2); border-radius: 0 0 var(--r-s) var(--r-s); }
+  .edita .c-campo { background: var(--carta); }
+  .edita .acciones { display: flex; gap: 8px; justify-content: flex-end; }
+  .lineas { list-style: none; margin: 4px 0; padding: 0; font-size: 13px; color: var(--suave); }
+  .lineas li { display: flex; gap: 10px; padding: 2px 0; }
+  .lineas li span { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+</style>
+<body>
+
+<div class="c-puerta" id="puerta">
+  <form id="f-clave">
+    <h2>Gastos</h2>
+    <p id="puerta-msg">Contraseña</p>
+    <input class="c-campo" type="password" name="pass" required autocomplete="current-password" aria-label="Contraseña">
+    <button class="c-btn pri" type="submit">Entrar</button>
+  </form>
+</div>
+
+<div class="c-toast" id="toast" role="status"><b id="toast-txt"></b><button id="toast-btn">Deshacer</button></div>
+
+<div class="app">
+  <header class="top">
+    <h1>Gastos</h1>
+    <span id="estado"></span>
+    <div class="ciclo">
+      <button class="redondo" id="prev" aria-label="Ciclo anterior">‹</button>
+      <b id="ciclo-tit"></b>
+      <button class="redondo" id="next" aria-label="Ciclo siguiente">›</button>
+    </div>
+  </header>
+
+  <div class="col">
+    <section class="c-carta carta" aria-label="Resumen del ciclo">
+      <div class="eti-sup" id="eti-total">Este ciclo</div>
+      <div class="total" id="total">—</div>
+      <p class="bajo" id="bajo"></p>
+      <div class="barra-ritmo" id="barra-total"><div class="c-barra"><i></i></div></div>
+      <div class="tres" id="tres"></div>
+    </section>
+
+    <section class="c-carta carta" aria-label="Lo importante">
+      <h2>Lo importante</h2>
+      <ul class="ins" id="insights"></ul>
+    </section>
+
+    <section class="c-carta carta" aria-label="Por categoría">
+      <h2>Por categoría <span class="der"><button class="c-btn mini" id="b-presu">Presupuestos</button></span></h2>
+      <div id="ajustes"></div>
+      <div id="cats"></div>
+    </section>
+
+    <section class="c-carta carta" aria-label="Apuntar un gasto">
+      <h2>Apuntar</h2>
+      <form class="nuevo" id="f-nuevo">
+        <input class="c-campo importe" name="importe" inputmode="decimal" placeholder="0,00 €" autocomplete="off" required aria-label="Importe">
+        <div class="chips" id="chips" role="group" aria-label="Categoría"></div>
+        <div class="fila2">
+          <input class="c-campo" name="nota" placeholder="Nota o comercio (opcional)" maxlength="120" aria-label="Nota">
+          <input class="c-campo" type="date" name="dia" aria-label="Día">
+        </div>
+        <button class="c-btn pri" type="submit">Apuntar</button>
+      </form>
+    </section>
+  </div>
+
+  <div class="col">
+    <section class="c-carta carta" aria-label="Ritmo del ciclo">
+      <h2>Ritmo del ciclo</h2>
+      <div class="leyenda" id="ley-ritmo"></div>
+      <div class="lienzo"><canvas id="g-ritmo" role="img" aria-label="Gasto acumulado del ciclo frente al ritmo del presupuesto y al ciclo anterior"></canvas></div>
+      <details class="datos"><summary>Ver los datos</summary><div class="scroll" id="t-ritmo"></div></details>
+    </section>
+
+    <section class="c-carta carta" aria-label="Últimos ciclos">
+      <h2>Últimos ciclos</h2>
+      <div class="leyenda" id="ley-hist"></div>
+      <div class="lienzo" style="height:190px"><canvas id="g-hist" role="img" aria-label="Gasto total de los últimos seis ciclos"></canvas></div>
+      <details class="datos"><summary>Ver los datos</summary><div id="t-hist"></div></details>
+    </section>
+
+    <section class="c-carta carta" aria-label="Movimientos">
+      <h2>Movimientos <span class="der c-eti" id="n-mov"></span></h2>
+      <div id="movs"></div>
+    </section>
+  </div>
+</div>
+
+<script>
+const $ = s => document.querySelector(s);
+const el = (t, cls, txt) => {
+  const e = document.createElement(t);
+  if (cls) e.className = cls;
+  if (txt != null) e.textContent = txt;
+  return e;
+};
+const MESES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio",
+               "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+const DIAS = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];
+const ORIGEN = {atajo: "atajo", applepay: "Apple Pay", bot: "Telegram", ticket: "ticket", web: ""};
+const ICONO = {mal: "!", ojo: "!", ok: "✓", info: "i"};
+
+const cap = s => s[0].toUpperCase() + s.slice(1);
+const iso = d => d.toLocaleDateString("sv");   // fecha local: toISOString() es UTC
+const HOY = iso(new Date());
+const fecha = s => new Date(s + "T12:00");
+const corta = s => `${fecha(s).getDate()} ${MESES[fecha(s).getMonth()].slice(0, 3)}`;
+// useGrouping "always": en es-ES, 1117 saldría sin punto de miles y el servidor sí lo pone
+const eur = n => n.toLocaleString("es-ES", {minimumFractionDigits: 2, maximumFractionDigits: 2, useGrouping: "always"}) + " €";
+const eur0 = n => Math.round(n).toLocaleString("es-ES", {useGrouping: "always"}) + " €";
+const suma = l => Math.round(l.reduce((a, g) => a + g.importe, 0) * 100) / 100;
+// "12,50", "1.234,50" o "12.5": con coma, el punto es de miles
+const num = s => {
+  s = String(s).replace(/[^\d,.]/g, "");
+  if (s.includes(",")) s = s.replace(/\./g, "").replace(",", ".");
+  return parseFloat(s);
+};
+const masDias = (s, n) => { const d = fecha(s); d.setDate(d.getDate() + n); return iso(d); };
+
+let S = {cats: [], gastos: [], ajustes: {ingreso: 1600, dia_cobro: 28}};
+let R = null;             // /api/resumen del ciclo que se ve
+let ref = HOY;            // un día cualquiera del ciclo que se ve
+let filtro = null;        // categoría pinchada
+let abierto = null;       // movimiento que se está editando
+let catNueva = "";        // "" = que la adivine el servidor por la nota
+let editaPresu = false;
+
+// Color por categoría según su posición: los 8 huecos de la paleta validada (--serie-1…8).
+// Sigue a la categoría, no a su gasto: filtrar no repinta nada.
+const color = id => `var(--serie-${Math.max(0, S.cats.findIndex(c => c.id === id)) % 8 + 1})`;
+const catN = id => (S.cats.find(c => c.id === id) || {n: id}).n;
+
+// ---------- servidor ----------
+async function api(ruta, op = {}) {
+  const r = await fetch(ruta, {headers: {"Content-Type": "application/json"}, ...op});
+  if (r.status === 401) { puerta(true); throw new Error("401"); }
+  if (!r.ok) throw new Error((await r.text()).slice(0, 200) || r.status);
+  return r.json();
+}
+
+function puerta(on, msg) {
+  $("#puerta").toggleAttribute("data-on", on);
+  $("#puerta-msg").textContent = msg || "Contraseña";
+  $("#puerta-msg").classList.toggle("mal", !!msg);
+  if (on) $("#puerta input").focus();
+}
+
+async function cargar(conTransicion) {
+  try {
+    const primera = !R;
+    [S, R] = await Promise.all([api("/api/estado"), api("/api/resumen?dia=" + ref)]);
+    puerta(false);
+    conTransicion ? calma.transicion(pinta) : pinta();
+    if (primera) {   // la primera vez: cartas y filas en cascada, y las barras se llenan
+      anima.entrada();
+      anima.llena(".c-barra", 300);
+    }
+  } catch (e) {
+    if (e.message !== "401") $("#estado").textContent = "Sin conexión";
+  }
+}
+
+let pend;
+function guardar(msg = "Guardado") {
+  pinta();
+  $("#estado").textContent = "Guardando…";
+  clearTimeout(pend);
+  pend = setTimeout(async () => {
+    try {
+      S = await api("/api/estado", {method: "PUT", body: JSON.stringify(S)});   // vuelve ya limpio
+      R = await api("/api/resumen?dia=" + ref);
+      $("#estado").textContent = msg;
+      pinta();
+    } catch (e) {
+      $("#estado").textContent = "Sin guardar";
+    }
+  }, 350);
+}
+
+let tt;
+function toast(txt, deshacer) {
+  $("#toast-txt").textContent = txt;
+  $("#toast-btn").hidden = !deshacer;
+  $("#toast-btn").onclick = () => { deshacer(); ocultaToast(); };
+  $("#toast").toggleAttribute("data-on", true);
+  clearTimeout(tt);
+  tt = setTimeout(ocultaToast, 7000);
+}
+const ocultaToast = () => $("#toast").removeAttribute("data-on");
+
+// ---------- pintar ----------
+function barra(contenedor, v, max, ritmo) {
+  contenedor.replaceChildren();
+  const b = el("div", "c-barra");
+  b.append(el("i"));
+  b.style.setProperty("--p", (max ? Math.min(100, v / max * 100) : 0) + "%");
+  b.classList.toggle("pasada", !!max && v > max);
+  contenedor.append(b);
+  // la raya marca dónde deberías ir hoy si gastaras al ritmo del presupuesto
+  if (max && ritmo != null) {
+    const m = el("span", "marca");
+    m.style.left = `calc(${(ritmo * 100).toFixed(1)}% - 1px)`;
+    m.title = "Dónde deberías ir hoy";
+    contenedor.append(m);
+  }
+}
+
+function pinta() {
+  if (!R) return;
+  $("#ciclo-tit").textContent = `${corta(R.inicio)} – ${corta(R.fin)}`;
+  $("#next").disabled = R.fin >= HOY;
+  const ritmo = R.actual ? R.hechos / R.dias : null;
+  const quedan = R.actual ? R.dias - R.hechos + 1 : 0;
+
+  $("#eti-total").textContent = R.actual ? "Este ciclo" : "Ciclo cerrado";
+  calma.cuenta($("#total"), R.total, eur);
+  const bajo = $("#bajo");
+  bajo.textContent = R.presu
+    ? `de ${eur0(R.presu)} · ${R.total > R.presu ? "te has pasado " + eur(R.total - R.presu)
+                                                : "quedan " + eur(R.presu - R.total)}`
+      + (R.actual ? ` · ${quedan} día${quedan === 1 ? "" : "s"}` : "")
+    : `${R.n} gasto${R.n === 1 ? "" : "s"} · sin presupuesto`;
+  bajo.classList.toggle("mal", !!R.presu && R.total > R.presu);
+  $("#barra-total").hidden = !R.presu;
+  barra($("#barra-total"), R.total, R.presu, ritmo);
+
+  const ahorro = R.ingreso - (R.actual ? R.proyeccion : R.total);
+  const tres = [
+    R.actual && R.presu ? ["Al día", eur0(Math.max(0, (R.presu - R.total) / quedan)), R.total > R.presu]
+                        : ["Gastos", String(R.n), false],
+    [R.actual ? "Acabarás en" : "Total", eur0(R.actual ? R.proyeccion : R.total), R.presu && (R.actual ? R.proyeccion : R.total) > R.presu],
+    // sin ingreso fijo no hay ahorro que calcular: la referencia es el mes anterior
+    R.ingreso ? [R.actual ? "Ahorro previsto" : "Ahorro", eur0(ahorro), ahorro < 0]
+              : [R.dia_cobro === 1 ? "Mes anterior" : "Ciclo anterior", eur0(R.historico.at(-2)?.total || 0), false],
+  ];
+  $("#tres").replaceChildren(...tres.map(([t, v, mal]) => {
+    const d = el("div");
+    d.append(el("small", null, t), el("b", mal ? "mal" : "", v));
+    return d;
+  }));
+
+  $("#insights").replaceChildren(...(R.insights.length ? R.insights : [{nivel: "info", texto: "Nada que contar todavía."}])
+    .map(i => {
+      const li = el("li", i.nivel);
+      li.append(el("i", null, ICONO[i.nivel]), el("span", null, i.texto));
+      return li;
+    }));
+
+  categorias(ritmo);
+  chips();
+  movimientos();
+  graficas();
+}
+
+function categorias(ritmo) {
+  const caja = $("#ajustes");
+  caja.replaceChildren();
+  if (editaPresu) caja.append(ajustes());
+  const cats = $("#cats");
+  cats.replaceChildren();
+  for (const c of R.cats) {
+    if (!c.gastado && !c.presu && !editaPresu) continue;
+    const fila = el(editaPresu ? "div" : "button", "cat");
+    fila.style.setProperty("--c", color(c.id));
+    const n = el("span", "n", c.n);
+    if (!editaPresu && c.estado !== "ok")
+      n.append(el("span", "c-chip " + (c.estado === "pasado" ? "mal" : "ojo"), c.estado === "pasado" ? "pasado" : "ojo"));
+    fila.append(el("i"), n);
+    if (editaPresu) {
+      const inp = el("input", "c-campo");
+      Object.assign(inp, {inputMode: "decimal", value: c.presu ? String(c.presu).replace(".", ",") : "",
+                          placeholder: c.sugerido ? String(c.sugerido) : "sin límite"});
+      inp.setAttribute("aria-label", `Presupuesto de ${c.n} por ciclo`);
+      inp.onchange = () => { S.cats.find(x => x.id === c.id).presu = num(inp.value) || 0; guardar(); };
+      fila.append(inp, el("span", "sub", c.sugerido ? `Sugerido ${eur0(c.sugerido)}: ${c.por}` : c.por));
+    } else {
+      fila.setAttribute("aria-pressed", filtro === c.id);
+      fila.onclick = () => { filtro = filtro === c.id ? null : c.id; movimientos(); categorias(ritmo); };
+      const v = el("span", "v", eur(c.gastado));
+      if (c.presu) v.append(el("small", null, " / " + eur0(c.presu)));
+      fila.append(v);
+      if (c.presu) {
+        const b = el("div", "barra-ritmo");
+        // los fijos (casa, suscripciones) se pagan de golpe: la raya de ritmo no les aplica
+        barra(b, c.gastado, c.presu, ["casa", "suscripciones"].includes(c.id) ? null : ritmo);
+        fila.append(b);
+      } else if (c.sugerido) {
+        fila.append(el("span", "sub", `Sin límite · sugerido ${eur0(c.sugerido)}`));
+      }
+    }
+    cats.append(fila);
+  }
+  if (!cats.children.length) cats.append(el("p", "vacio", "Nada en este ciclo."));
+  $("#b-presu").textContent = editaPresu ? "Hecho" : "Presupuestos";
+}
+
+function ajustes() {
+  const f = el("div", "ajustes");
+  const presuTotal = S.cats.reduce((a, c) => a + c.presu, 0);
+  const ahorro = S.ajustes.ingreso - presuTotal;
+  f.innerHTML = `
+    <label>Cobras al mes<input class="c-campo" name="ingreso" inputmode="decimal" placeholder="vacío si varía"></label>
+    <label>Día de cobro<input class="c-campo" name="dia" type="number" min="1" max="31"></label>
+    <div class="fila-btn"><button class="c-btn" type="button" name="sug">Usar sugeridos</button><span></span></div>`;
+  const [ing, dia] = f.querySelectorAll("input");
+  ing.value = S.ajustes.ingreso ? String(S.ajustes.ingreso).replace(".", ",") : "";
+  dia.value = S.ajustes.dia_cobro;
+  f.querySelector("span").textContent = !S.ajustes.ingreso
+    ? (presuTotal ? `Presupuesto ${eur0(presuTotal)} al ciclo` : `Los sugeridos son lo que gastas de media: ${eur0(R.sugerido_total)} al ciclo.`)
+    : presuTotal
+    ? `Presupuesto ${eur0(presuTotal)} · ahorro objetivo ${eur0(ahorro)} (${Math.round(ahorro * 100 / S.ajustes.ingreso)} %)`
+    : `Los sugeridos dejan ${eur0(S.ajustes.ingreso - R.sugerido_total)} de ahorro al ciclo.`;
+  // vacío = ingreso variable (una instancia sin sueldo fijo; si no, el servidor vuelve a su valor por defecto)
+  ing.onchange = () => { S.ajustes.ingreso = num(ing.value) || 0; guardar(); };
+  dia.onchange = () => { S.ajustes.dia_cobro = Math.min(31, Math.max(1, +dia.value || S.ajustes.dia_cobro)); ref = HOY; guardar(); };
+  f.querySelector("[name=sug]").onclick = () => {
+    for (const c of R.cats) if (c.sugerido) S.cats.find(x => x.id === c.id).presu = c.sugerido;
+    guardar("Presupuestos sugeridos puestos");
+  };
+  return f;
+}
+
+function chips() {
+  const c = $("#chips");
+  c.replaceChildren();
+  for (const [id, n] of [["", "Auto"], ...S.cats.map(x => [x.id, x.n])]) {
+    const b = el("button", null, n);
+    b.type = "button";
+    if (id) {
+      const i = el("i");
+      i.style.setProperty("--c", color(id));
+      b.prepend(i);
+    }
+    b.setAttribute("aria-pressed", catNueva === id);
+    b.onclick = () => { catNueva = id; chips(); };
+    c.append(b);
+  }
+}
+
+function fechaTxt(d) {
+  if (d === HOY) return "Hoy";
+  if (d === masDias(HOY, -1)) return "Ayer";
+  return `${cap(DIAS[fecha(d).getDay()])} ${fecha(d).getDate()}`;
+}
+
+function movimientos() {
+  const lista = S.gastos.filter(g => g.dia >= R.inicio && g.dia <= R.fin && (!filtro || g.cat === filtro))
+    .sort((a, b) => b.dia.localeCompare(a.dia) || b.id.localeCompare(a.id));
+  $("#n-mov").textContent = filtro ? `${catN(filtro)} · ${lista.length}` : String(lista.length);
+  const c = $("#movs");
+  c.replaceChildren();
+  if (!lista.length) {
+    c.append(el("p", "vacio", filtro ? "Nada en esta categoría." : "Sin gastos en este ciclo."));
+    return;
+  }
+  let dia = null;
+  for (const g of lista) {
+    if (g.dia !== dia) {
+      dia = g.dia;
+      const h = el("div", "dia", fechaTxt(dia));
+      h.append(el("span", null, eur(suma(lista.filter(x => x.dia === dia)))));
+      c.append(h);
+    }
+    const b = el("button", "mov");
+    b.dataset.id = g.id;
+    b.style.setProperty("--c", color(g.cat));
+    b.setAttribute("aria-expanded", abierto === g.id);
+    const t = el("span", "t");
+    t.append(el("b", null, g.comercio || g.nota || catN(g.cat)),
+             el("small", null, [catN(g.cat), g.comercio && g.nota ? g.nota : "", ORIGEN[g.src]].filter(Boolean).join(" · ")));
+    b.append(el("i"), t, el("span", "v", eur(g.importe)));
+    b.onclick = () => { abierto = abierto === g.id ? null : g.id; movimientos(); if (abierto) anima.nueva($(".edita")); };
+    c.append(b);
+    if (abierto === g.id) c.append(editor(g));
+  }
+}
+
+function editor(g) {
+  const f = el("form", "edita");
+  f.innerHTML = `
+    <div class="fila2">
+      <input class="c-campo" name="importe" inputmode="decimal" aria-label="Importe">
+      <input class="c-campo" type="date" name="dia" aria-label="Día">
+    </div>
+    <select class="c-campo" name="cat" aria-label="Categoría"></select>
+    <input class="c-campo" name="comercio" placeholder="Comercio" maxlength="60" aria-label="Comercio">
+    <input class="c-campo" name="nota" placeholder="Nota" maxlength="120" aria-label="Nota">
+    <div class="acciones">
+      <button type="button" class="c-btn peligro" name="borrar">Borrar</button>
+      <button class="c-btn pri">Guardar</button>
+    </div>`;
+  f.importe.value = g.importe.toFixed(2).replace(".", ",");
+  f.dia.value = g.dia;
+  f.comercio.value = g.comercio;
+  f.nota.value = g.nota;
+  f.cat.append(...S.cats.map(c => new Option(c.n, c.id, false, c.id === g.cat)));
+  if (g.lineas.length) {
+    const ul = el("ul", "lineas");
+    for (const l of g.lineas) {
+      const li = el("li");
+      li.append(el("span", null, l.t), el("b", null, eur(l.imp)));
+      ul.append(li);
+    }
+    f.insertBefore(ul, f.querySelector(".acciones"));
+  }
+  f.onsubmit = e => {
+    e.preventDefault();
+    const imp = num(f.importe.value);
+    if (!(imp > 0)) return f.importe.focus();
+    Object.assign(g, {importe: imp, dia: f.dia.value || g.dia, cat: f.cat.value,
+                      comercio: f.comercio.value.trim(), nota: f.nota.value.trim()});
+    abierto = null;
+    guardar();
+  };
+  f.borrar.onclick = async () => {
+    f.borrar.disabled = true;
+    await Promise.all([anima.hecha(f), anima.hecha(f.previousElementSibling)]);   // se pliega antes de irse
+    S.gastos = S.gastos.filter(x => x !== g);
+    abierto = null;
+    guardar("Borrado");
+    toast(`Borrado: ${eur(g.importe)}`, () => { S.gastos.push(g); guardar("Recuperado"); });
+  };
+  return f;
+}
+
+// ---------- gráficas (Chart.js) ----------
+// Colores siempre de los tokens de calma.css, leídos al pintar: así claro/oscuro sale solo.
+const graf = {};
+function tokens() {
+  const s = getComputedStyle(document.documentElement), v = n => s.getPropertyValue(n).trim();
+  return {texto: v("--texto"), suave: v("--suave"), tenue: v("--tenue"), linea: v("--linea"),
+          acento: v("--acento"), carta: v("--carta"), peligro: v("--peligro"), fuente: v("--fuente")};
+}
+
+function base(t) {
+  return {
+    responsive: true, maintainAspectRatio: false,
+    interaction: {mode: "index", intersect: false},
+    animation: anima.graficas(250),   // se dibujan solas, día a día
+    plugins: {
+      legend: {display: false},   // leyenda propia en HTML, encima de cada gráfica
+      tooltip: {backgroundColor: t.texto, titleColor: t.carta, bodyColor: t.carta, padding: 10,
+                cornerRadius: 8, displayColors: false, titleFont: {family: t.fuente, weight: "600"},
+                bodyFont: {family: t.fuente},
+                callbacks: {label: c => c.raw == null ? null : `${c.dataset.label}: ${eur(c.raw)}`}},
+    },
+    scales: {
+      x: {grid: {display: false}, border: {color: t.linea},
+          ticks: {color: t.tenue, font: {family: t.fuente, size: 11}, maxRotation: 0, autoSkipPadding: 14}},
+      y: {beginAtZero: true, grid: {color: t.linea}, border: {display: false},
+          ticks: {color: t.tenue, font: {family: t.fuente, size: 11}, maxTicksLimit: 5, callback: v => eur0(v)}},
+    },
+  };
+}
+
+function dibuja(id, config) {
+  graf[id]?.destroy();
+  graf[id] = new Chart(document.getElementById(id), config);
+}
+
+function leyenda(sel, items) {
+  $(sel).replaceChildren(...items.map(([txt, c, raya]) => {
+    const s = el("span");
+    const m = el("s", raya ? "raya" : "");
+    m.style.setProperty("--c", c);
+    s.append(m, document.createTextNode(txt));
+    return s;
+  }));
+}
+
+function tabla(sel, cabecera, filas) {
+  const t = el("table");
+  const h = el("tr");
+  cabecera.forEach(x => h.append(el("th", null, x)));
+  t.append(h);
+  for (const f of filas) {
+    const tr = el("tr");
+    f.forEach(x => tr.append(el("td", null, x)));
+    t.append(tr);
+  }
+  $(sel).replaceChildren(t);
+}
+
+function graficas() {
+  if (!window.Chart) return;   // sin la librería (sin red) la página funciona igual
+  const t = tokens();
+  const dias = Array.from({length: R.dias}, (_, i) => masDias(R.inicio, i));
+  const previa = R.serie_previa.slice(0, R.dias);
+  const pace = R.presu ? dias.map((_, i) => Math.round(R.presu * (i + 1) / R.dias * 100) / 100) : null;
+  const proy = R.actual && R.hechos >= 3 && R.hechos < R.dias
+    ? dias.map((_, i) => i < R.hechos - 1 ? null
+        : Math.round((R.serie[R.hechos - 1] + (R.proyeccion - R.total) * (i - R.hechos + 1) / (R.dias - R.hechos)) * 100) / 100)
+    : null;
+
+  const ds = [
+    {label: "Este ciclo", data: R.serie, borderColor: t.acento, backgroundColor: t.acento + "1f", fill: "origin",
+     borderWidth: 2, pointRadius: 0, pointHoverRadius: 4, tension: .25},
+    {label: "Ciclo anterior", data: previa, borderColor: t.tenue, borderWidth: 2, pointRadius: 0, pointHoverRadius: 3, tension: .25},
+  ];
+  if (pace) ds.push({label: "Ritmo del presupuesto", data: pace, borderColor: t.suave, borderWidth: 1.5,
+                     borderDash: [4, 4], pointRadius: 0, pointHoverRadius: 0});
+  if (proy) ds.push({label: "Proyección", data: proy, borderColor: t.acento, borderWidth: 2, borderDash: [2, 4],
+                     pointRadius: 0, pointHoverRadius: 3});
+  const op = base(t);
+  op.plugins.tooltip.callbacks.title = c => corta(dias[c[0].dataIndex]);
+  dibuja("g-ritmo", {type: "line", data: {labels: dias.map(d => fecha(d).getDate()), datasets: ds}, options: op});
+  leyenda("#ley-ritmo", [["Este ciclo", t.acento], ["Ciclo anterior", t.tenue],
+    ...(pace ? [["Ritmo del presupuesto", t.suave, true]] : []), ...(proy ? [["Proyección", t.acento, true]] : [])]);
+  tabla("#t-ritmo", ["Día", "Este ciclo", "Anterior", ...(pace ? ["Presupuesto"] : [])],
+    dias.map((d, i) => [corta(d), R.serie[i] != null ? eur(R.serie[i]) : "—",
+                        previa[i] != null ? eur(previa[i]) : "—", ...(pace ? [eur(pace[i])] : [])]));
+
+  // últimos ciclos: barras, la del ciclo que se ve destacada y el resto en gris
+  const h = R.historico;
+  const etiquetas = h.map(c => MESES[fecha(c.fin).getMonth()].slice(0, 3));
+  const hist = [{type: "bar", label: "Gastado", data: h.map(c => c.total), borderRadius: 4, maxBarThickness: 34,
+                 backgroundColor: h.map(c => c.inicio === R.inicio ? t.acento : t.tenue + "66"), borderSkipped: "start"}];
+  if (R.presu) hist.push({type: "line", label: "Presupuesto", data: h.map(() => R.presu), borderColor: t.suave,
+                          borderWidth: 1.5, borderDash: [4, 4], pointRadius: 0});
+  const oh = base(t);
+  oh.plugins.tooltip.callbacks.title = c => `${corta(h[c[0].dataIndex].inicio)} – ${corta(h[c[0].dataIndex].fin)}`;
+  dibuja("g-hist", {data: {labels: etiquetas, datasets: hist}, options: oh});
+  leyenda("#ley-hist", [["Gastado", t.acento], ...(R.presu ? [["Presupuesto de ahora", t.suave, true]] : [])]);
+  tabla("#t-hist", ["Ciclo", "Gastado"], h.map(c => [`${corta(c.inicio)} – ${corta(c.fin)}`, eur(c.total)]));
+}
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => R && graficas());
+
+// ---------- eventos ----------
+$("#f-nuevo").dia.value = HOY;
+$("#f-nuevo").onsubmit = async e => {
+  e.preventDefault();
+  const f = e.target, btn = f.querySelector("button[type=submit]");
+  const imp = num(f.importe.value);
+  if (!(imp > 0)) return f.importe.focus();
+  btn.disabled = true;
+  try {
+    // por el mismo camino que el atajo: el servidor adivina la categoría y avisa si te pasas
+    const r = await api("/api/gasto", {method: "POST", body: JSON.stringify({
+      importe: imp, cat: catNueva, nota: f.nota.value.trim(), dia: f.dia.value || HOY, src: "web"})});
+    f.importe.value = "";
+    f.nota.value = "";
+    catNueva = "";
+    ref = r.gasto.dia;
+    await cargar();
+    anima.nueva($(`.mov[data-id="${r.gasto.id}"]`));
+    toast([r.texto.split("\n")[0], ...(r.avisos || [])].join(" · "),
+          () => { S.gastos = S.gastos.filter(x => x.id !== r.gasto.id); guardar("Quitado"); });
+  } catch (err) {
+    if (err.message !== "401") $("#estado").textContent = "No se ha apuntado";
+  } finally {
+    btn.disabled = false;
+  }
+};
+
+$("#prev").onclick = () => { ref = masDias(R.inicio, -1); filtro = abierto = null; cargar(true); };
+$("#next").onclick = () => { ref = masDias(R.fin, 1); filtro = abierto = null; cargar(true); };
+$("#b-presu").onclick = () => { editaPresu = !editaPresu; categorias(R.actual ? R.hechos / R.dias : null); };
+
+$("#f-clave").onsubmit = async e => {
+  e.preventDefault();
+  const inp = e.target.pass;
+  const r = await fetch("/api/login", {
+    method: "POST", headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({pass: inp.value}),
+  }).catch(() => null);
+  if (r && r.ok) { inp.value = ""; await cargar(); }
+  else puerta(true, r && r.status === 401 ? "Contraseña incorrecta" : "No se pudo conectar");
+};
+addEventListener("visibilitychange", () => !document.hidden && !abierto && !editaPresu && cargar());
+
+cargar();
+</script>
+</body>
+</html>
