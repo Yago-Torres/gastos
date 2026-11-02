@@ -17,7 +17,8 @@ presupuestos por categoría. Corre en una Raspberry Pi.
   dónde más gastas…).
 - **Categorías con presupuesto** y una marca de dónde deberías ir a estas alturas del ciclo.
 - **Apuntar rápido** desde la web, desde un atajo de iOS (`POST /api/gasto`) o desde un bot de
-  Telegram, que también entiende fotos de tickets.
+  Telegram, que también entiende fotos de tickets y capturas de la app del banco (se salta lo ya apuntado
+  y pregunta lo dudoso).
 - **Fijos** (casa, suscripciones) y la comida de la semana, que se lee de la app de comida.
 - **Varias personas, mismo código:** cada instancia arranca con su propio `.env` y sus datos aparte.
 

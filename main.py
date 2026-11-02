@@ -24,7 +24,7 @@ CATS = [("super", "Súper"), ("fuera", "Comer fuera"), ("ocio", "Ocio"), ("trans
 # (meses naturales); con ingreso 0 lo que debería gastar sale de lo que gasta de media, no de un %.
 AJUSTES = {"ingreso": float(os.getenv("GASTOS_INGRESO", "1600")), "dia_cobro": int(os.getenv("GASTOS_COBRO", "28"))}
 EMPTY = {"cats": [{"id": i, "n": n, "presu": 0} for i, n in CATS], "gastos": [], "ajustes": dict(AJUSTES)}
-SRCS = {"web", "atajo", "applepay", "bot", "ticket"}
+SRCS = {"web", "atajo", "applepay", "bot", "ticket", "banco"}
 
 # Cuánto debería gastar: 80 % en vivir y 20 % de ahorro (la regla 50/30/20 apretada a un
 # piso compartido y a la dieta de comida.yagotg.dev). Los fijos se toman de lo que de
@@ -512,7 +512,7 @@ def apunta(a: dict = Body(...), gastos_sesion: str = Cookie(None), authorization
     if alertas:
         texto += "\n" + "\n".join(alertas)
         # lo que entra por el bot ya contesta en Telegram con este texto: no avisar dos veces
-        if g["src"] not in ("bot", "ticket"):
+        if g["src"] not in ("bot", "ticket", "banco"):
             telegram("\n".join(alertas))
     return {"texto": texto, "gasto": g, "avisos": alertas}
 
