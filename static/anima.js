@@ -11,22 +11,24 @@ const anima = (() => {
   function entra(sel, paso = 40, desde = 0) {
     const els = [...document.querySelectorAll(sel)];
     if (mov && els.length) {
-      els.forEach(e => { e.style.opacity = "0"; e.style.transform = "translateY(14px)"; });
-      anime.animate(els, {y: [14, 0], opacity: [0, 1], delay: anime.stagger(paso, {start: desde}), duration: 420, ease: "outCubic"});
+      // rápida: lo de abajo no espera su turno más de 6 pasos (con muchas tarjetas la cascada se hacía eterna)
+      els.forEach(e => { e.style.opacity = "0"; e.style.transform = "translateY(8px)"; });
+      anime.animate(els, {y: [8, 0], opacity: [0, 1], delay: (_, i) => desde + Math.min(i, 6) * paso, duration: 260, ease: "outCubic"});
     }
     document.documentElement.classList.remove("c-cargando");
   }
 
   // La entrada de todas las páginas, igual en todas: el título letra a letra y las tarjetas en
   // cascada, al mismo ritmo. Cada página la llama una vez, cuando ya tiene sus datos pintados.
+  // Si la página llega con transición entre páginas (calma.js → .c-vt), el título ya ha entrado volando: no se repite.
   function entrada() {
     const h1 = document.querySelector(".app h1");
-    if (mov && h1 && !h1.dataset.entro) {
+    if (mov && h1 && !h1.dataset.entro && !document.documentElement.classList.contains("c-vt")) {
       h1.dataset.entro = "1";
       anime.animate(anime.splitText(h1, {chars: true}).chars,
-        {y: ["60%", "0%"], opacity: [0, 1], delay: anime.stagger(12), duration: 420, ease: "outExpo"});
+        {y: ["60%", "0%"], opacity: [0, 1], delay: anime.stagger(8), duration: 300, ease: "outExpo"});
     }
-    entra(".app .c-carta, .app .panel, .app .escena3d", 40, 40);
+    entra(".app .c-carta, .app .panel, .app .escena3d", 22, 0);
   }
 
   // hecho: el círculo se rellena y el check se dibuja, y la fila se pliega hacia la derecha.

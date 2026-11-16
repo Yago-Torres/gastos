@@ -1,0 +1,2764 @@
+{
+ "version": 2,
+ "defecto": {
+  "tema": "hormigon",
+  "modo": "sistema",
+  "base": "#F2F2F2",
+  "acento": "#4E7A62",
+  "fuente": "instrument",
+  "titulos": "instrument",
+  "esquinas": "suaves",
+  "fondo": "sutil",
+  "paleta": "hormigon"
+ },
+ "temas": [
+  {
+   "id": "hormigon",
+   "nombre": "Hormigón",
+   "vibra": "Grises puros y un verde salvia. Sobrio.",
+   "base": "#F2F2F2",
+   "acento": "#4E7A62",
+   "fuente": "instrument",
+   "titulos": "instrument",
+   "esquinas": "suaves",
+   "fondo": "sutil",
+   "modo": "sistema",
+   "decoracion": "ascii",
+   "sonido": "campanas"
+  },
+  {
+   "id": "shibuya",
+   "nombre": "Shibuya",
+   "vibra": "Papel washi, tinta sumi y el rojo de un sello. Japón urbano.",
+   "base": "#F7F4EC",
+   "acento": "#C8102E",
+   "fuente": "zen-kaku",
+   "titulos": "shippori",
+   "esquinas": "rectas",
+   "fondo": "sutil",
+   "modo": "sistema",
+   "decoracion": "washi",
+   "sonido": "madera"
+  },
+  {
+   "id": "kioto",
+   "nombre": "Kioto",
+   "vibra": "Índigo teñido y oro de kintsugi. Noche en un templo.",
+   "base": "#141C30",
+   "acento": "#D4AF37",
+   "fuente": "zen-kaku",
+   "titulos": "shippori",
+   "esquinas": "suaves",
+   "fondo": "apagado",
+   "modo": "oscuro",
+   "decoracion": "kintsugi",
+   "sonido": "bambu"
+  },
+  {
+   "id": "sakura",
+   "nombre": "Sakura",
+   "vibra": "Cerezo en flor sobre blanco rosado. Amable.",
+   "base": "#FFF7F8",
+   "acento": "#E05C7E",
+   "fuente": "dm-sans",
+   "titulos": "shippori",
+   "esquinas": "redondas",
+   "fondo": "sutil",
+   "modo": "sistema",
+   "decoracion": "petalos",
+   "sonido": "campanas"
+  },
+  {
+   "id": "calma",
+   "nombre": "Calma",
+   "vibra": "El de siempre: oliva y lima sobre blanco verdoso.",
+   "base": "#F4F5F0",
+   "acento": "#5E7A1E",
+   "fuente": "inter",
+   "titulos": "inter",
+   "esquinas": "actuales",
+   "fondo": "normal",
+   "modo": "sistema",
+   "decoracion": "ascii",
+   "sonido": "campanas"
+  },
+  {
+   "id": "terminal",
+   "nombre": "Terminal",
+   "vibra": "Fósforo verde sobre negro. Para la consola.",
+   "base": "#050A05",
+   "acento": "#5CFF7A",
+   "fuente": "jetbrains",
+   "titulos": "jetbrains",
+   "esquinas": "rectas",
+   "fondo": "presente",
+   "modo": "oscuro",
+   "decoracion": "barrido",
+   "sonido": "8bit"
+  },
+  {
+   "id": "prensa",
+   "nombre": "Prensa",
+   "vibra": "Papel de periódico, titulares en serif y rojo de portada.",
+   "base": "#FBFBF8",
+   "acento": "#B3261E",
+   "fuente": "inter",
+   "titulos": "fraunces",
+   "esquinas": "rectas",
+   "fondo": "apagado",
+   "modo": "claro",
+   "decoracion": "papel",
+   "sonido": "clic"
+  },
+  {
+   "id": "fiordo",
+   "nombre": "Fiordo",
+   "vibra": "Azules nórdicos y escarcha. Frío y limpio.",
+   "base": "#ECEFF4",
+   "acento": "#5E81AC",
+   "fuente": "manrope",
+   "titulos": "manrope",
+   "esquinas": "suaves",
+   "fondo": "sutil",
+   "modo": "sistema",
+   "decoracion": "curvas",
+   "sonido": "bambu"
+  },
+  {
+   "id": "cafe",
+   "nombre": "Café",
+   "vibra": "Tostado, crema y miel. Cálido de sobremesa.",
+   "base": "#F3EFE8",
+   "acento": "#A66300",
+   "fuente": "dm-sans",
+   "titulos": "fraunces",
+   "esquinas": "suaves",
+   "fondo": "sutil",
+   "modo": "sistema",
+   "decoracion": "manchas",
+   "sonido": "madera"
+  },
+  {
+   "id": "bauhaus",
+   "nombre": "Bauhaus",
+   "vibra": "Blanco roto, rojo primario y geometría seca.",
+   "base": "#F5F3EE",
+   "acento": "#D62828",
+   "fuente": "space-grotesk",
+   "titulos": "space-grotesk",
+   "esquinas": "rectas",
+   "fondo": "apagado",
+   "modo": "claro",
+   "decoracion": "formas",
+   "sonido": "clic"
+  },
+  {
+   "id": "miami",
+   "nombre": "Miami",
+   "vibra": "Neón rosa sobre violeta noche. Años 80.",
+   "base": "#120016",
+   "acento": "#FF3CF2",
+   "fuente": "space-grotesk",
+   "titulos": "space-grotesk",
+   "esquinas": "redondas",
+   "fondo": "normal",
+   "modo": "oscuro",
+   "decoracion": "rejilla-neon",
+   "sonido": "sintetizador"
+  },
+  {
+   "id": "matcha",
+   "nombre": "Matcha",
+   "vibra": "Verde té y crema. Fresco.",
+   "base": "#F1F6ED",
+   "acento": "#6E9A3C",
+   "fuente": "dm-sans",
+   "titulos": "dm-sans",
+   "esquinas": "redondas",
+   "fondo": "sutil",
+   "modo": "sistema",
+   "decoracion": "manchas",
+   "sonido": "campanas"
+  },
+  {
+   "id": "lavanda",
+   "nombre": "Lavanda",
+   "vibra": "Lila suave y violeta. Tranquilo.",
+   "base": "#F3F2F7",
+   "acento": "#7C5CFF",
+   "fuente": "manrope",
+   "titulos": "manrope",
+   "esquinas": "redondas",
+   "fondo": "sutil",
+   "modo": "sistema",
+   "decoracion": "manchas",
+   "sonido": "campanas"
+  },
+  {
+   "id": "medianoche",
+   "nombre": "Medianoche",
+   "vibra": "Azul marino profundo y oro viejo.",
+   "base": "#0F141C",
+   "acento": "#E8B04B",
+   "fuente": "plex",
+   "titulos": "plex",
+   "esquinas": "suaves",
+   "fondo": "sutil",
+   "modo": "oscuro",
+   "decoracion": "estrellas",
+   "sonido": "campanas"
+  },
+  {
+   "id": "braun",
+   "nombre": "Braun",
+   "vibra": "Gris de aparato y el naranja de un botón. Dieter Rams.",
+   "base": "#ECECE9",
+   "acento": "#FF6A13",
+   "fuente": "plex",
+   "titulos": "plex",
+   "esquinas": "suaves",
+   "fondo": "apagado",
+   "modo": "claro",
+   "decoracion": "rejilla-fina",
+   "sonido": "clic"
+  },
+  {
+   "id": "bosque",
+   "nombre": "Bosque",
+   "vibra": "Verde de noche en el monte y lima.",
+   "base": "#0D140B",
+   "acento": "#C6F432",
+   "fuente": "geist",
+   "titulos": "geist",
+   "esquinas": "suaves",
+   "fondo": "normal",
+   "modo": "sistema",
+   "decoracion": "curvas",
+   "sonido": "madera"
+  },
+  {
+   "id": "arena",
+   "nombre": "Arena",
+   "vibra": "Dunas, terracota y serif blanda.",
+   "base": "#F6EFE6",
+   "acento": "#D08C5B",
+   "fuente": "manrope",
+   "titulos": "fraunces",
+   "esquinas": "redondas",
+   "fondo": "sutil",
+   "modo": "sistema",
+   "decoracion": "manchas",
+   "sonido": "madera"
+  },
+  {
+   "id": "grafito",
+   "nombre": "Grafito",
+   "vibra": "Negro mate y lima eléctrica. Técnico.",
+   "base": "#111111",
+   "acento": "#C6F432",
+   "fuente": "geist",
+   "titulos": "geist",
+   "esquinas": "rectas",
+   "fondo": "presente",
+   "modo": "oscuro",
+   "decoracion": "ascii",
+   "sonido": "8bit"
+  }
+ ],
+ "sugerencias": {
+  "acento": [
+   "#4E7A62",
+   "#5E7A1E",
+   "#C8102E",
+   "#D62828",
+   "#E05C7E",
+   "#FF3CF2",
+   "#7C5CFF",
+   "#5E81AC",
+   "#2F6FD6",
+   "#1FA37A",
+   "#6E9A3C",
+   "#C6F432",
+   "#D4AF37",
+   "#E8B04B",
+   "#A66300",
+   "#FF6A13",
+   "#D08C5B",
+   "#5CFF7A"
+  ],
+  "base": [
+   "#F2F2F2",
+   "#FFFFFF",
+   "#F7F4EC",
+   "#F4F5F0",
+   "#ECEFF4",
+   "#F3F2F7",
+   "#FFF7F8",
+   "#F1F6ED",
+   "#F6EFE6",
+   "#111111",
+   "#050A05",
+   "#0F141C",
+   "#141C30",
+   "#120016",
+   "#0D140B"
+  ]
+ },
+ "paletas": [
+  {
+   "id": "calma",
+   "nombre": "Calma",
+   "familia": "Calma y afines",
+   "descripcion": "Blanco verdoso y grafito con punto oliva.",
+   "claro": {
+    "fondo": "#F4F5F0",
+    "carta": "#FFFFFF",
+    "carta_luz": "#FFFFFF",
+    "carta2": "#ECEEE6",
+    "texto": "#1E211C",
+    "suave": "#686D60",
+    "tenue": "#A0A595",
+    "linea": "#E2E5DB",
+    "dock": "#2E342B",
+    "dock_texto": "#B5BAA6",
+    "ascii": "rgba(44, 50, 38, .26)"
+   },
+   "oscuro": {
+    "fondo": "#171A16",
+    "carta": "#21251F",
+    "carta_luz": "#282D26",
+    "carta2": "#2B3028",
+    "texto": "#EEF0E8",
+    "suave": "#A3A892",
+    "tenue": "#737865",
+    "linea": "#363C31",
+    "dock": "#2E342B",
+    "dock_texto": "#B5BAA6",
+    "ascii": "rgba(214, 222, 196, .2)"
+   },
+   "acento": "oliva"
+  },
+  {
+   "id": "papel",
+   "nombre": "Papel y tinta",
+   "familia": "Calma y afines",
+   "descripcion": "Blanco roto neutro y negro tinta.",
+   "claro": {
+    "fondo": "#F6F5F2",
+    "carta": "#FFFFFF",
+    "carta_luz": "#FFFFFF",
+    "carta2": "#EEEDE9",
+    "texto": "#161616",
+    "suave": "#6B6A66",
+    "tenue": "#A4A29C",
+    "linea": "#E4E2DD",
+    "dock": "#1C1C1C",
+    "dock_texto": "#B4B2AC",
+    "ascii": "rgba(30, 30, 30, .18)"
+   },
+   "oscuro": {
+    "fondo": "#121212",
+    "carta": "#1C1C1C",
+    "carta_luz": "#222222",
+    "carta2": "#262626",
+    "texto": "#EFEDE8",
+    "suave": "#A09E98",
+    "tenue": "#6C6A65",
+    "linea": "#303030",
+    "dock": "#262626",
+    "dock_texto": "#B4B2AC",
+    "ascii": "rgba(239, 237, 232, .13)"
+   },
+   "acento": "oliva"
+  },
+  {
+   "id": "niebla",
+   "nombre": "Niebla",
+   "familia": "Calma y afines",
+   "descripcion": "Gris azulado frío y tinta azul noche.",
+   "claro": {
+    "fondo": "#F1F3F6",
+    "carta": "#FFFFFF",
+    "carta_luz": "#FFFFFF",
+    "carta2": "#E7EAF0",
+    "texto": "#161B26",
+    "suave": "#646C7C",
+    "tenue": "#9EA5B3",
+    "linea": "#DDE1E9",
+    "dock": "#232A38",
+    "dock_texto": "#AAB2C2",
+    "ascii": "rgba(30, 40, 60, .18)"
+   },
+   "oscuro": {
+    "fondo": "#12151C",
+    "carta": "#1B2029",
+    "carta_luz": "#212732",
+    "carta2": "#262C38",
+    "texto": "#E9EDF4",
+    "suave": "#9AA3B4",
+    "tenue": "#687184",
+    "linea": "#303846",
+    "dock": "#232A38",
+    "dock_texto": "#AAB2C2",
+    "ascii": "rgba(200, 212, 235, .14)"
+   },
+   "acento": "pizarra"
+  },
+  {
+   "id": "arena",
+   "nombre": "Arena",
+   "familia": "Calma y afines",
+   "descripcion": "Arena cálida y marrón café.",
+   "claro": {
+    "fondo": "#F3EFE8",
+    "carta": "#FFFDF9",
+    "carta_luz": "#FFFFFF",
+    "carta2": "#EAE4DA",
+    "texto": "#2A231C",
+    "suave": "#7A6F62",
+    "tenue": "#ADA295",
+    "linea": "#E2DBCE",
+    "dock": "#3A3128",
+    "dock_texto": "#C2B6A6",
+    "ascii": "rgba(60, 45, 30, .18)"
+   },
+   "oscuro": {
+    "fondo": "#1A1612",
+    "carta": "#241F1A",
+    "carta_luz": "#2B251F",
+    "carta2": "#2F2822",
+    "texto": "#F2ECE3",
+    "suave": "#A89C8D",
+    "tenue": "#776C5F",
+    "linea": "#3A332B",
+    "dock": "#3A3128",
+    "dock_texto": "#C2B6A6",
+    "ascii": "rgba(240, 225, 205, .13)"
+   },
+   "acento": "arcilla"
+  },
+  {
+   "id": "salvia",
+   "nombre": "Salvia",
+   "familia": "Calma y afines",
+   "descripcion": "Verde grisáceo muy suave en todo.",
+   "claro": {
+    "fondo": "#EEF2EE",
+    "carta": "#FBFDFB",
+    "carta_luz": "#FFFFFF",
+    "carta2": "#E2E9E3",
+    "texto": "#18241C",
+    "suave": "#62716A",
+    "tenue": "#9AA79F",
+    "linea": "#D7E0D9",
+    "dock": "#27352C",
+    "dock_texto": "#AFC0B4",
+    "ascii": "rgba(30, 60, 40, .18)"
+   },
+   "oscuro": {
+    "fondo": "#121915",
+    "carta": "#1A231E",
+    "carta_luz": "#202A24",
+    "carta2": "#24302A",
+    "texto": "#E6EEE8",
+    "suave": "#97A89D",
+    "tenue": "#66756B",
+    "linea": "#2E3B33",
+    "dock": "#27352C",
+    "dock_texto": "#AFC0B4",
+    "ascii": "rgba(200, 230, 210, .13)"
+   },
+   "acento": "salvia"
+  },
+  {
+   "id": "pizarra",
+   "nombre": "Pizarra",
+   "familia": "Calma y afines",
+   "descripcion": "Azul pizarra profundo en oscuro, gris piedra en claro.",
+   "claro": {
+    "fondo": "#EEEFF1",
+    "carta": "#FFFFFF",
+    "carta_luz": "#FFFFFF",
+    "carta2": "#E3E5E9",
+    "texto": "#1A1D24",
+    "suave": "#666B77",
+    "tenue": "#9EA3AE",
+    "linea": "#D9DCE2",
+    "dock": "#1F2633",
+    "dock_texto": "#A7AEBD",
+    "ascii": "rgba(30, 35, 50, .18)"
+   },
+   "oscuro": {
+    "fondo": "#0F141C",
+    "carta": "#172030",
+    "carta_luz": "#1C2638",
+    "carta2": "#1F2A3C",
+    "texto": "#E4EAF4",
+    "suave": "#8F9BB0",
+    "tenue": "#5F6B80",
+    "linea": "#2A3650",
+    "dock": "#1F2633",
+    "dock_texto": "#A7AEBD",
+    "ascii": "rgba(170, 195, 235, .14)"
+   },
+   "acento": "pizarra"
+  },
+  {
+   "id": "lavanda",
+   "nombre": "Lavanda",
+   "familia": "Calma y afines",
+   "descripcion": "Gris lavanda y berenjena.",
+   "claro": {
+    "fondo": "#F3F2F7",
+    "carta": "#FFFFFF",
+    "carta_luz": "#FFFFFF",
+    "carta2": "#E9E7F0",
+    "texto": "#1E1A2B",
+    "suave": "#6E6982",
+    "tenue": "#A39FB4",
+    "linea": "#E0DDEA",
+    "dock": "#2C2740",
+    "dock_texto": "#B5AEC9",
+    "ascii": "rgba(45, 35, 70, .18)"
+   },
+   "oscuro": {
+    "fondo": "#15131C",
+    "carta": "#1E1B28",
+    "carta_luz": "#252131",
+    "carta2": "#282436",
+    "texto": "#ECE9F4",
+    "suave": "#A39DB5",
+    "tenue": "#716B84",
+    "linea": "#332E44",
+    "dock": "#2C2740",
+    "dock_texto": "#B5AEC9",
+    "ascii": "rgba(215, 205, 240, .14)"
+   },
+   "acento": "violeta"
+  },
+  {
+   "id": "bosque",
+   "nombre": "Bosque",
+   "familia": "Calma y afines",
+   "descripcion": "Verde bosque oscuro con lima.",
+   "claro": {
+    "fondo": "#EFF2EC",
+    "carta": "#FFFFFF",
+    "carta_luz": "#FFFFFF",
+    "carta2": "#E3E8DD",
+    "texto": "#15200F",
+    "suave": "#5F6B58",
+    "tenue": "#98A291",
+    "linea": "#D9DFD2",
+    "dock": "#1C2A17",
+    "dock_texto": "#A9B89E",
+    "ascii": "rgba(25, 45, 15, .2)"
+   },
+   "oscuro": {
+    "fondo": "#0D140B",
+    "carta": "#152012",
+    "carta_luz": "#1A2716",
+    "carta2": "#1E2C19",
+    "texto": "#E7F0E0",
+    "suave": "#94A589",
+    "tenue": "#62725A",
+    "linea": "#273722",
+    "dock": "#1C2A17",
+    "dock_texto": "#A9B89E",
+    "ascii": "rgba(200, 235, 170, .15)"
+   },
+   "acento": "lima"
+  },
+  {
+   "id": "hormigon",
+   "nombre": "Hormigón",
+   "familia": "Calma y afines",
+   "descripcion": "Grises puros, sin tinte: el acento es el único color.",
+   "claro": {
+    "fondo": "#F2F2F2",
+    "carta": "#FFFFFF",
+    "carta_luz": "#FFFFFF",
+    "carta2": "#E8E8E8",
+    "texto": "#161616",
+    "suave": "#6A6A6A",
+    "tenue": "#A3A3A3",
+    "linea": "#DEDEDE",
+    "dock": "#262626",
+    "dock_texto": "#B0B0B0",
+    "ascii": "rgba(20, 20, 20, .16)"
+   },
+   "oscuro": {
+    "fondo": "#111111",
+    "carta": "#1B1B1B",
+    "carta_luz": "#212121",
+    "carta2": "#252525",
+    "texto": "#EDEDED",
+    "suave": "#9A9A9A",
+    "tenue": "#6E6E6E",
+    "linea": "#2F2F2F",
+    "dock": "#262626",
+    "dock_texto": "#B0B0B0",
+    "ascii": "rgba(237, 237, 237, .12)"
+   },
+   "acento": "salvia"
+  },
+  {
+   "id": "musgo",
+   "nombre": "Musgo",
+   "familia": "Verdes",
+   "descripcion": "Verde musgo apagado, más terroso que Calma.",
+   "claro": {
+    "fondo": "#F3F5EF",
+    "carta": "#FDFEFC",
+    "carta_luz": "#FFFFFF",
+    "carta2": "#E9EBE2",
+    "texto": "#1A1C14",
+    "suave": "#686A62",
+    "tenue": "#9D9F99",
+    "linea": "#DEE1D9",
+    "dock": "#2D2F26",
+    "dock_texto": "#B6B8B1",
+    "ascii": "rgba(44, 47, 36, 0.2)"
+   },
+   "oscuro": {
+    "fondo": "#12140E",
+    "carta": "#1C1E17",
+    "carta_luz": "#22241C",
+    "carta2": "#25281F",
+    "texto": "#EEEFEB",
+    "suave": "#A3A69E",
+    "tenue": "#686A63",
+    "linea": "#32342C",
+    "dock": "#2D2F26",
+    "dock_texto": "#B6B8B1",
+    "ascii": "rgba(219, 225, 205, 0.15)"
+   },
+   "acento": "p-musgo"
+  },
+  {
+   "id": "menta",
+   "nombre": "Menta",
+   "familia": "Verdes",
+   "descripcion": "Fresco y limpio, verde agua.",
+   "claro": {
+    "fondo": "#EFF6F3",
+    "carta": "#FCFEFD",
+    "carta_luz": "#FFFFFF",
+    "carta2": "#E3ECE8",
+    "texto": "#151D19",
+    "suave": "#636B67",
+    "tenue": "#99A09D",
+    "linea": "#D9E2DE",
+    "dock": "#27302C",
+    "dock_texto": "#B2B9B6",
+    "ascii": "rgba(37, 49, 43, 0.2)"
+   },
+   "oscuro": {
+    "fondo": "#0E1411",
+    "carta": "#171F1B",
+    "carta_luz": "#1D2521",
+    "carta2": "#202925",
+    "texto": "#EBF0ED",
+    "suave": "#9FA7A3",
+    "tenue": "#646B67",
+    "linea": "#2C3531",
+    "dock": "#27302C",
+    "dock_texto": "#B2B9B6",
+    "ascii": "rgba(206, 228, 217, 0.15)"
+   },
+   "acento": "p-menta"
+  },
+  {
+   "id": "pino",
+   "nombre": "Pino",
+   "familia": "Verdes",
+   "descripcion": "Verde bosque frío, serio.",
+   "claro": {
+    "fondo": "#EFF7F1",
+    "carta": "#FCFEFD",
+    "carta_luz": "#FFFFFF",
+    "carta2": "#E2EDE5",
+    "texto": "#141D17",
+    "suave": "#626C65",
+    "tenue": "#99A19B",
+    "linea": "#D9E2DC",
+    "dock": "#263129",
+    "dock_texto": "#B1BAB4",
+    "ascii": "rgba(36, 50, 40, 0.2)"
+   },
+   "oscuro": {
+    "fondo": "#0D1510",
+    "carta": "#161F19",
+    "carta_luz": "#1C251F",
+    "carta2": "#1F2922",
+    "texto": "#EBF0EC",
+    "suave": "#9EA7A1",
+    "tenue": "#646B66",
+    "linea": "#2B362F",
+    "dock": "#263129",
+    "dock_texto": "#B1BAB4",
+    "ascii": "rgba(205, 229, 212, 0.15)"
+   },
+   "acento": "p-pino"
+  },
+  {
+   "id": "oliva-negro",
+   "nombre": "Oliva negro",
+   "familia": "Verdes",
+   "descripcion": "Casi neutro con un oliva intenso.",
+   "claro": {
+    "fondo": "#F4F5F1",
+    "carta": "#FEFEFD",
+    "carta_luz": "#FFFFFF",
+    "carta2": "#E9EAE5",
+    "texto": "#1A1B17",
+    "suave": "#696965",
+    "tenue": "#9E9F9B",
+    "linea": "#DFE0DB",
+    "dock": "#2D2E29",
+    "dock_texto": "#B7B8B4",
+    "ascii": "rgba(45, 47, 40, 0.2)"
+   },
+   "oscuro": {
+    "fondo": "#12130F",
+    "carta": "#1D1D19",
+    "carta_luz": "#23231F",
+    "carta2": "#262722",
+    "texto": "#EEEFEC",
+    "suave": "#A4A5A0",
+    "tenue": "#696965",
+    "linea": "#33332E",
+    "dock": "#2D2E29",
+    "dock_texto": "#B7B8B4",
+    "ascii": "rgba(221, 223, 211, 0.15)"
+   },
+   "acento": "p-oliva-negro"
+  },
+  {
+   "id": "matcha",
+   "nombre": "Matcha",
+   "familia": "Verdes",
+   "descripcion": "Verde té, vivo y alegre.",
+   "claro": {
+    "fondo": "#F1F6ED",
+    "carta": "#FDFEFC",
+    "carta_luz": "#FFFFFF",
+    "carta2": "#E6ECE0",
+    "texto": "#171D12",
+    "suave": "#656B60",
+    "tenue": "#9BA097",
+    "linea": "#DCE2D7",
+    "dock": "#2A3024",
+    "dock_texto": "#B4B9AF",
+    "ascii": "rgba(41, 49, 33, 0.2)"
+   },
+   "oscuro": {
+    "fondo": "#10140C",
+    "carta": "#1A1F15",
+    "carta_luz": "#1F251A",
+    "carta2": "#23291D",
+    "texto": "#ECF0E9",
+    "suave": "#A1A79C",
+    "tenue": "#666B62",
+    "linea": "#2F3529",
+    "dock": "#2A3024",
+    "dock_texto": "#B4B9AF",
+    "ascii": "rgba(213, 228, 199, 0.15)"
+   },
+   "acento": "p-matcha"
+  },
+  {
+   "id": "eucalipto",
+   "nombre": "Eucalipto",
+   "familia": "Verdes",
+   "descripcion": "Verde azulado muy suave.",
+   "claro": {
+    "fondo": "#EEF7F5",
+    "carta": "#FCFEFE",
+    "carta_luz": "#FFFFFF",
+    "carta2": "#E2EDEA",
+    "texto": "#141D1B",
+    "suave": "#626B69",
+    "tenue": "#98A09E",
+    "linea": "#D8E2E0",
+    "dock": "#25312E",
+    "dock_texto": "#B1BAB7",
+    "ascii": "rgba(35, 49, 46, 0.2)"
+   },
+   "oscuro": {
+    "fondo": "#0D1413",
+    "carta": "#161F1D",
+    "carta_luz": "#1C2523",
+    "carta2": "#1F2927",
+    "texto": "#EAF0EE",
+    "suave": "#9EA7A5",
+    "tenue": "#636B69",
+    "linea": "#2B3533",
+    "dock": "#25312E",
+    "dock_texto": "#B1BAB7",
+    "ascii": "rgba(203, 228, 223, 0.15)"
+   },
+   "acento": "p-eucalipto"
+  },
+  {
+   "id": "glaciar",
+   "nombre": "Glaciar",
+   "familia": "Azules",
+   "descripcion": "Gris hielo con azul claro.",
+   "claro": {
+    "fondo": "#F0F5F8",
+    "carta": "#FDFEFF",
+    "carta_luz": "#FFFFFF",
+    "carta2": "#E4EBEF",
+    "texto": "#161C1F",
+    "suave": "#646A6D",
+    "tenue": "#9A9FA2",
+    "linea": "#DAE1E4",
+    "dock": "#282F33",
+    "dock_texto": "#B3B8BB",
+    "ascii": "rgba(38, 47, 52, 0.2)"
+   },
+   "oscuro": {
+    "fondo": "#0F1316",
+    "carta": "#181E21",
+    "carta_luz": "#1E2427",
+    "carta2": "#21282B",
+    "texto": "#ECEFF1",
+    "suave": "#A0A6A9",
+    "tenue": "#656A6C",
+    "linea": "#2D3438",
+    "dock": "#282F33",
+    "dock_texto": "#B3B8BB",
+    "ascii": "rgba(209, 225, 233, 0.15)"
+   },
+   "acento": "p-glaciar"
+  },
+  {
+   "id": "oceano",
+   "nombre": "Océano",
+   "familia": "Azules",
+   "descripcion": "Azul mar, profundo.",
+   "claro": {
+    "fondo": "#EBF7FB",
+    "carta": "#FBFEFF",
+    "carta_luz": "#FFFFFF",
+    "carta2": "#DEEDF3",
+    "texto": "#101D22",
+    "suave": "#5E6B71",
+    "tenue": "#95A1A5",
+    "linea": "#D5E2E8",
+    "dock": "#213137",
+    "dock_texto": "#AEBABF",
+    "ascii": "rgba(29, 49, 57, 0.2)"
+   },
+   "oscuro": {
+    "fondo": "#0A1419",
+    "carta": "#121F24",
+    "carta_luz": "#18252A",
+    "carta2": "#1A292F",
+    "texto": "#E8F0F3",
+    "suave": "#9AA7AC",
+    "tenue": "#606B6F",
+    "linea": "#27353C",
+    "dock": "#213137",
+    "dock_texto": "#AEBABF",
+    "ascii": "rgba(193, 229, 243, 0.15)"
+   },
+   "acento": "p-oceano"
+  },
+  {
+   "id": "marino",
+   "nombre": "Marino",
+   "familia": "Azules",
+   "descripcion": "Azul marino clásico.",
+   "claro": {
+    "fondo": "#EFF5FE",
+    "carta": "#FCFEFF",
+    "carta_luz": "#FFFFFF",
+    "carta2": "#E3EAF6",
+    "texto": "#151B24",
+    "suave": "#636974",
+    "tenue": "#999FA8",
+    "linea": "#D9E0EB",
+    "dock": "#272E3A",
+    "dock_texto": "#B2B8C1",
+    "ascii": "rgba(37, 46, 61, 0.2)"
+   },
+   "oscuro": {
+    "fondo": "#0E131B",
+    "carta": "#171D27",
+    "carta_luz": "#1D232D",
+    "carta2": "#202732",
+    "texto": "#EBEFF5",
+    "suave": "#9FA5AF",
+    "tenue": "#646972",
+    "linea": "#2C333F",
+    "dock": "#272E3A",
+    "dock_texto": "#B2B8C1",
+    "ascii": "rgba(206, 223, 251, 0.15)"
+   },
+   "acento": "p-marino"
+  },
+  {
+   "id": "indigo",
+   "nombre": "Índigo",
+   "familia": "Azules",
+   "descripcion": "Índigo vivo.",
+   "claro": {
+    "fondo": "#F2F4FC",
+    "carta": "#FDFEFF",
+    "carta_luz": "#FFFFFF",
+    "carta2": "#E7E9F4",
+    "texto": "#181A23",
+    "suave": "#666872",
+    "tenue": "#9C9EA6",
+    "linea": "#DDDFE9",
+    "dock": "#2B2D38",
+    "dock_texto": "#B5B7C0",
+    "ascii": "rgba(42, 45, 59, 0.2)"
+   },
+   "oscuro": {
+    "fondo": "#111219",
+    "carta": "#1A1C25",
+    "carta_luz": "#20222B",
+    "carta2": "#242630",
+    "texto": "#EDEEF4",
+    "suave": "#A2A4AD",
+    "tenue": "#676870",
+    "linea": "#30323D",
+    "dock": "#2B2D38",
+    "dock_texto": "#B5B7C0",
+    "ascii": "rgba(215, 221, 246, 0.15)"
+   },
+   "acento": "p-indigo"
+  },
+  {
+   "id": "cielo",
+   "nombre": "Cielo",
+   "familia": "Azules",
+   "descripcion": "Azul cielo luminoso.",
+   "claro": {
+    "fondo": "#EFF5FA",
+    "carta": "#FCFEFF",
+    "carta_luz": "#FFFFFF",
+    "carta2": "#E3EBF1",
+    "texto": "#151C21",
+    "suave": "#636A6F",
+    "tenue": "#999FA4",
+    "linea": "#D9E1E6",
+    "dock": "#272F35",
+    "dock_texto": "#B2B8BD",
+    "ascii": "rgba(37, 47, 55, 0.2)"
+   },
+   "oscuro": {
+    "fondo": "#0E1318",
+    "carta": "#171E23",
+    "carta_luz": "#1D2429",
+    "carta2": "#20282D",
+    "texto": "#EBEFF2",
+    "suave": "#9FA6AB",
+    "tenue": "#646A6E",
+    "linea": "#2C343A",
+    "dock": "#272F35",
+    "dock_texto": "#B2B8BD",
+    "ascii": "rgba(206, 225, 239, 0.15)"
+   },
+   "acento": "p-cielo"
+  },
+  {
+   "id": "petroleo",
+   "nombre": "Petróleo",
+   "familia": "Azules",
+   "descripcion": "Azul verdoso oscuro.",
+   "claro": {
+    "fondo": "#ECF7F9",
+    "carta": "#FCFEFF",
+    "carta_luz": "#FFFFFF",
+    "carta2": "#DFEDEF",
+    "texto": "#111D1F",
+    "suave": "#5F6B6E",
+    "tenue": "#96A1A3",
+    "linea": "#D6E2E5",
+    "dock": "#223133",
+    "dock_texto": "#AFBABC",
+    "ascii": "rgba(31, 49, 53, 0.2)"
+   },
+   "oscuro": {
+    "fondo": "#0B1516",
+    "carta": "#131F21",
+    "carta_luz": "#192527",
+    "carta2": "#1C292B",
+    "texto": "#E9F0F1",
+    "suave": "#9BA7A9",
+    "tenue": "#616B6D",
+    "linea": "#283638",
+    "dock": "#223133",
+    "dock_texto": "#AFBABC",
+    "ascii": "rgba(196, 229, 235, 0.15)"
+   },
+   "acento": "p-petroleo"
+  },
+  {
+   "id": "terracota",
+   "nombre": "Terracota",
+   "familia": "Cálidos",
+   "descripcion": "Barro cocido.",
+   "claro": {
+    "fondo": "#FAF3F0",
+    "carta": "#FFFDFC",
+    "carta_luz": "#FFFFFF",
+    "carta2": "#F1E8E3",
+    "texto": "#201915",
+    "suave": "#6F6763",
+    "tenue": "#A49D99",
+    "linea": "#E6DEDA",
+    "dock": "#352B27",
+    "dock_texto": "#BDB5B2",
+    "ascii": "rgba(55, 43, 38, 0.2)"
+   },
+   "oscuro": {
+    "fondo": "#17110E",
+    "carta": "#231B18",
+    "carta_luz": "#29211D",
+    "carta2": "#2D2420",
+    "texto": "#F2EDEB",
+    "suave": "#ABA39F",
+    "tenue": "#6E6764",
+    "linea": "#3A312D",
+    "dock": "#352B27",
+    "dock_texto": "#BDB5B2",
+    "ascii": "rgba(239, 217, 207, 0.15)"
+   },
+   "acento": "p-terracota"
+  },
+  {
+   "id": "miel",
+   "nombre": "Miel",
+   "familia": "Cálidos",
+   "descripcion": "Dorado miel.",
+   "claro": {
+    "fondo": "#F8F4EE",
+    "carta": "#FFFEFC",
+    "carta_luz": "#FFFFFF",
+    "carta2": "#EEE9E1",
+    "texto": "#1E1A13",
+    "suave": "#6D6861",
+    "tenue": "#A29E98",
+    "linea": "#E3DFD8",
+    "dock": "#322D25",
+    "dock_texto": "#BBB7B0",
+    "ascii": "rgba(51, 45, 35, 0.2)"
+   },
+   "oscuro": {
+    "fondo": "#16120D",
+    "carta": "#201C16",
+    "carta_luz": "#26221B",
+    "carta2": "#2A261E",
+    "texto": "#F1EEEA",
+    "suave": "#A8A49D",
+    "tenue": "#6C6863",
+    "linea": "#37322A",
+    "dock": "#322D25",
+    "dock_texto": "#BBB7B0",
+    "ascii": "rgba(232, 220, 202, 0.15)"
+   },
+   "acento": "p-miel"
+  },
+  {
+   "id": "oxido",
+   "nombre": "Óxido",
+   "familia": "Cálidos",
+   "descripcion": "Naranja óxido.",
+   "claro": {
+    "fondo": "#FBF2EE",
+    "carta": "#FFFDFC",
+    "carta_luz": "#FFFFFF",
+    "carta2": "#F3E7E1",
+    "texto": "#211813",
+    "suave": "#706761",
+    "tenue": "#A59C98",
+    "linea": "#E8DDD8",
+    "dock": "#362B25",
+    "dock_texto": "#BEB5B0",
+    "ascii": "rgba(56, 42, 35, 0.2)"
+   },
+   "oscuro": {
+    "fondo": "#18110D",
+    "carta": "#241B16",
+    "carta_luz": "#2A201B",
+    "carta2": "#2E241E",
+    "texto": "#F3EDEA",
+    "suave": "#ACA29D",
+    "tenue": "#6F6763",
+    "linea": "#3B302A",
+    "dock": "#362B25",
+    "dock_texto": "#BEB5B0",
+    "ascii": "rgba(242, 216, 202, 0.15)"
+   },
+   "acento": "p-oxido"
+  },
+  {
+   "id": "caramelo",
+   "nombre": "Caramelo",
+   "familia": "Cálidos",
+   "descripcion": "Marrón caramelo suave.",
+   "claro": {
+    "fondo": "#F9F3EE",
+    "carta": "#FFFDFC",
+    "carta_luz": "#FFFFFF",
+    "carta2": "#F0E8E2",
+    "texto": "#1F1914",
+    "suave": "#6E6862",
+    "tenue": "#A39D98",
+    "linea": "#E5DED8",
+    "dock": "#342C26",
+    "dock_texto": "#BCB6B1",
+    "ascii": "rgba(53, 44, 35, 0.2)"
+   },
+   "oscuro": {
+    "fondo": "#17120D",
+    "carta": "#221C16",
+    "carta_luz": "#28221C",
+    "carta2": "#2C251F",
+    "texto": "#F1EEEA",
+    "suave": "#AAA39E",
+    "tenue": "#6D6863",
+    "linea": "#38312B",
+    "dock": "#342C26",
+    "dock_texto": "#BCB6B1",
+    "ascii": "rgba(236, 219, 203, 0.15)"
+   },
+   "acento": "p-caramelo"
+  },
+  {
+   "id": "mostaza",
+   "nombre": "Mostaza",
+   "familia": "Cálidos",
+   "descripcion": "Amarillo mostaza, retro.",
+   "claro": {
+    "fondo": "#F6F4EE",
+    "carta": "#FEFEFC",
+    "carta_luz": "#FFFFFF",
+    "carta2": "#ECEAE1",
+    "texto": "#1D1B13",
+    "suave": "#6B6961",
+    "tenue": "#A09E98",
+    "linea": "#E2E0D8",
+    "dock": "#302E25",
+    "dock_texto": "#B9B7B0",
+    "ascii": "rgba(49, 46, 34, 0.2)"
+   },
+   "oscuro": {
+    "fondo": "#14130D",
+    "carta": "#1F1D16",
+    "carta_luz": "#25231B",
+    "carta2": "#29261E",
+    "texto": "#F0EEEA",
+    "suave": "#A7A59D",
+    "tenue": "#6B6963",
+    "linea": "#35332A",
+    "dock": "#302E25",
+    "dock_texto": "#B9B7B0",
+    "ascii": "rgba(228, 222, 202, 0.15)"
+   },
+   "acento": "p-mostaza"
+  },
+  {
+   "id": "canela",
+   "nombre": "Canela",
+   "familia": "Cálidos",
+   "descripcion": "Canela y crema tostada.",
+   "claro": {
+    "fondo": "#F9F3EF",
+    "carta": "#FFFDFC",
+    "carta_luz": "#FFFFFF",
+    "carta2": "#F0E8E3",
+    "texto": "#1F1915",
+    "suave": "#6E6763",
+    "tenue": "#A39D99",
+    "linea": "#E5DEDA",
+    "dock": "#342C27",
+    "dock_texto": "#BCB6B2",
+    "ascii": "rgba(53, 44, 37, 0.2)"
+   },
+   "oscuro": {
+    "fondo": "#17110E",
+    "carta": "#221B17",
+    "carta_luz": "#28211D",
+    "carta2": "#2C2520",
+    "texto": "#F1EEEB",
+    "suave": "#AAA39F",
+    "tenue": "#6D6864",
+    "linea": "#39312C",
+    "dock": "#342C27",
+    "dock_texto": "#BCB6B2",
+    "ascii": "rgba(236, 218, 207, 0.15)"
+   },
+   "acento": "p-canela"
+  },
+  {
+   "id": "rosa-empolvado",
+   "nombre": "Rosa empolvado",
+   "familia": "Rosas y morados",
+   "descripcion": "Rosa viejo, delicado.",
+   "claro": {
+    "fondo": "#F9F3F3",
+    "carta": "#FFFDFD",
+    "carta_luz": "#FFFFFF",
+    "carta2": "#F0E7E8",
+    "texto": "#1F1919",
+    "suave": "#6E6768",
+    "tenue": "#A39D9D",
+    "linea": "#E5DDDE",
+    "dock": "#342B2C",
+    "dock_texto": "#BCB5B6",
+    "ascii": "rgba(53, 43, 44, 0.2)"
+   },
+   "oscuro": {
+    "fondo": "#161112",
+    "carta": "#221B1C",
+    "carta_luz": "#282122",
+    "carta2": "#2C2425",
+    "texto": "#F1EDEE",
+    "suave": "#AAA2A3",
+    "tenue": "#6D6768",
+    "linea": "#383131",
+    "dock": "#342B2C",
+    "dock_texto": "#BCB5B6",
+    "ascii": "rgba(235, 217, 219, 0.15)"
+   },
+   "acento": "p-rosa-empolvado"
+  },
+  {
+   "id": "frambuesa",
+   "nombre": "Frambuesa",
+   "familia": "Rosas y morados",
+   "descripcion": "Rosa frambuesa vivo.",
+   "claro": {
+    "fondo": "#FAF2F5",
+    "carta": "#FFFDFE",
+    "carta_luz": "#FFFFFF",
+    "carta2": "#F1E7EA",
+    "texto": "#20181B",
+    "suave": "#6F6669",
+    "tenue": "#A49C9F",
+    "linea": "#E6DDE0",
+    "dock": "#352B2E",
+    "dock_texto": "#BDB5B8",
+    "ascii": "rgba(54, 42, 46, 0.2)"
+   },
+   "oscuro": {
+    "fondo": "#171113",
+    "carta": "#221A1D",
+    "carta_luz": "#292023",
+    "carta2": "#2D2327",
+    "texto": "#F2EDEF",
+    "suave": "#ABA2A5",
+    "tenue": "#6E6769",
+    "linea": "#393033",
+    "dock": "#352B2E",
+    "dock_texto": "#BDB5B8",
+    "ascii": "rgba(238, 215, 223, 0.15)"
+   },
+   "acento": "p-frambuesa"
+  },
+  {
+   "id": "ciruela",
+   "nombre": "Ciruela",
+   "familia": "Rosas y morados",
+   "descripcion": "Morado ciruela.",
+   "claro": {
+    "fondo": "#F9F2F8",
+    "carta": "#FFFDFF",
+    "carta_luz": "#FFFFFF",
+    "carta2": "#F0E6EF",
+    "texto": "#1F181E",
+    "suave": "#6E666D",
+    "tenue": "#A39CA2",
+    "linea": "#E5DCE4",
+    "dock": "#342A33",
+    "dock_texto": "#BCB5BB",
+    "ascii": "rgba(53, 41, 52, 0.2)"
+   },
+   "oscuro": {
+    "fondo": "#171016",
+    "carta": "#221A21",
+    "carta_luz": "#282027",
+    "carta2": "#2C232B",
+    "texto": "#F1EDF1",
+    "suave": "#AAA2A9",
+    "tenue": "#6D666C",
+    "linea": "#392F37",
+    "dock": "#342A33",
+    "dock_texto": "#BCB5BB",
+    "ascii": "rgba(236, 214, 233, 0.15)"
+   },
+   "acento": "p-ciruela"
+  },
+  {
+   "id": "uva",
+   "nombre": "Uva",
+   "familia": "Rosas y morados",
+   "descripcion": "Violeta uva.",
+   "claro": {
+    "fondo": "#F6F3F9",
+    "carta": "#FEFDFF",
+    "carta_luz": "#FFFFFF",
+    "carta2": "#ECE8F0",
+    "texto": "#1C1920",
+    "suave": "#6A676F",
+    "tenue": "#A09DA3",
+    "linea": "#E1DEE6",
+    "dock": "#302C34",
+    "dock_texto": "#B9B6BD",
+    "ascii": "rgba(48, 43, 54, 0.2)"
+   },
+   "oscuro": {
+    "fondo": "#141117",
+    "carta": "#1E1B22",
+    "carta_luz": "#242128",
+    "carta2": "#28252C",
+    "texto": "#EFEDF2",
+    "suave": "#A6A3AA",
+    "tenue": "#6A686E",
+    "linea": "#353139",
+    "dock": "#302C34",
+    "dock_texto": "#B9B6BD",
+    "ascii": "rgba(226, 218, 237, 0.15)"
+   },
+   "acento": "p-uva"
+  },
+  {
+   "id": "lila",
+   "nombre": "Lila",
+   "familia": "Rosas y morados",
+   "descripcion": "Lila suave.",
+   "claro": {
+    "fondo": "#F4F3FA",
+    "carta": "#FEFDFF",
+    "carta_luz": "#FFFFFF",
+    "carta2": "#E9E9F2",
+    "texto": "#1A1A21",
+    "suave": "#696870",
+    "tenue": "#9E9DA4",
+    "linea": "#DFDEE7",
+    "dock": "#2D2D35",
+    "dock_texto": "#B7B6BD",
+    "ascii": "rgba(45, 44, 55, 0.2)"
+   },
+   "oscuro": {
+    "fondo": "#121218",
+    "carta": "#1D1C23",
+    "carta_luz": "#232229",
+    "carta2": "#26252D",
+    "texto": "#EEEEF2",
+    "suave": "#A4A3AB",
+    "tenue": "#69686E",
+    "linea": "#32323A",
+    "dock": "#2D2D35",
+    "dock_texto": "#B7B6BD",
+    "ascii": "rgba(221, 219, 240, 0.15)"
+   },
+   "acento": "p-lila"
+  },
+  {
+   "id": "coral",
+   "nombre": "Coral",
+   "familia": "Rosas y morados",
+   "descripcion": "Coral vivo.",
+   "claro": {
+    "fondo": "#FAF2F1",
+    "carta": "#FFFDFD",
+    "carta_luz": "#FFFFFF",
+    "carta2": "#F2E7E6",
+    "texto": "#211817",
+    "suave": "#706665",
+    "tenue": "#A59C9B",
+    "linea": "#E7DDDC",
+    "dock": "#362B2A",
+    "dock_texto": "#BEB5B4",
+    "ascii": "rgba(55, 42, 41, 0.2)"
+   },
+   "oscuro": {
+    "fondo": "#181110",
+    "carta": "#231A1A",
+    "carta_luz": "#29201F",
+    "carta2": "#2D2423",
+    "texto": "#F2EDEC",
+    "suave": "#ABA2A1",
+    "tenue": "#6F6766",
+    "linea": "#3A302F",
+    "dock": "#362B2A",
+    "dock_texto": "#BEB5B4",
+    "ascii": "rgba(240, 215, 213, 0.15)"
+   },
+   "acento": "p-coral"
+  },
+  {
+   "id": "carbon-naranja",
+   "nombre": "Carbón y naranja",
+   "familia": "Neutros con acento",
+   "descripcion": "Grises puros y un naranja que salta.",
+   "claro": {
+    "fondo": "#F4F4F4",
+    "carta": "#FEFEFE",
+    "carta_luz": "#FFFFFF",
+    "carta2": "#EAEAEA",
+    "texto": "#1B1B1B",
+    "suave": "#696969",
+    "tenue": "#9E9E9E",
+    "linea": "#DFDFDF",
+    "dock": "#2E2E2E",
+    "dock_texto": "#B7B7B7",
+    "ascii": "rgba(46, 46, 46, 0.2)"
+   },
+   "oscuro": {
+    "fondo": "#131313",
+    "carta": "#1D1D1D",
+    "carta_luz": "#232323",
+    "carta2": "#262626",
+    "texto": "#EEEEEE",
+    "suave": "#A4A4A4",
+    "tenue": "#696969",
+    "linea": "#333333",
+    "dock": "#2E2E2E",
+    "dock_texto": "#B7B7B7",
+    "ascii": "rgba(222, 222, 222, 0.15)"
+   },
+   "acento": "p-carbon-naranja"
+  },
+  {
+   "id": "hielo-electrico",
+   "nombre": "Hielo y eléctrico",
+   "familia": "Neutros con acento",
+   "descripcion": "Blanco frío y azul eléctrico.",
+   "claro": {
+    "fondo": "#F3F5F6",
+    "carta": "#FDFEFE",
+    "carta_luz": "#FFFFFF",
+    "carta2": "#E8EAEC",
+    "texto": "#191B1C",
+    "suave": "#67696A",
+    "tenue": "#9D9FA0",
+    "linea": "#DEE0E1",
+    "dock": "#2C2E30",
+    "dock_texto": "#B6B7B9",
+    "ascii": "rgba(44, 46, 48, 0.2)"
+   },
+   "oscuro": {
+    "fondo": "#121314",
+    "carta": "#1B1D1E",
+    "carta_luz": "#212324",
+    "carta2": "#252728",
+    "texto": "#EDEEEF",
+    "suave": "#A3A5A6",
+    "tenue": "#68696A",
+    "linea": "#313335",
+    "dock": "#2C2E30",
+    "dock_texto": "#B6B7B9",
+    "ascii": "rgba(218, 223, 226, 0.15)"
+   },
+   "acento": "p-hielo-electrico"
+  },
+  {
+   "id": "grafito-lima",
+   "nombre": "Grafito y lima",
+   "familia": "Neutros con acento",
+   "descripcion": "Gris grafito con lima.",
+   "claro": {
+    "fondo": "#F4F5F3",
+    "carta": "#FEFEFD",
+    "carta_luz": "#FFFFFF",
+    "carta2": "#E9EAE8",
+    "texto": "#1A1B19",
+    "suave": "#696967",
+    "tenue": "#9E9F9D",
+    "linea": "#DFE0DE",
+    "dock": "#2D2E2C",
+    "dock_texto": "#B7B7B6",
+    "ascii": "rgba(45, 46, 43, 0.2)"
+   },
+   "oscuro": {
+    "fondo": "#121311",
+    "carta": "#1D1D1B",
+    "carta_luz": "#222321",
+    "carta2": "#262725",
+    "texto": "#EEEEED",
+    "suave": "#A4A5A3",
+    "tenue": "#696967",
+    "linea": "#323331",
+    "dock": "#2D2E2C",
+    "dock_texto": "#B7B7B6",
+    "ascii": "rgba(221, 223, 218, 0.15)"
+   },
+   "acento": "p-grafito-lima"
+  },
+  {
+   "id": "hueso-rojo",
+   "nombre": "Hueso y rojo",
+   "familia": "Neutros con acento",
+   "descripcion": "Hueso cálido y rojo suizo.",
+   "claro": {
+    "fondo": "#F6F4F2",
+    "carta": "#FEFEFD",
+    "carta_luz": "#FFFFFF",
+    "carta2": "#ECE9E7",
+    "texto": "#1D1A18",
+    "suave": "#6B6866",
+    "tenue": "#A09E9C",
+    "linea": "#E2DFDD",
+    "dock": "#302D2B",
+    "dock_texto": "#B9B7B5",
+    "ascii": "rgba(49, 45, 42, 0.2)"
+   },
+   "oscuro": {
+    "fondo": "#141211",
+    "carta": "#1F1C1A",
+    "carta_luz": "#252220",
+    "carta2": "#292624",
+    "texto": "#F0EEED",
+    "suave": "#A7A4A2",
+    "tenue": "#6B6867",
+    "linea": "#353230",
+    "dock": "#302D2B",
+    "dock_texto": "#B9B7B5",
+    "ascii": "rgba(228, 220, 215, 0.15)"
+   },
+   "acento": "p-hueso-rojo"
+  },
+  {
+   "id": "lino-verde",
+   "nombre": "Lino y verde",
+   "familia": "Neutros con acento",
+   "descripcion": "Lino natural con verde hoja.",
+   "claro": {
+    "fondo": "#F6F4F0",
+    "carta": "#FEFEFD",
+    "carta_luz": "#FFFFFF",
+    "carta2": "#ECE9E4",
+    "texto": "#1C1A16",
+    "suave": "#6B6964",
+    "tenue": "#A09E9A",
+    "linea": "#E2DFDB",
+    "dock": "#302E28",
+    "dock_texto": "#B9B7B3",
+    "ascii": "rgba(49, 45, 39, 0.2)"
+   },
+   "oscuro": {
+    "fondo": "#14120F",
+    "carta": "#1F1D18",
+    "carta_luz": "#25231E",
+    "carta2": "#282622",
+    "texto": "#EFEEEC",
+    "suave": "#A6A4A0",
+    "tenue": "#6A6965",
+    "linea": "#35332E",
+    "dock": "#302E28",
+    "dock_texto": "#B9B7B3",
+    "ascii": "rgba(227, 221, 210, 0.15)"
+   },
+   "acento": "p-lino-verde"
+  },
+  {
+   "id": "tiza-violeta",
+   "nombre": "Tiza y violeta",
+   "familia": "Neutros con acento",
+   "descripcion": "Gris tiza con violeta.",
+   "claro": {
+    "fondo": "#F4F4F6",
+    "carta": "#FEFEFE",
+    "carta_luz": "#FFFFFF",
+    "carta2": "#E9E9EC",
+    "texto": "#1A1A1D",
+    "suave": "#68696B",
+    "tenue": "#9E9EA0",
+    "linea": "#DFDFE2",
+    "dock": "#2D2E30",
+    "dock_texto": "#B7B7B9",
+    "ascii": "rgba(45, 45, 49, 0.2)"
+   },
+   "oscuro": {
+    "fondo": "#121314",
+    "carta": "#1C1D1F",
+    "carta_luz": "#222325",
+    "carta2": "#262629",
+    "texto": "#EEEEF0",
+    "suave": "#A4A4A7",
+    "tenue": "#68696B",
+    "linea": "#323335",
+    "dock": "#2D2E30",
+    "dock_texto": "#B7B7B9",
+    "ascii": "rgba(221, 221, 228, 0.15)"
+   },
+   "acento": "p-tiza-violeta"
+  },
+  {
+   "id": "arena-turquesa",
+   "nombre": "Arena y turquesa",
+   "familia": "Contraste",
+   "descripcion": "Fondo cálido, acento frío.",
+   "claro": {
+    "fondo": "#F8F3EE",
+    "carta": "#FFFDFC",
+    "carta_luz": "#FFFFFF",
+    "carta2": "#EFE9E1",
+    "texto": "#1F1A14",
+    "suave": "#6E6862",
+    "tenue": "#A39D98",
+    "linea": "#E4DED8",
+    "dock": "#332D25",
+    "dock_texto": "#BCB6B1",
+    "ascii": "rgba(52, 44, 35, 0.2)"
+   },
+   "oscuro": {
+    "fondo": "#16120D",
+    "carta": "#211C16",
+    "carta_luz": "#27221C",
+    "carta2": "#2B251F",
+    "texto": "#F1EEEA",
+    "suave": "#A9A39D",
+    "tenue": "#6D6863",
+    "linea": "#38322B",
+    "dock": "#332D25",
+    "dock_texto": "#BCB6B1",
+    "ascii": "rgba(234, 219, 203, 0.15)"
+   },
+   "acento": "p-arena-turquesa"
+  },
+  {
+   "id": "niebla-coral",
+   "nombre": "Niebla y coral",
+   "familia": "Contraste",
+   "descripcion": "Fondo frío, acento cálido.",
+   "claro": {
+    "fondo": "#F1F5F9",
+    "carta": "#FDFEFF",
+    "carta_luz": "#FFFFFF",
+    "carta2": "#E5EBEF",
+    "texto": "#161B1F",
+    "suave": "#646A6E",
+    "tenue": "#9A9FA3",
+    "linea": "#DBE0E5",
+    "dock": "#292F33",
+    "dock_texto": "#B3B8BC",
+    "ascii": "rgba(39, 47, 53, 0.2)"
+   },
+   "oscuro": {
+    "fondo": "#0F1316",
+    "carta": "#191E21",
+    "carta_luz": "#1E2427",
+    "carta2": "#22272B",
+    "texto": "#ECEFF1",
+    "suave": "#A0A5A9",
+    "tenue": "#656A6D",
+    "linea": "#2E3438",
+    "dock": "#292F33",
+    "dock_texto": "#B3B8BC",
+    "ascii": "rgba(210, 224, 235, 0.15)"
+   },
+   "acento": "p-niebla-coral"
+  },
+  {
+   "id": "salvia-ciruela",
+   "nombre": "Salvia y ciruela",
+   "familia": "Contraste",
+   "descripcion": "Verde suave con morado.",
+   "claro": {
+    "fondo": "#F0F6F1",
+    "carta": "#FDFEFD",
+    "carta_luz": "#FFFFFF",
+    "carta2": "#E4ECE6",
+    "texto": "#161C17",
+    "suave": "#646B65",
+    "tenue": "#9AA09B",
+    "linea": "#DBE2DC",
+    "dock": "#28302A",
+    "dock_texto": "#B3B9B4",
+    "ascii": "rgba(39, 49, 41, 0.2)"
+   },
+   "oscuro": {
+    "fondo": "#0F1410",
+    "carta": "#181F19",
+    "carta_luz": "#1E251F",
+    "carta2": "#212923",
+    "texto": "#ECF0EC",
+    "suave": "#A0A7A1",
+    "tenue": "#656B66",
+    "linea": "#2E352F",
+    "dock": "#28302A",
+    "dock_texto": "#B3B9B4",
+    "ascii": "rgba(210, 228, 212, 0.15)"
+   },
+   "acento": "p-salvia-ciruela"
+  },
+  {
+   "id": "pizarra-mostaza",
+   "nombre": "Pizarra y mostaza",
+   "familia": "Contraste",
+   "descripcion": "Azul gris con amarillo.",
+   "claro": {
+    "fondo": "#EFF5FC",
+    "carta": "#FCFEFF",
+    "carta_luz": "#FFFFFF",
+    "carta2": "#E3EBF4",
+    "texto": "#151B23",
+    "suave": "#636A72",
+    "tenue": "#999FA6",
+    "linea": "#DAE0E9",
+    "dock": "#272E38",
+    "dock_texto": "#B2B8BF",
+    "ascii": "rgba(37, 47, 58, 0.2)"
+   },
+   "oscuro": {
+    "fondo": "#0E1319",
+    "carta": "#171D25",
+    "carta_luz": "#1D232B",
+    "carta2": "#202730",
+    "texto": "#EBEFF4",
+    "suave": "#9FA5AD",
+    "tenue": "#646970",
+    "linea": "#2D333C",
+    "dock": "#272E38",
+    "dock_texto": "#B2B8BF",
+    "ascii": "rgba(207, 224, 246, 0.15)"
+   },
+   "acento": "p-pizarra-mostaza"
+  },
+  {
+   "id": "bosque-melocoton",
+   "nombre": "Bosque y melocotón",
+   "familia": "Contraste",
+   "descripcion": "Verde bosque con melocotón.",
+   "claro": {
+    "fondo": "#EEF7F0",
+    "carta": "#FCFEFC",
+    "carta_luz": "#FFFFFF",
+    "carta2": "#E2EDE4",
+    "texto": "#141D15",
+    "suave": "#626C64",
+    "tenue": "#98A19A",
+    "linea": "#D8E3DA",
+    "dock": "#253127",
+    "dock_texto": "#B1BAB2",
+    "ascii": "rgba(35, 50, 38, 0.2)"
+   },
+   "oscuro": {
+    "fondo": "#0D150E",
+    "carta": "#162018",
+    "carta_luz": "#1C261D",
+    "carta2": "#1F2A21",
+    "texto": "#EAF0EB",
+    "suave": "#9EA89F",
+    "tenue": "#636B64",
+    "linea": "#2B362D",
+    "dock": "#253127",
+    "dock_texto": "#B1BAB2",
+    "ascii": "rgba(203, 230, 208, 0.15)"
+   },
+   "acento": "p-bosque-melocoton"
+  },
+  {
+   "id": "berenjena-menta",
+   "nombre": "Berenjena y menta",
+   "familia": "Contraste",
+   "descripcion": "Morado oscuro con menta.",
+   "claro": {
+    "fondo": "#F7F2FA",
+    "carta": "#FEFDFF",
+    "carta_luz": "#FFFFFF",
+    "carta2": "#EDE7F2",
+    "texto": "#1D1821",
+    "suave": "#6C6770",
+    "tenue": "#A19CA4",
+    "linea": "#E2DDE7",
+    "dock": "#312B35",
+    "dock_texto": "#BAB5BD",
+    "ascii": "rgba(50, 42, 55, 0.2)"
+   },
+   "oscuro": {
+    "fondo": "#151118",
+    "carta": "#1F1B23",
+    "carta_luz": "#252129",
+    "carta2": "#29242D",
+    "texto": "#F0EDF2",
+    "suave": "#A7A2AB",
+    "tenue": "#6B676E",
+    "linea": "#36303A",
+    "dock": "#312B35",
+    "dock_texto": "#BAB5BD",
+    "ascii": "rgba(229, 216, 240, 0.15)"
+   },
+   "acento": "p-berenjena-menta"
+  }
+ ],
+ "acentos": [
+  {
+   "id": "oliva",
+   "nombre": "Oliva y lima",
+   "claro": {
+    "acento": "#5E7A1E",
+    "texto": "#FFFFFF",
+    "suave": "#EBF3D6"
+   },
+   "oscuro": {
+    "acento": "#CDE77F",
+    "texto": "#26300A",
+    "suave": "#333D22"
+   },
+   "gota": "#CDE77F",
+   "gota_texto": "#26300A"
+  },
+  {
+   "id": "lima",
+   "nombre": "Lima en los dos",
+   "claro": {
+    "acento": "#4F6A12",
+    "texto": "#FFFFFF",
+    "suave": "#E6F2C8"
+   },
+   "oscuro": {
+    "acento": "#C6F432",
+    "texto": "#1E2A00",
+    "suave": "#33401A"
+   },
+   "gota": "#C6F432",
+   "gota_texto": "#1E2A00"
+  },
+  {
+   "id": "salvia",
+   "nombre": "Salvia",
+   "claro": {
+    "acento": "#4E7A62",
+    "texto": "#FFFFFF",
+    "suave": "#E2EFE7"
+   },
+   "oscuro": {
+    "acento": "#9FD3B4",
+    "texto": "#14301F",
+    "suave": "#24372C"
+   },
+   "gota": "#A8D5BA",
+   "gota_texto": "#173325"
+  },
+  {
+   "id": "pizarra",
+   "nombre": "Pizarra",
+   "claro": {
+    "acento": "#3D5A80",
+    "texto": "#FFFFFF",
+    "suave": "#E3EAF4"
+   },
+   "oscuro": {
+    "acento": "#9DBBEA",
+    "texto": "#12233B",
+    "suave": "#24324A"
+   },
+   "gota": "#A9C4EB",
+   "gota_texto": "#14243B"
+  },
+  {
+   "id": "ambar",
+   "nombre": "Ámbar",
+   "claro": {
+    "acento": "#A66300",
+    "texto": "#FFFFFF",
+    "suave": "#F9ECD7"
+   },
+   "oscuro": {
+    "acento": "#F2BE5C",
+    "texto": "#3A2500",
+    "suave": "#3D3119"
+   },
+   "gota": "#F5C76B",
+   "gota_texto": "#3A2500"
+  },
+  {
+   "id": "arcilla",
+   "nombre": "Arcilla",
+   "claro": {
+    "acento": "#A84F33",
+    "texto": "#FFFFFF",
+    "suave": "#F6E4DC"
+   },
+   "oscuro": {
+    "acento": "#EE9C7E",
+    "texto": "#3B160A",
+    "suave": "#40261D"
+   },
+   "gota": "#F2A68A",
+   "gota_texto": "#3B160A"
+  },
+  {
+   "id": "violeta",
+   "nombre": "Violeta",
+   "claro": {
+    "acento": "#6C44A4",
+    "texto": "#FFFFFF",
+    "suave": "#F2E9FF"
+   },
+   "oscuro": {
+    "acento": "#D7B7FF",
+    "texto": "#280B48",
+    "suave": "#342A47"
+   },
+   "gota": "#E2BFFF",
+   "gota_texto": "#2B0E4B"
+  },
+  {
+   "id": "menta",
+   "nombre": "Menta",
+   "claro": {
+    "acento": "#00704E",
+    "texto": "#FFFFFF",
+    "suave": "#DEF5EA"
+   },
+   "oscuro": {
+    "acento": "#8EDEBB",
+    "texto": "#002A16",
+    "suave": "#1C372B"
+   },
+   "gota": "#93E9C4",
+   "gota_texto": "#002C18"
+  },
+  {
+   "id": "azul",
+   "nombre": "Azul",
+   "claro": {
+    "acento": "#0E5CAF",
+    "texto": "#FFFFFF",
+    "suave": "#DEF0FF"
+   },
+   "oscuro": {
+    "acento": "#91CEFF",
+    "texto": "#001C4F",
+    "suave": "#1D314A"
+   },
+   "gota": "#96D8FF",
+   "gota_texto": "#001E52"
+  },
+  {
+   "id": "coral",
+   "nombre": "Coral",
+   "claro": {
+    "acento": "#A52B1E",
+    "texto": "#FFFFFF",
+    "suave": "#FFE5DF"
+   },
+   "oscuro": {
+    "acento": "#FFA795",
+    "texto": "#470000",
+    "suave": "#49251F"
+   },
+   "gota": "#FFAE9B",
+   "gota_texto": "#4A0000"
+  },
+  {
+   "id": "rosa",
+   "nombre": "Rosa",
+   "claro": {
+    "acento": "#A3215A",
+    "texto": "#FFFFFF",
+    "suave": "#FFE3ED"
+   },
+   "oscuro": {
+    "acento": "#FFA1C7",
+    "texto": "#46001D",
+    "suave": "#48222F"
+   },
+   "gota": "#FFA7D0",
+   "gota_texto": "#49001F"
+  },
+  {
+   "id": "turquesa",
+   "nombre": "Turquesa",
+   "claro": {
+    "acento": "#007172",
+    "texto": "#FFFFFF",
+    "suave": "#D8F5F5"
+   },
+   "oscuro": {
+    "acento": "#70E0DF",
+    "texto": "#002A2B",
+    "suave": "#113737"
+   },
+   "gota": "#73EBEA",
+   "gota_texto": "#002C2E"
+  },
+  {
+   "id": "p-musgo",
+   "nombre": "Musgo",
+   "claro": {
+    "acento": "#4D6900",
+    "texto": "#FFFFFF",
+    "suave": "#E9F3DB"
+   },
+   "oscuro": {
+    "acento": "#BAD786",
+    "texto": "#162500",
+    "suave": "#2B341A"
+   },
+   "gota": "#C3E28B",
+   "gota_texto": "#182800"
+  },
+  {
+   "id": "p-menta",
+   "nombre": "Menta",
+   "claro": {
+    "acento": "#00704E",
+    "texto": "#FFFFFF",
+    "suave": "#DEF5EA"
+   },
+   "oscuro": {
+    "acento": "#8EDEBB",
+    "texto": "#002A16",
+    "suave": "#1C372B"
+   },
+   "gota": "#93E9C4",
+   "gota_texto": "#002C18"
+  },
+  {
+   "id": "p-pino",
+   "nombre": "Pino",
+   "claro": {
+    "acento": "#197037",
+    "texto": "#FFFFFF",
+    "suave": "#E1F5E4"
+   },
+   "oscuro": {
+    "acento": "#9ADEA7",
+    "texto": "#002906",
+    "suave": "#203625"
+   },
+   "gota": "#A0E9AF",
+   "gota_texto": "#002C08"
+  },
+  {
+   "id": "p-oliva-negro",
+   "nombre": "Oliva negro",
+   "claro": {
+    "acento": "#646200",
+    "texto": "#FFFFFF",
+    "suave": "#EFF1D5"
+   },
+   "oscuro": {
+    "acento": "#D0D26A",
+    "texto": "#242100",
+    "suave": "#323310"
+   },
+   "gota": "#DADC6C",
+   "gota_texto": "#262400"
+  },
+  {
+   "id": "p-matcha",
+   "nombre": "Matcha",
+   "claro": {
+    "acento": "#336F00",
+    "texto": "#FFFFFF",
+    "suave": "#E4F5DC"
+   },
+   "oscuro": {
+    "acento": "#A6DD87",
+    "texto": "#022800",
+    "suave": "#24361A"
+   },
+   "gota": "#ADE88C",
+   "gota_texto": "#042B00"
+  },
+  {
+   "id": "p-eucalipto",
+   "nombre": "Eucalipto",
+   "claro": {
+    "acento": "#026E5B",
+    "texto": "#FFFFFF",
+    "suave": "#E0F4ED"
+   },
+   "oscuro": {
+    "acento": "#94DBC8",
+    "texto": "#00281D",
+    "suave": "#1E362F"
+   },
+   "gota": "#9AE6D1",
+   "gota_texto": "#002B20"
+  },
+  {
+   "id": "p-glaciar",
+   "nombre": "Glaciar",
+   "claro": {
+    "acento": "#006697",
+    "texto": "#FFFFFF",
+    "suave": "#DCF2FF"
+   },
+   "oscuro": {
+    "acento": "#85D6FF",
+    "texto": "#002341",
+    "suave": "#193443"
+   },
+   "gota": "#8AE0FF",
+   "gota_texto": "#002643"
+  },
+  {
+   "id": "p-oceano",
+   "nombre": "Océano",
+   "claro": {
+    "acento": "#006C90",
+    "texto": "#FFFFFF",
+    "suave": "#D8F4FE"
+   },
+   "oscuro": {
+    "acento": "#6DDBFC",
+    "texto": "#00273C",
+    "suave": "#103640"
+   },
+   "gota": "#70E6FF",
+   "gota_texto": "#00293F"
+  },
+  {
+   "id": "p-marino",
+   "nombre": "Marino",
+   "claro": {
+    "acento": "#195DAA",
+    "texto": "#FFFFFF",
+    "suave": "#DFF0FF"
+   },
+   "oscuro": {
+    "acento": "#95CEFF",
+    "texto": "#001D4C",
+    "suave": "#1F3149"
+   },
+   "gota": "#9BD8FF",
+   "gota_texto": "#001F4F"
+  },
+  {
+   "id": "p-indigo",
+   "nombre": "Índigo",
+   "claro": {
+    "acento": "#3F4FBB",
+    "texto": "#FFFFFF",
+    "suave": "#E4EEFF"
+   },
+   "oscuro": {
+    "acento": "#AAC4FF",
+    "texto": "#101256",
+    "suave": "#262E4E"
+   },
+   "gota": "#B1CDFF",
+   "gota_texto": "#121559"
+  },
+  {
+   "id": "p-cielo",
+   "nombre": "Cielo",
+   "claro": {
+    "acento": "#0061AB",
+    "texto": "#FFFFFF",
+    "suave": "#DAF2FF"
+   },
+   "oscuro": {
+    "acento": "#7FD3FF",
+    "texto": "#001F4C",
+    "suave": "#173349"
+   },
+   "gota": "#83DDFF",
+   "gota_texto": "#00224F"
+  },
+  {
+   "id": "p-petroleo",
+   "nombre": "Petróleo",
+   "claro": {
+    "acento": "#006E74",
+    "texto": "#FFFFFF",
+    "suave": "#DCF4F5"
+   },
+   "oscuro": {
+    "acento": "#84DCE0",
+    "texto": "#00282C",
+    "suave": "#193637"
+   },
+   "gota": "#88E7EC",
+   "gota_texto": "#002B2F"
+  },
+  {
+   "id": "p-terracota",
+   "nombre": "Terracota",
+   "claro": {
+    "acento": "#A0340B",
+    "texto": "#FFFFFF",
+    "suave": "#FFE7DD"
+   },
+   "oscuro": {
+    "acento": "#FFAC8D",
+    "texto": "#440000",
+    "suave": "#47261C"
+   },
+   "gota": "#FFB492",
+   "gota_texto": "#470100"
+  },
+  {
+   "id": "p-miel",
+   "nombre": "Miel",
+   "claro": {
+    "acento": "#8D4C00",
+    "texto": "#FFFFFF",
+    "suave": "#FEECD3"
+   },
+   "oscuro": {
+    "acento": "#FBBE65",
+    "texto": "#3A1200",
+    "suave": "#402C0E"
+   },
+   "gota": "#FFC767",
+   "gota_texto": "#3D1400"
+  },
+  {
+   "id": "p-oxido",
+   "nombre": "Óxido",
+   "claro": {
+    "acento": "#A23300",
+    "texto": "#FFFFFF",
+    "suave": "#FFE7D9"
+   },
+   "oscuro": {
+    "acento": "#FFAD7E",
+    "texto": "#450000",
+    "suave": "#472617"
+   },
+   "gota": "#FFB482",
+   "gota_texto": "#480000"
+  },
+  {
+   "id": "p-caramelo",
+   "nombre": "Caramelo",
+   "claro": {
+    "acento": "#904700",
+    "texto": "#FFFFFF",
+    "suave": "#FFEAD9"
+   },
+   "oscuro": {
+    "acento": "#FFB97F",
+    "texto": "#3C0F00",
+    "suave": "#412B18"
+   },
+   "gota": "#FFC283",
+   "gota_texto": "#3F1100"
+  },
+  {
+   "id": "p-mostaza",
+   "nombre": "Mostaza",
+   "claro": {
+    "acento": "#795900",
+    "texto": "#FFFFFF",
+    "suave": "#F6EFD3"
+   },
+   "oscuro": {
+    "acento": "#E4CA61",
+    "texto": "#2F1B00",
+    "suave": "#39300D"
+   },
+   "gota": "#F0D363",
+   "gota_texto": "#321E00"
+  },
+  {
+   "id": "p-canela",
+   "nombre": "Canela",
+   "claro": {
+    "acento": "#91450D",
+    "texto": "#FFFFFF",
+    "suave": "#FFE9DD"
+   },
+   "oscuro": {
+    "acento": "#FFB78E",
+    "texto": "#3C0D00",
+    "suave": "#422A1D"
+   },
+   "gota": "#FFBF94",
+   "gota_texto": "#3F1000"
+  },
+  {
+   "id": "p-rosa-empolvado",
+   "nombre": "Rosa empolvado",
+   "claro": {
+    "acento": "#933C54",
+    "texto": "#FFFFFF",
+    "suave": "#FFE7EC"
+   },
+   "oscuro": {
+    "acento": "#FFAFC1",
+    "texto": "#3D061A",
+    "suave": "#42272D"
+   },
+   "gota": "#FFB6CB",
+   "gota_texto": "#40091C"
+  },
+  {
+   "id": "p-frambuesa",
+   "nombre": "Frambuesa",
+   "claro": {
+    "acento": "#A61859",
+    "texto": "#FFFFFF",
+    "suave": "#FFE3ED"
+   },
+   "oscuro": {
+    "acento": "#FF9EC6",
+    "texto": "#47001D",
+    "suave": "#49212F"
+   },
+   "gota": "#FFA4D0",
+   "gota_texto": "#4A001F"
+  },
+  {
+   "id": "p-ciruela",
+   "nombre": "Ciruela",
+   "claro": {
+    "acento": "#8A3785",
+    "texto": "#FFFFFF",
+    "suave": "#FEE6FB"
+   },
+   "oscuro": {
+    "acento": "#FAACF2",
+    "texto": "#380236",
+    "suave": "#3F263D"
+   },
+   "gota": "#FFB3FE",
+   "gota_texto": "#3B0439"
+  },
+  {
+   "id": "p-uva",
+   "nombre": "Uva",
+   "claro": {
+    "acento": "#753BA8",
+    "texto": "#FFFFFF",
+    "suave": "#F5E8FF"
+   },
+   "oscuro": {
+    "acento": "#E0B1FF",
+    "texto": "#2D034B",
+    "suave": "#372848"
+   },
+   "gota": "#ECB9FF",
+   "gota_texto": "#30064E"
+  },
+  {
+   "id": "p-lila",
+   "nombre": "Lila",
+   "claro": {
+    "acento": "#5E4DA1",
+    "texto": "#FFFFFF",
+    "suave": "#EEEBFF"
+   },
+   "oscuro": {
+    "acento": "#C9BEFF",
+    "texto": "#211346",
+    "suave": "#302C46"
+   },
+   "gota": "#D3C7FF",
+   "gota_texto": "#231649"
+  },
+  {
+   "id": "p-coral",
+   "nombre": "Coral",
+   "claro": {
+    "acento": "#A82418",
+    "texto": "#FFFFFF",
+    "suave": "#FFE5DE"
+   },
+   "oscuro": {
+    "acento": "#FFA592",
+    "texto": "#490000",
+    "suave": "#4A241E"
+   },
+   "gota": "#FFAB97",
+   "gota_texto": "#4C0000"
+  },
+  {
+   "id": "p-carbon-naranja",
+   "nombre": "Carbón y naranja",
+   "claro": {
+    "acento": "#A72D00",
+    "texto": "#FFFFFF",
+    "suave": "#FFE7D4"
+   },
+   "oscuro": {
+    "acento": "#FFAB69",
+    "texto": "#480000",
+    "suave": "#492610"
+   },
+   "gota": "#FFB26C",
+   "gota_texto": "#4B0000"
+  },
+  {
+   "id": "p-hielo-electrico",
+   "nombre": "Hielo y eléctrico",
+   "claro": {
+    "acento": "#1251CC",
+    "texto": "#FFFFFF",
+    "suave": "#DCEFFF"
+   },
+   "oscuro": {
+    "acento": "#8CC8FF",
+    "texto": "#001060",
+    "suave": "#1C2F53"
+   },
+   "gota": "#91D2FF",
+   "gota_texto": "#001463"
+  },
+  {
+   "id": "p-grafito-lima",
+   "nombre": "Grafito y lima",
+   "claro": {
+    "acento": "#476C00",
+    "texto": "#FFFFFF",
+    "suave": "#E7F4D4"
+   },
+   "oscuro": {
+    "acento": "#B4DC65",
+    "texto": "#122700",
+    "suave": "#29360E"
+   },
+   "gota": "#BCE667",
+   "gota_texto": "#142900"
+  },
+  {
+   "id": "p-hueso-rojo",
+   "nombre": "Hueso y rojo",
+   "claro": {
+    "acento": "#B00C15",
+    "texto": "#FFFFFF",
+    "suave": "#FFE3DD"
+   },
+   "oscuro": {
+    "acento": "#FF9E90",
+    "texto": "#4D0000",
+    "suave": "#4D211D"
+   },
+   "gota": "#FFA496",
+   "gota_texto": "#500000"
+  },
+  {
+   "id": "p-lino-verde",
+   "nombre": "Lino y verde",
+   "claro": {
+    "acento": "#197037",
+    "texto": "#FFFFFF",
+    "suave": "#E1F5E4"
+   },
+   "oscuro": {
+    "acento": "#9ADEA7",
+    "texto": "#002906",
+    "suave": "#203625"
+   },
+   "gota": "#A0E9AF",
+   "gota_texto": "#002C08"
+  },
+  {
+   "id": "p-tiza-violeta",
+   "nombre": "Tiza y violeta",
+   "claro": {
+    "acento": "#683EB6",
+    "texto": "#FFFFFF",
+    "suave": "#F0E9FF"
+   },
+   "oscuro": {
+    "acento": "#D2B5FF",
+    "texto": "#270353",
+    "suave": "#33294D"
+   },
+   "gota": "#DCBDFF",
+   "gota_texto": "#290656"
+  },
+  {
+   "id": "p-arena-turquesa",
+   "nombre": "Arena y turquesa",
+   "claro": {
+    "acento": "#007172",
+    "texto": "#FFFFFF",
+    "suave": "#D8F5F5"
+   },
+   "oscuro": {
+    "acento": "#70E0DF",
+    "texto": "#002A2B",
+    "suave": "#113737"
+   },
+   "gota": "#73EBEA",
+   "gota_texto": "#002C2E"
+  },
+  {
+   "id": "p-niebla-coral",
+   "nombre": "Niebla y coral",
+   "claro": {
+    "acento": "#A52B1E",
+    "texto": "#FFFFFF",
+    "suave": "#FFE5DF"
+   },
+   "oscuro": {
+    "acento": "#FFA795",
+    "texto": "#470000",
+    "suave": "#49251F"
+   },
+   "gota": "#FFAE9B",
+   "gota_texto": "#4A0000"
+  },
+  {
+   "id": "p-salvia-ciruela",
+   "nombre": "Salvia y ciruela",
+   "claro": {
+    "acento": "#873A82",
+    "texto": "#FFFFFF",
+    "suave": "#FDE7FA"
+   },
+   "oscuro": {
+    "acento": "#F7AEF0",
+    "texto": "#370535",
+    "suave": "#3E273C"
+   },
+   "gota": "#FFB6FC",
+   "gota_texto": "#390837"
+  },
+  {
+   "id": "p-pizarra-mostaza",
+   "nombre": "Pizarra y mostaza",
+   "claro": {
+    "acento": "#7E5600",
+    "texto": "#FFFFFF",
+    "suave": "#F8EED3"
+   },
+   "oscuro": {
+    "acento": "#EBC761",
+    "texto": "#321900",
+    "suave": "#3B2F0C"
+   },
+   "gota": "#F7D062",
+   "gota_texto": "#351C00"
+  },
+  {
+   "id": "p-bosque-melocoton",
+   "nombre": "Bosque y melocotón",
+   "claro": {
+    "acento": "#954200",
+    "texto": "#FFFFFF",
+    "suave": "#FFE9DC"
+   },
+   "oscuro": {
+    "acento": "#FFB588",
+    "texto": "#3E0A00",
+    "suave": "#43291B"
+   },
+   "gota": "#FFBD8D",
+   "gota_texto": "#410D00"
+  },
+  {
+   "id": "p-berenjena-menta",
+   "nombre": "Berenjena y menta",
+   "claro": {
+    "acento": "#00724C",
+    "texto": "#FFFFFF",
+    "suave": "#DDF5E9"
+   },
+   "oscuro": {
+    "acento": "#87E0BA",
+    "texto": "#002A15",
+    "suave": "#1A372B"
+   },
+   "gota": "#8CEBC3",
+   "gota_texto": "#002D17"
+  }
+ ],
+ "fuentes": [
+  {
+   "id": "instrument",
+   "nombre": "Instrument Sans",
+   "css": "\"Instrument Sans\"",
+   "web": "instrument-sans-normal-latin",
+   "pesos": "400 700",
+   "ttf": [
+    "InstrumentSans.ttf"
+   ],
+   "familia_ios": "Instrument Sans"
+  },
+  {
+   "id": "inter",
+   "nombre": "Inter",
+   "css": "\"Inter\"",
+   "web": "inter-normal-latin",
+   "pesos": "300 800",
+   "ttf": [
+    "Inter.ttf"
+   ],
+   "familia_ios": "Inter"
+  },
+  {
+   "id": "manrope",
+   "nombre": "Manrope",
+   "css": "\"Manrope\"",
+   "web": "manrope-normal-latin",
+   "pesos": "300 800",
+   "ttf": [
+    "Manrope.ttf"
+   ],
+   "familia_ios": "Manrope"
+  },
+  {
+   "id": "geist",
+   "nombre": "Geist",
+   "css": "\"Geist\"",
+   "web": "geist-normal-latin",
+   "pesos": "300 800",
+   "ttf": [
+    "Geist.ttf"
+   ],
+   "familia_ios": "Geist"
+  },
+  {
+   "id": "plex",
+   "nombre": "IBM Plex Sans",
+   "css": "\"IBM Plex Sans\"",
+   "web": "ibm-plex-sans-normal-latin",
+   "pesos": "300 800",
+   "ttf": [
+    "IBMPlexSans.ttf"
+   ],
+   "familia_ios": "IBM Plex Sans"
+  },
+  {
+   "id": "dm-sans",
+   "nombre": "DM Sans",
+   "css": "\"DM Sans\"",
+   "web": "dm-sans",
+   "pesos": "300 800",
+   "ttf": [
+    "DMSans.ttf"
+   ],
+   "familia_ios": "DM Sans"
+  },
+  {
+   "id": "space-grotesk",
+   "nombre": "Space Grotesk",
+   "css": "\"Space Grotesk\"",
+   "web": "space-grotesk",
+   "pesos": "300 700",
+   "ttf": [
+    "SpaceGrotesk.ttf"
+   ],
+   "familia_ios": "Space Grotesk"
+  },
+  {
+   "id": "jetbrains",
+   "nombre": "JetBrains Mono",
+   "css": "\"JetBrains Mono\"",
+   "web": "jetbrains-mono",
+   "pesos": "300 800",
+   "ttf": [
+    "JetBrainsMono.ttf"
+   ],
+   "familia_ios": "JetBrains Mono"
+  },
+  {
+   "id": "fraunces",
+   "nombre": "Fraunces",
+   "css": "\"Fraunces\"",
+   "web": "fraunces",
+   "pesos": "300 900",
+   "ttf": [
+    "Fraunces.ttf"
+   ],
+   "familia_ios": "Fraunces"
+  },
+  {
+   "id": "zen-kaku",
+   "nombre": "Zen Kaku Gothic",
+   "css": "\"Zen Kaku Gothic New\"",
+   "web": "zen-kaku",
+   "pesos": "estaticos",
+   "ttf": [
+    "ZenKakuGothicNew-Regular.ttf",
+    "ZenKakuGothicNew-Bold.ttf"
+   ],
+   "familia_ios": "Zen Kaku Gothic New"
+  },
+  {
+   "id": "shippori",
+   "nombre": "Shippori Mincho",
+   "css": "\"Shippori Mincho\"",
+   "web": "shippori-mincho",
+   "pesos": "estaticos",
+   "ttf": [
+    "ShipporiMincho-Regular.ttf",
+    "ShipporiMincho-Bold.ttf"
+   ],
+   "familia_ios": "Shippori Mincho"
+  },
+  {
+   "id": "sistema",
+   "nombre": "SF Pro (sistema)",
+   "css": "-apple-system, system-ui",
+   "web": "",
+   "pesos": "",
+   "ttf": [],
+   "familia_ios": ""
+  }
+ ],
+ "esquinas": [
+  {
+   "id": "rectas",
+   "nombre": "Rectas",
+   "carta": 6,
+   "boton": 4,
+   "celda": 3
+  },
+  {
+   "id": "suaves",
+   "nombre": "Suaves",
+   "carta": 12,
+   "boton": 8,
+   "celda": 6
+  },
+  {
+   "id": "actuales",
+   "nombre": "Redondeadas",
+   "carta": 18,
+   "boton": 12,
+   "celda": 8
+  },
+  {
+   "id": "redondas",
+   "nombre": "Muy redondas",
+   "carta": 26,
+   "boton": 16,
+   "celda": 10
+  }
+ ],
+ "fondos": [
+  {
+   "id": "apagado",
+   "nombre": "Apagado",
+   "intensidad": 0
+  },
+  {
+   "id": "sutil",
+   "nombre": "Sutil",
+   "intensidad": 0.5
+  },
+  {
+   "id": "normal",
+   "nombre": "Normal",
+   "intensidad": 1
+  },
+  {
+   "id": "presente",
+   "nombre": "Más presente",
+   "intensidad": 1.6
+  }
+ ],
+ "fijos": {
+  "claro": {
+   "peligro": "#D64545",
+   "peligro_suave": "#FBE9E9",
+   "aviso": "#B97A0E",
+   "aviso_suave": "#FBF1DD"
+  },
+  "oscuro": {
+   "peligro": "#F2726B",
+   "peligro_suave": "#3F2624",
+   "aviso": "#E8B04A",
+   "aviso_suave": "#3D3119"
+  }
+ }
+}

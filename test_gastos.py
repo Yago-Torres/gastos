@@ -4,7 +4,6 @@ import tempfile
 from datetime import date
 
 os.environ["GASTOS_DB"] = os.path.join(tempfile.mkdtemp(), "data.json")
-os.environ["GASTOS_COMIDA"] = "/no/existe"   # que el súper salga del % y no de comida
 os.environ.pop("TELEGRAM_TOKEN", None)        # las pruebas no mandan nada a Telegram
 import main as m  # noqa: E402
 
@@ -46,7 +45,7 @@ sucio = {"cats": cats, "gastos": [
 limpio = m.clean(sucio)
 assert [g["id"] for g in limpio["gastos"]] == ["c", "a"], limpio
 assert limpio["gastos"][0]["cat"] == "otros" and limpio["gastos"][1]["importe"] == 3.2
-assert limpio["ajustes"] == {"ingreso": 1600, "dia_cobro": 31}
+assert {k: limpio["ajustes"][k] for k in ("ingreso", "dia_cobro")} == {"ingreso": 1600, "dia_cobro": 31}
 assert m.clean(limpio) == limpio
 
 # cuánto debería gastar: % de 1600 redondeado a 5 €, y el ahorro es lo que sobra
@@ -90,7 +89,7 @@ viejos = m.AJUSTES
 m.AJUSTES = {"ingreso": 0.0, "dia_cobro": 1}
 e = m.clean({"gastos": [{"id": "a", "dia": "2026-09-10", "importe": 30, "cat": "fuera"},
                         {"id": "b", "dia": "2026-08-10", "importe": 50, "cat": "fuera"}]})
-assert e["ajustes"] == {"ingreso": 0.0, "dia_cobro": 1}, e["ajustes"]
+assert e["ajustes"] == {"ingreso": 0.0, "dia_cobro": 1, "hucha": 0, "hucha_desde": ""}, e["ajustes"]
 s = m.sugeridos(e, _d(2026, 10, 15))
 assert s["fuera"] == {"importe": 40, "por": "lo que gastas de media al mes"} and s["super"]["importe"] == 0, s
 r = m.resumen(e, hoy=_d(2026, 10, 15))

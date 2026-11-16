@@ -5,22 +5,20 @@
 <meta name="color-scheme" content="light dark">
 <meta name="calma-datos" content="/api/estado">
 <meta name="calma-entrada" content="espera">
-<meta name="theme-color" content="#F4F5F0" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#171A16" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#F2F2F2" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#111111" media="(prefers-color-scheme: dark)">
 <title>Gastos</title>
 <link rel="icon" href="/icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Gastos">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="/calma.css?v=3006c142">
+<link rel="preload" href="/fuentes/instrument-sans-normal-latin.woff2?v=1" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/calma.css?v=f18e764d">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-<script src="/calma.js?v=3006c142"></script>
+<script src="/calma.js?v=f18e764d"></script>
 <script src="/anime-4.5.0.min.js"></script>
-<script src="/anima.js?v=3006c142"></script>
+<script src="/anima.js?v=f18e764d"></script>
 <style>
   /* Estilo Calma: tokens y componentes en /calma.css (fuente: ~/estilo). Aquí solo lo de gastos. */
   body { padding: 16px; padding-bottom: calc(28px + env(safe-area-inset-bottom, 0px)); }
@@ -28,35 +26,35 @@
   .col { display: grid; gap: 14px; align-content: start; min-width: 0; }
   @media (min-width: 920px) { .app { grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); } }
   .top { grid-column: 1 / -1; display: flex; align-items: center; flex-wrap: wrap; gap: 8px 12px; padding: 4px 2px 0; }
-  h1 { margin: 0; font-size: 26px; font-weight: 700; letter-spacing: -.02em; }
-  #estado { font-size: 13px; color: var(--suave); }
+  h1 { margin: 0; font-size: var(--t-titulo); font-weight: 700; letter-spacing: -.02em; }
+  #estado { font-size: var(--t-pequeno); color: var(--suave); }
   .ciclo { display: flex; align-items: center; gap: 6px; margin-left: auto; }
-  .ciclo b { min-width: 9.5em; text-align: center; font-weight: 600; font-size: 15px; }
-  .redondo { width: 36px; height: 36px; padding: 0; border-radius: 50%; border: 1px solid var(--linea); background: var(--carta); font-size: 18px; line-height: 1; }
+  .ciclo b { min-width: 9.5em; text-align: center; font-weight: 600; font-size: var(--t-texto); }
+  .redondo { width: 36px; height: 36px; padding: 0; border-radius: 50%; border: 1px solid var(--linea); background: var(--carta); font-size: var(--t-destacado); line-height: 1; }
   .redondo:disabled { opacity: .35; cursor: default; }
   .carta { padding: 16px; min-width: 0; }
   .carta h2 { margin: 0 0 12px; font-size: 16px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
   .carta h2 .der { margin-left: auto; font-weight: 400; }
-  .vacio { margin: 0; padding: 8px 2px; font-size: 14px; color: var(--suave); }
+  .vacio { margin: 0; padding: 8px 2px; font-size: var(--t-texto); color: var(--suave); }
 
   /* ---------- cifra principal ---------- */
-  .eti-sup { font-size: 13px; color: var(--suave); }
-  .total { font-size: 42px; font-weight: 700; letter-spacing: -.03em; line-height: 1.1; margin: 2px 0; }
-  .bajo { margin: 0 0 12px; font-size: 14px; color: var(--suave); }
+  .eti-sup { font-size: var(--t-pequeno); color: var(--suave); }
+  .total { font-size: var(--t-gigante); font-weight: 700; letter-spacing: -.03em; line-height: 1.1; margin: 2px 0; }
+  .bajo { margin: 0 0 12px; font-size: var(--t-texto); color: var(--suave); }
   .bajo.mal { color: var(--peligro); }
   .barra-ritmo { position: relative; }
   .barra-ritmo .marca { position: absolute; top: -4px; bottom: -4px; width: 2px; border-radius: 1px; background: var(--texto); opacity: .45; }
   .tres { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 14px; }
   .tres div { background: var(--carta-2); border-radius: var(--r-s); padding: 10px; min-width: 0; }
-  .tres small { display: block; font-size: 12px; color: var(--suave); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .tres b { font-size: 17px; font-weight: 650; white-space: nowrap; }
+  .tres small { display: block; font-size: var(--t-pequeno); color: var(--suave); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .tres b { font-size: var(--t-destacado); font-weight: 650; white-space: nowrap; }
   .tres b.mal { color: var(--peligro); }
 
   /* ---------- lo importante ---------- */
   .ins { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
-  .ins li { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; line-height: 1.45; }
+  .ins li { display: flex; gap: 10px; align-items: flex-start; font-size: var(--t-texto); line-height: 1.45; }
   .ins i { flex: none; width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center;
-           font-style: normal; font-size: 12px; font-weight: 700; margin-top: 1px; }
+           font-style: normal; font-size: var(--t-pequeno); font-weight: 700; margin-top: 1px; }
   .ins .mal i { background: var(--peligro-suave); color: var(--peligro); }
   .ins .ojo i { background: var(--aviso-suave); color: var(--aviso); }
   .ins .ok i { background: var(--acento-suave); color: var(--acento); }
@@ -71,25 +69,25 @@
   .cat .n { font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .cat .v { font-weight: 600; white-space: nowrap; font-variant-numeric: tabular-nums; }
   .cat .v small, .cat .sub { font-weight: 400; color: var(--suave); }
-  .cat .sub { grid-column: 2 / -1; font-size: 12px; margin-top: -4px; }
+  .cat .sub { grid-column: 2 / -1; font-size: var(--t-pequeno); margin-top: -4px; }
   .cat .barra-ritmo { grid-column: 2 / -1; }
   .cat .c-barra { height: 6px; }
   .cat .c-barra > i { background: var(--c); }
   .cat .c-barra.pasada > i { background: var(--peligro); }
-  .cat .c-chip { font-size: 11px; padding: 1px 7px; margin-left: 6px; vertical-align: 1px; }
+  .cat .c-chip { font-size: var(--t-etiqueta); padding: 1px 7px; margin-left: 6px; vertical-align: 1px; }
   .cat input { width: 104px; min-height: 38px; text-align: right; }
   .ajustes { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px; margin-bottom: 12px; }
-  .ajustes label { font-size: 13px; color: var(--suave); display: grid; gap: 4px; }
+  .ajustes label { font-size: var(--t-pequeno); color: var(--suave); display: grid; gap: 4px; }
   .ajustes .fila-btn { grid-column: 1 / -1; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-  .ajustes .fila-btn span { font-size: 14px; color: var(--suave); }
+  .ajustes .fila-btn span { font-size: var(--t-texto); color: var(--suave); }
 
   /* ---------- gráficas ---------- */
   .lienzo { position: relative; height: 230px; }
-  .leyenda { display: flex; flex-wrap: wrap; gap: 4px 14px; margin: -4px 0 10px; font-size: 13px; color: var(--suave); }
+  .leyenda { display: flex; flex-wrap: wrap; gap: 4px 14px; margin: -4px 0 10px; font-size: var(--t-pequeno); color: var(--suave); }
   .leyenda span { display: inline-flex; align-items: center; gap: 6px; }
   .leyenda s { display: inline-block; width: 16px; height: 0; border-top: 2px solid var(--c); text-decoration: none; }
   .leyenda s.raya { border-top-style: dashed; }
-  details.datos { margin-top: 8px; font-size: 13px; color: var(--suave); }
+  details.datos { margin-top: 8px; font-size: var(--t-pequeno); color: var(--suave); }
   details.datos summary { cursor: pointer; width: max-content; }
   details.datos table { width: 100%; border-collapse: collapse; margin-top: 6px; font-variant-numeric: tabular-nums; }
   details.datos th, details.datos td { text-align: right; padding: 4px 6px; border-bottom: 1px solid var(--linea); font-weight: 400; }
@@ -98,15 +96,15 @@
 
   /* ---------- apuntar ---------- */
   form.nuevo { display: grid; gap: 10px; }
-  .importe { font-size: 28px; font-weight: 600; min-height: 58px; }
+  .importe { font-size: var(--t-titulo); font-weight: 600; min-height: 58px; }
   .chips { display: flex; flex-wrap: wrap; gap: 6px; }
-  .chips button { display: flex; align-items: center; gap: 6px; border: 1px solid var(--linea); background: var(--carta); border-radius: 999px; padding: 6px 12px; font-size: 14px; font-weight: 500; }
+  .chips button { display: flex; align-items: center; gap: 6px; border: 1px solid var(--linea); background: var(--carta); border-radius: 999px; padding: 6px 12px; font-size: var(--t-texto); font-weight: 500; }
   .chips button i { width: 8px; height: 8px; border-radius: 50%; background: var(--c); }
   .chips button[aria-pressed="true"] { background: var(--acento-suave); border-color: var(--acento); color: var(--acento); }
   .fila2 { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; }
 
   /* ---------- movimientos ---------- */
-  .dia { display: flex; margin: 16px 8px 4px; font-size: 13px; font-weight: 600; color: var(--suave); }
+  .dia { display: flex; margin: 16px 8px 4px; font-size: var(--t-pequeno); font-weight: 600; color: var(--suave); }
   .dia:first-child { margin-top: 2px; }
   .dia span { margin-left: auto; font-variant-numeric: tabular-nums; }
   .mov { display: flex; align-items: center; gap: 12px; width: 100%; text-align: left; background: none; border: 0; border-radius: var(--r-s); padding: 10px 8px; }
@@ -115,14 +113,61 @@
   .mov > i { width: 10px; height: 10px; flex: none; border-radius: 50%; background: var(--c); }
   .mov .t { flex: 1; min-width: 0; }
   .mov .t b { display: block; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .mov .t small { font-size: 13px; color: var(--suave); }
+  .mov .t small { font-size: var(--t-pequeno); color: var(--suave); }
   .mov .v { font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
   .edita { display: grid; gap: 8px; padding: 4px 10px 12px; margin-bottom: 6px; background: var(--carta-2); border-radius: 0 0 var(--r-s) var(--r-s); }
   .edita .c-campo { background: var(--carta); }
   .edita .acciones { display: flex; gap: 8px; justify-content: flex-end; }
-  .lineas { list-style: none; margin: 4px 0; padding: 0; font-size: 13px; color: var(--suave); }
+  .lineas { list-style: none; margin: 4px 0; padding: 0; font-size: var(--t-pequeno); color: var(--suave); }
   .lineas li { display: flex; gap: 10px; padding: 2px 0; }
   .lineas li span { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .fila2.dos { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .hucha { display: flex; align-items: center; gap: 10px; font-size: var(--t-texto); color: var(--suave); margin-bottom: 8px; }
+  .hucha .c-campo { width: 110px; margin-left: auto; text-align: right; }
+  .viaje-barra { margin: 0 8px 8px; }
+  #f-viaje-sitio .edita { border-radius: var(--r-s); margin-bottom: 12px; }
+  .opciones { display: flex; gap: 8px; flex-wrap: wrap; margin: -4px 0 14px; }
+  .plan { margin: -4px 0 14px; }
+  .plan li.futuro { opacity: .6; }
+  .plan b { font-variant-numeric: tabular-nums; }
+  .plan b.mal { color: var(--peligro); }
+  /* en el viaje, cada gasto tuyo se toca y se edita ahí mismo */
+  .lineas .linea { display: flex; gap: 10px; width: 100%; padding: 4px 6px; margin: 0 -6px; background: none; border: 0;
+                   border-radius: var(--r-s); text-align: left; font: inherit; color: inherit; cursor: pointer; }
+  .lineas .linea:hover, .lineas .linea[aria-expanded="true"] { background: var(--carta); }
+  .lineas .linea span { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .lineas li.abierto { display: block; }
+  .campos-viaje { display: grid; gap: 8px; grid-template-columns: minmax(0, 1fr); }
+  .lineas li.abierto .edita { margin: 4px 0 8px; border-radius: var(--r-s); background: var(--carta); }
+  .lineas li.abierto .edita .c-campo { background: var(--carta-2); }
+  .saldo { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 0 0 8px; }
+  label.con { display: flex; align-items: center; gap: 8px; font-size: var(--t-texto); color: var(--suave); }
+  /* ---------- flujo del ciclo (sankey en SVG) ---------- */
+  .flujo svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .flujo .banda { fill: var(--c); opacity: .32; transition: opacity .25s; cursor: pointer; }
+  .flujo .nodo { fill: var(--c); cursor: pointer; }
+  .flujo text { font-family: var(--fuente); fill: var(--texto); font-size: 13px; }
+  .flujo text.v { fill: var(--suave); font-size: 12px; font-variant-numeric: tabular-nums; }
+  .flujo g.apagada .banda { opacity: .08; }
+  .flujo g.apagada .nodo, .flujo g.apagada text { opacity: .35; }
+  .flujo g.viva .banda { opacity: .55; }
+  .flujo .crece { animation: crece .9s cubic-bezier(.2, .8, .2, 1) both; transform-origin: left center; }
+  @keyframes crece { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+  @media (prefers-reduced-motion: reduce) { .flujo .crece { animation: none; } }
+  .flujo-pie { margin: 6px 0 0; font-size: var(--t-pequeno); color: var(--suave); }
+
+  /* ---------- reglas y recurrentes ---------- */
+  .regla { display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: var(--r-s); }
+  .regla > i { width: 10px; height: 10px; flex: none; border-radius: 50%; background: var(--c); }
+  .regla .t { flex: 1; min-width: 0; font-size: var(--t-texto); }
+  .regla .t small { display: block; font-size: var(--t-pequeno); color: var(--suave); }
+  .regla .bs { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+  .regla.prop { background: var(--acento-suave); margin-bottom: 6px; flex-wrap: wrap; }
+  .regla select { min-height: 32px; }
+  .c-btn.mini { padding: 4px 10px; font-size: var(--t-pequeno); min-height: 30px; }
+  .rec-estado { font-size: var(--t-etiqueta); color: var(--suave); margin-left: 6px; }
+  .mov.ignorado { opacity: .5; }
+  .edita { grid-template-columns: minmax(0, 1fr); }   /* sin esto, una línea larga ensancha el formulario más que la pantalla */
 </style>
 <body>
 
@@ -157,6 +202,13 @@
       <div class="tres" id="tres"></div>
     </section>
 
+    <section class="c-carta carta flujo" aria-label="Flujo del ciclo">
+      <h2><span id="flujo-tit">Adónde va el dinero</span> <span class="der c-eti" id="flujo-total"></span></h2>
+      <div id="flujo"></div>
+      <p class="flujo-pie" id="flujo-pie"></p>
+      <details class="datos"><summary>Ver los datos</summary><div id="t-flujo"></div></details>
+    </section>
+
     <section class="c-carta carta" aria-label="Lo importante">
       <h2>Lo importante</h2>
       <ul class="ins" id="insights"></ul>
@@ -168,10 +220,17 @@
       <div id="cats"></div>
     </section>
 
+    <section class="c-carta carta" aria-label="Reglas de categoría">
+      <h2>Reglas <span class="der c-eti" id="n-reglas"></span></h2>
+      <div id="reglas"></div>
+    </section>
+
     <section class="c-carta carta" aria-label="Apuntar un gasto">
       <h2>Apuntar</h2>
       <form class="nuevo" id="f-nuevo">
+        <div class="chips" id="tipo" role="group" aria-label="Qué apuntas"></div>
         <input class="c-campo importe" name="importe" inputmode="decimal" placeholder="0,00 €" autocomplete="off" required aria-label="Importe">
+        <select class="c-campo" name="moneda" hidden aria-label="Moneda"></select>
         <div class="chips" id="chips" role="group" aria-label="Categoría"></div>
         <div class="fila2">
           <input class="c-campo" name="nota" placeholder="Nota o comercio (opcional)" maxlength="120" aria-label="Nota">
@@ -195,6 +254,23 @@
       <div class="leyenda" id="ley-hist"></div>
       <div class="lienzo" style="height:190px"><canvas id="g-hist" role="img" aria-label="Gasto total de los últimos seis ciclos"></canvas></div>
       <details class="datos"><summary>Ver los datos</summary><div id="t-hist"></div></details>
+    </section>
+
+    <section class="c-carta carta" aria-label="Viajes">
+      <h2>Viajes <span class="der"><button class="c-btn mini" id="b-viaje">Nuevo viaje</button></span></h2>
+      <div id="f-viaje-sitio"></div>
+      <div id="hucha"></div>
+      <div id="viajes"></div>
+    </section>
+
+    <section class="c-carta carta" aria-label="Recurrentes">
+      <h2>Recurrentes <span class="der c-eti" id="n-sus"></span></h2>
+      <div id="sus"></div>
+    </section>
+
+    <section class="c-carta carta" aria-label="Ingresos">
+      <h2>Ingresos <span class="der c-eti" id="n-ings"></span></h2>
+      <div id="ings"></div>
     </section>
 
     <section class="c-carta carta" aria-label="Movimientos">
@@ -235,18 +311,28 @@ const num = s => {
 };
 const masDias = (s, n) => { const d = fecha(s); d.setDate(d.getDate() + n); return iso(d); };
 
-let S = {cats: [], gastos: [], ajustes: {ingreso: 1600, dia_cobro: 28}};
+let S = {cats: [], gastos: [], viajes: [], ingresos: [], ajustes: {ingreso: 1600, dia_cobro: 28}};
+let tipoNuevo = "gasto";   // lo que se apunta arriba: un gasto, lo que te devuelven o un ingreso extra
+let ingresoAbierto = null;
 let R = null;             // /api/resumen del ciclo que se ve
 let ref = HOY;            // un día cualquiera del ciclo que se ve
 let filtro = null;        // categoría pinchada
 let abierto = null;       // movimiento que se está editando
 let catNueva = "";        // "" = que la adivine el servidor por la nota
 let editaPresu = false;
+let REG = {reglas: [], propuestas: []};   // /api/reglas
+let para = null;          // la regla que se ofrece por lo último que apuntaste o corregiste
+let flujoSel = null;      // la banda tocada en el flujo
 
 // Color por categoría según su posición: los 8 huecos de la paleta validada (--serie-1…8).
 // Sigue a la categoría, no a su gasto: filtrar no repinta nada.
 const color = id => `var(--serie-${Math.max(0, S.cats.findIndex(c => c.id === id)) % 8 + 1})`;
 const catN = id => (S.cats.find(c => c.id === id) || {n: id}).n;
+const viajeN = id => (S.viajes.find(v => v.id === id) || {n: ""}).n;
+const SIMB = {EUR: "€", GBP: "£", USD: "$", CHF: "CHF", SEK: "kr", NOK: "kr", DKK: "kr", CZK: "Kč", PLN: "zł", HUF: "Ft", JPY: "¥", MAD: "DH"};
+const enMoneda = (n, m) => eur(n).replace(/€$/, SIMB[m] || m);
+const REPARTOS = () => ({medias: "A medias", mio: "Solo mío", suyo: `Todo de ${R.pareja}`,
+                         pago: `Le pago a ${R.pareja} (saldar)`, cobro: `${R.pareja} me paga (saldar)`});
 
 // ---------- servidor ----------
 async function api(ruta, op = {}) {
@@ -266,7 +352,8 @@ function puerta(on, msg) {
 async function cargar(conTransicion) {
   try {
     const primera = !R;
-    [S, R] = await Promise.all([api("/api/estado"), api("/api/resumen?dia=" + ref)]);
+    [S, R, REG] = await Promise.all([api("/api/estado"), api("/api/resumen?dia=" + ref),
+                                     api("/api/reglas").catch(() => ({reglas: [], propuestas: []}))]);
     puerta(false);
     conTransicion ? calma.transicion(pinta) : pinta();
     if (primera) {   // la primera vez: cartas y filas en cascada, y las barras se llenan
@@ -338,11 +425,12 @@ function pinta() {
                                                 : "quedan " + eur(R.presu - R.total)}`
       + (R.actual ? ` · ${quedan} día${quedan === 1 ? "" : "s"}` : "")
     : `${R.n} gasto${R.n === 1 ? "" : "s"} · sin presupuesto`;
+  if (R.aparte) bajo.textContent += ` · incluye ${eur0(R.aparte)} para viajes`;
   bajo.classList.toggle("mal", !!R.presu && R.total > R.presu);
   $("#barra-total").hidden = !R.presu;
   barra($("#barra-total"), R.total, R.presu, ritmo);
 
-  const ahorro = R.ingreso - (R.actual ? R.proyeccion : R.total);
+  const ahorro = R.ingreso + (R.extra || 0) - (R.actual ? R.proyeccion : R.total);   // ya lleva lo apartado para viajes
   const tres = [
     R.actual && R.presu ? ["Al día", eur0(Math.max(0, (R.presu - R.total) / quedan)), R.total > R.presu]
                         : ["Gastos", String(R.n), false],
@@ -367,6 +455,19 @@ function pinta() {
   categorias(ritmo);
   chips();
   movimientos();
+  viajes();
+  subs();
+  reglas();
+  flujo();
+  ingresos();
+  tipos();
+  // en un viaje en otra moneda, lo que apuntas va en esa por defecto
+  const vh = S.viajes.find(v => v.desde <= HOY && HOY <= v.hasta && v.moneda !== "EUR"), sm = $("#f-nuevo").moneda;
+  sm.hidden = !vh;
+  if (vh && sm.dataset.v !== vh.id) {
+    sm.replaceChildren(new Option(`${vh.moneda} (${SIMB[vh.moneda]})`, vh.moneda), new Option("EUR (€)", "EUR"));
+    sm.dataset.v = vh.id;
+  }
   graficas();
 }
 
@@ -405,7 +506,15 @@ function categorias(ritmo) {
       } else if (c.sugerido) {
         fila.append(el("span", "sub", `Sin límite · sugerido ${eur0(c.sugerido)}`));
       }
+      if (c.devuelto) fila.append(el("span", "sub", `Ya descontados ${eur(c.devuelto)} que te han devuelto`));
     }
+    cats.append(fila);
+  }
+  if (R.aparte && !editaPresu) {   // lo que este ciclo pone para viajes: un fijo más, aunque no sea una categoría
+    const fila = el("div", "cat");
+    fila.style.setProperty("--c", "var(--acento)");
+    fila.append(el("i"), el("span", "n", "Hucha de viajes"), el("span", "v", eur(R.aparte)),
+                el("span", "sub", "Apartado este ciclo: los viajes salen de aquí, no de tus categorías."));
     cats.append(fila);
   }
   if (!cats.children.length) cats.append(el("p", "vacio", "Nada en este ciclo."));
@@ -415,7 +524,7 @@ function categorias(ritmo) {
 function ajustes() {
   const f = el("div", "ajustes");
   const presuTotal = S.cats.reduce((a, c) => a + c.presu, 0);
-  const ahorro = S.ajustes.ingreso - presuTotal;
+  const ahorro = S.ajustes.ingreso - presuTotal - (S.ajustes.hucha || 0);
   f.innerHTML = `
     <label>Cobras al mes<input class="c-campo" name="ingreso" inputmode="decimal" placeholder="vacío si varía"></label>
     <label>Día de cobro<input class="c-campo" name="dia" type="number" min="1" max="31"></label>
@@ -428,7 +537,7 @@ function ajustes() {
     : presuTotal
     ? `Presupuesto ${eur0(presuTotal)} · ahorro objetivo ${eur0(ahorro)} (${Math.round(ahorro * 100 / S.ajustes.ingreso)} %)`
     : `Los sugeridos dejan ${eur0(S.ajustes.ingreso - R.sugerido_total)} de ahorro al ciclo.`;
-  // vacío = ingreso variable (una instancia sin sueldo fijo; si no, el servidor vuelve a su valor por defecto)
+  // vacío = ingreso variable (sin sueldo fijo; si no, el servidor vuelve a su valor por defecto)
   ing.onchange = () => { S.ajustes.ingreso = num(ing.value) || 0; guardar(); };
   dia.onchange = () => { S.ajustes.dia_cobro = Math.min(31, Math.max(1, +dia.value || S.ajustes.dia_cobro)); ref = HOY; guardar(); };
   f.querySelector("[name=sug]").onclick = () => {
@@ -436,6 +545,21 @@ function ajustes() {
     guardar("Presupuestos sugeridos puestos");
   };
   return f;
+}
+
+// arriba: qué se apunta. «Me devuelven» lleva categoría (de qué era); un ingreso extra, no
+function tipos() {
+  const f = $("#f-nuevo");
+  $("#tipo").replaceChildren(...[["gasto", "Gasto"], ["devuelve", "Me devuelven"], ["extra", "Ingreso"]].map(([k, n]) => {
+    const b = el("button", null, n);
+    b.type = "button";
+    b.setAttribute("aria-pressed", tipoNuevo === k);
+    b.onclick = () => { tipoNuevo = k; tipos(); chips(); };
+    return b;
+  }));
+  $("#chips").hidden = tipoNuevo === "extra";
+  f.nota.placeholder = {gasto: "Nota o comercio (opcional)", devuelve: "Quién y de qué: Juan, la cena", extra: "De quién: mamá, una venta…"}[tipoNuevo];
+  f.querySelector("button[type=submit]").textContent = tipoNuevo === "gasto" ? "Apuntar" : "Apuntar ingreso";
 }
 
 function chips() {
@@ -485,7 +609,7 @@ function movimientos() {
     b.setAttribute("aria-expanded", abierto === g.id);
     const t = el("span", "t");
     t.append(el("b", null, g.comercio || g.nota || catN(g.cat)),
-             el("small", null, [catN(g.cat), g.comercio && g.nota ? g.nota : "", ORIGEN[g.src]].filter(Boolean).join(" · ")));
+             el("small", null, [g.orig ? enMoneda(g.orig, g.moneda) : "", g.viaje ? "✈ " + viajeN(g.viaje) : "", catN(g.cat), g.comercio && g.nota ? g.nota : "", ORIGEN[g.src]].filter(Boolean).join(" · ")));
     b.append(el("i"), t, el("span", "v", eur(g.importe)));
     b.onclick = () => { abierto = abierto === g.id ? null : g.id; movimientos(); if (abierto) anima.nueva($(".edita")); };
     c.append(b);
@@ -501,6 +625,8 @@ function editor(g) {
       <input class="c-campo" type="date" name="dia" aria-label="Día">
     </div>
     <select class="c-campo" name="cat" aria-label="Categoría"></select>
+    <select class="c-campo" name="viaje" aria-label="Viaje"></select>
+    <select class="c-campo" name="reparto" aria-label="De quién es"></select>
     <input class="c-campo" name="comercio" placeholder="Comercio" maxlength="60" aria-label="Comercio">
     <input class="c-campo" name="nota" placeholder="Nota" maxlength="120" aria-label="Nota">
     <div class="acciones">
@@ -512,6 +638,11 @@ function editor(g) {
   f.comercio.value = g.comercio;
   f.nota.value = g.nota;
   f.cat.append(...S.cats.map(c => new Option(c.n, c.id, false, c.id === g.cat)));
+  f.viaje.append(new Option("Sin viaje: cuenta en el ciclo", "", false, !g.viaje),
+                 ...S.viajes.map(v => new Option("Viaje: " + v.n, v.id, false, v.id === g.viaje)));
+  f.viaje.hidden = !S.viajes.length;
+  f.reparto.append(...Object.entries(REPARTOS()).map(([k, n]) => new Option(n, k, false, k === g.reparto)));
+  f.reparto.hidden = !S.viajes.find(v => v.id === g.viaje)?.con;   // solo en un viaje compartido
   if (g.lineas.length) {
     const ul = el("ul", "lineas");
     for (const l of g.lineas) {
@@ -525,20 +656,445 @@ function editor(g) {
     e.preventDefault();
     const imp = num(f.importe.value);
     if (!(imp > 0)) return f.importe.focus();
-    Object.assign(g, {importe: imp, dia: f.dia.value || g.dia, cat: f.cat.value,
+    const otraCat = f.cat.value !== g.cat;
+    Object.assign(g, {importe: imp, dia: f.dia.value || g.dia, cat: f.cat.value, viaje: f.viaje.value, reparto: f.reparto.value,
                       comercio: f.comercio.value.trim(), nota: f.nota.value.trim()});
-    abierto = null;
+    abierto = editaViaje = null;
     guardar();
+    // corregiste la categoría: ¿que sea así siempre? (después del PUT, para que el servidor vea la nueva)
+    if (otraCat) setTimeout(async () => {
+      try { para = (await api("/api/reglas?id=" + encodeURIComponent(g.id))).para; reglas(); } catch (e) {}
+    }, 900);
   };
   f.borrar.onclick = async () => {
     f.borrar.disabled = true;
     await Promise.all([anima.hecha(f), anima.hecha(f.previousElementSibling)]);   // se pliega antes de irse
     S.gastos = S.gastos.filter(x => x !== g);
-    abierto = null;
+    abierto = editaViaje = null;
     guardar("Borrado");
     toast(`Borrado: ${eur(g.importe)}`, () => { S.gastos.push(g); guardar("Recuperado"); });
   };
   return f;
+}
+
+// ---------- viajes: aparte del ciclo, pagados por su hucha ----------
+let viajeAbierto = null, nuevoViaje = false, editaViaje = null;   // editaViaje: el gasto abierto dentro del viaje
+
+function formViaje(v) {
+  const f = el("form", "edita");
+  f.innerHTML = `
+    <input class="c-campo" name="n" placeholder="Nombre: Londres" maxlength="40" required aria-label="Nombre del viaje">
+    <div class="fila2 dos">
+      <input class="c-campo" type="date" name="desde" required aria-label="Desde">
+      <input class="c-campo" type="date" name="hasta" required aria-label="Hasta">
+    </div>
+    <input class="c-campo" name="presu" inputmode="decimal" placeholder="Presupuesto del viaje (opcional)" aria-label="Presupuesto del viaje">
+    <div class="fila2 dos">
+      <select class="c-campo" name="moneda" aria-label="Moneda del viaje"></select>
+      <input class="c-campo" name="cambio" inputmode="decimal" placeholder="€ por unidad" aria-label="Cambio: euros por unidad">
+    </div>
+    ${R.pareja ? `<label class="con"><input type="checkbox" name="con"> Compartido con ${R.pareja}</label>` : ""}
+    <div class="acciones">${v ? '<button type="button" class="c-btn peligro" name="borrar">Borrar viaje</button>' : ""}
+      <button class="c-btn pri">${v ? "Guardar" : "Crear viaje"}</button></div>`;
+  if (v) {
+    f.n.value = v.n; f.desde.value = v.desde; f.hasta.value = v.hasta;
+    f.presu.value = v.presu ? String(v.presu).replace(".", ",") : "";
+  }
+  f.moneda.append(...Object.keys(SIMB).map(k => new Option(`${k} (${SIMB[k]})`, k, false, k === (v ? v.moneda : "EUR"))));
+  f.cambio.value = v && v.cambio ? String(v.cambio).replace(".", ",") : "";
+  f.cambio.hidden = f.moneda.value === "EUR";
+  if (f.con) f.con.checked = !!(v && v.con);
+  f.moneda.onchange = async () => {   // el cambio de hoy, para no tener que buscarlo
+    f.cambio.hidden = f.moneda.value === "EUR";
+    if (f.cambio.hidden) return;
+    try { f.cambio.value = String((await api("/api/cambio?moneda=" + f.moneda.value)).cambio || "").replace(".", ","); } catch (e) {}
+  };
+  f.onsubmit = async e => {
+    e.preventDefault();
+    const datos = {n: f.n.value.trim(), desde: f.desde.value, hasta: f.hasta.value || f.desde.value, presu: num(f.presu.value) || 0,
+                   moneda: f.moneda.value, cambio: f.moneda.value === "EUR" ? 0 : num(f.cambio.value) || 0, con: !!(f.con && f.con.checked)};
+    if (v) { Object.assign(v, datos); viajeAbierto = null; return guardar(); }
+    try {
+      // en el servidor: además se lleva los gastos que ya eran del viaje (reservas, los que lo nombran)
+      const r = await api("/api/viaje", {method: "POST", body: JSON.stringify(datos)});
+      nuevoViaje = false;
+      viajeAbierto = r.viaje.id;
+      await cargar();
+      const ids = new Set(r.movidos.map(g => g.id));
+      if (!ids.size) return toast(`Viaje ${r.viaje.n} creado`);
+      toast(`${r.viaje.n} se lleva ${ids.size} gasto${ids.size === 1 ? "" : "s"}: ${r.movidos.map(g => g.comercio || g.nota || catN(g.cat)).join(", ")}`,
+            () => { for (const g of S.gastos) if (ids.has(g.id)) g.viaje = ""; guardar("Devueltos al ciclo"); });
+    } catch (err) {
+      if (err.message !== "401") $("#estado").textContent = "No se ha creado";
+    }
+  };
+  if (v) f.borrar.onclick = () => {
+    const suyos = S.gastos.filter(g => g.viaje === v.id);
+    S.viajes = S.viajes.filter(x => x !== v);
+    for (const g of suyos) g.viaje = "";
+    viajeAbierto = null;
+    guardar("Viaje borrado");
+    toast(`Borrado ${v.n}: sus gastos vuelven al ciclo`, () => { S.viajes.push(v); for (const g of suyos) g.viaje = v.id; guardar("Recuperado"); });
+  };
+  return f;
+}
+
+function viajes() {
+  $("#f-viaje-sitio").replaceChildren(...(nuevoViaje ? [formViaje()] : []));
+  const h = R.hucha, periodo = R.dia_cobro === 1 ? "mes" : "ciclo";
+  const inp = Object.assign(el("input", "c-campo"), {inputMode: "decimal", placeholder: "0 €",
+                                                     value: S.ajustes.hucha ? String(S.ajustes.hucha).replace(".", ",") : ""});
+  inp.setAttribute("aria-label", `Lo que apartas para viajes cada ${periodo}`);
+  inp.onchange = () => { S.ajustes.hucha = num(inp.value) || 0; guardar(); };
+  const fila = el("label", "hucha", `Apartas para viajes cada ${periodo}`);
+  fila.append(inp);
+  const veces = n => `${n} ${periodo}${n === 1 ? "" : periodo === "mes" ? "es" : "s"}`;
+  const partes = [fila];
+  if (!h) {
+    // sin hucha: lo de los viajes de este ciclo repartido en unos cuantos, para elegir de un toque
+    const deuda = S.viajes.filter(v => v.hasta >= R.inicio).reduce((a, v) => a + (R.cuentas?.[v.id]?.parte || 0), 0);   // tu parte
+    partes.push(el("p", "bajo", deuda
+      ? `Los viajes de este ${periodo} suman ${eur(deuda)}. Para repartirlos, aparta cada ${periodo}:`
+      : `Con algo cada ${periodo}, los viajes salen de esta hucha y no de tus categorías: se gasta de golpe y los siguientes la rellenan.`));
+    if (deuda) {
+      const opc = el("div", "opciones");
+      for (const n of [3, 4, 6]) {
+        const x = Math.ceil(deuda / n / 5) * 5, b = el("button", "c-btn mini", `${eur0(x)} · ${veces(n)}`);
+        b.onclick = () => { S.ajustes.hucha = x; guardar(`Hucha: ${eur0(x)} cada ${periodo}`); };
+        opc.append(b);
+      }
+      partes.push(opc);
+    }
+  } else {
+    partes.push(el("p", "bajo" + (h.saldo < 0 ? " mal" : ""), h.saldo >= 0
+      ? `En la hucha: ${eur(h.saldo)}.`
+      : `La hucha está en ${eur(h.saldo)}: el viaje se pagó de golpe y te lo ganas en ${veces(h.ciclos_a_cero)} más.`));
+    // ciclo a ciclo: lo que apartas, lo que se fue en viajes y cómo queda; los que vienen, más claros
+    const ul = el("ul", "lineas plan");
+    for (const p of h.plan) {
+      const li = el("li", p.futuro ? "futuro" : "");
+      li.append(el("span", null, `${cap(MESES[fecha(p.fin).getMonth()])} · +${eur0(p.aparta)}` + (p.gastado ? ` · −${eur0(p.gastado)} en viajes` : "")),
+                el("b", p.saldo < 0 ? "mal" : "", (p.futuro && p.saldo >= 0 ? "✓ " : "") + eur(p.saldo)));
+      ul.append(li);
+    }
+    partes.push(ul);
+  }
+  $("#hucha").replaceChildren(...partes);
+
+  const l = $("#viajes");
+  l.replaceChildren();
+  if (!S.viajes.length) {
+    l.append(el("p", "vacio", "Sin viajes. Sus gastos salen aquí y no en el ciclo: las reservas (Booking, vuelos…), lo que nombre el viaje y lo de esos días."));
+    return;
+  }
+  for (const v of [...S.viajes].sort((a, b) => b.desde.localeCompare(a.desde))) {
+    const gs = S.gastos.filter(g => g.viaje === v.id), cu = R.cuentas?.[v.id], tot = cu ? cu.parte : suma(gs);
+    const b = el("button", "mov");
+    b.style.setProperty("--c", "var(--acento)");
+    b.setAttribute("aria-expanded", viajeAbierto === v.id);
+    const t = el("span", "t");
+    const n = gs.length + (cu && v.con ? cu.suyos.length : 0);
+    t.append(el("b", null, v.n), el("small", null, [`${corta(v.desde)} – ${corta(v.hasta)}`, `${n} gasto${n === 1 ? "" : "s"}`,
+      v.con ? `con ${R.pareja} · tu parte` : "", v.moneda !== "EUR" ? `en ${SIMB[v.moneda]}` : ""].filter(Boolean).join(" · ")));
+    b.append(el("i"), t, el("span", "v", eur(tot) + (v.presu ? ` de ${eur0(v.presu)}` : "")));
+    b.onclick = () => { viajeAbierto = viajeAbierto === v.id ? null : v.id; viajes(); };
+    l.append(b);
+    if (v.presu) { const bar = el("div", "barra-ritmo viaje-barra"); barra(bar, tot, v.presu, null); l.append(bar); }
+    if (viajeAbierto === v.id) l.append(detalleViaje(v, gs));
+  }
+}
+
+function detalleViaje(v, gs) {
+  const f = formViaje(v), porCat = {}, cu = R.cuentas?.[v.id], compartido = v.con && cu;
+  // los de los dos, si es compartido: los suyos se leen de su app y aquí no se tocan
+  const todos = [...gs.map(g => [g, ""]), ...(compartido ? cu.suyos.map(g => [g, R.pareja]) : [])]
+    .sort((a, b) => a[0].dia.localeCompare(b[0].dia));
+  const saldar = g => compartido && ["pago", "cobro"].includes(g.reparto);
+  for (const [g] of todos) if (!saldar(g)) porCat[g.cat] = (porCat[g.cat] || 0) + g.importe;
+  const ul = el("ul", "lineas");
+  for (const [g, quien] of todos) {
+    // el reparto dicho desde quien mira: «solo mío» de la otra persona es «solo suyo» aquí
+    const li = el("li"), corto = (quien ? {mio: `solo de ${quien}`, suyo: "para ti", pago: "te paga", cobro: "le pagas"}
+                                        : {mio: "solo tuyo", suyo: `para ${R.pareja}`, pago: `pagas a ${R.pareja}`, cobro: `${R.pareja} te paga`})[g.reparto];
+    const txt = el("span", null, [corta(g.dia), g.comercio || g.nota || catN(g.cat), compartido ? quien || "tú" : "",
+                                  compartido && corto ? corto : ""].filter(Boolean).join(" · ")),
+          imp = el("b", null, (g.orig ? enMoneda(g.orig, g.moneda) + " · " : "") + eur(g.importe));
+    if (quien) li.append(txt, imp);   // los de la pareja se cambian en su app
+    else {   // los tuyos, aquí mismo: el mismo editor que en Movimientos
+      const b = el("button", "linea");
+      b.type = "button";
+      b.setAttribute("aria-expanded", editaViaje === g.id);
+      b.append(txt, imp);
+      b.onclick = () => { editaViaje = editaViaje === g.id ? null : g.id; viajes(); };
+      li.append(b);
+      if (editaViaje === g.id) { li.classList.add("abierto"); li.append(editor(g)); }
+    }
+    ul.append(li);
+  }
+  const arriba = [el("p", "bajo", todos.length ? Object.entries(porCat).sort((a, b) => b[1] - a[1]).map(([c, n]) => `${catN(c)} ${eur0(n)}`).join(" · ")
+                                               : "Aún sin gastos: se le irán sumando solos.")];
+  if (compartido) {
+    const d = cu.me_debe, s = el("div", "saldo");
+    arriba.push(el("p", "bajo", `Total ${eur(cu.total)} · has pagado ${eur(cu.pagado)} · ${R.pareja} ${eur(cu.pagado_pareja)} · tu parte ${eur(cu.parte)}`));
+    s.append(el("b", null, Math.abs(d) < .01 ? "Estáis en paz" : d > 0 ? `${R.pareja} te debe ${eur(d)}` : `Le debes ${eur(-d)} a ${R.pareja}`));
+    if (Math.abs(d) >= .01) {
+      const b = el("button", "c-btn mini", "Saldar");
+      b.type = "button";
+      b.onclick = () => salda(v, d);
+      s.append(b);
+    }
+    arriba.push(s);
+  }
+  // el formulario del viaje va debajo y aparte: la lista lleva dentro los formularios de cada gasto
+  f.className = "campos-viaje";
+  const caja = el("div", "edita");
+  caja.append(...arriba, ul, f);
+  return caja;
+}
+
+// un Bizum para quedar en paz: lo apunta quien lo mira (pago si debías, cobro si te debían)
+async function salda(v, d) {
+  try {
+    await api("/api/gasto", {method: "POST", body: JSON.stringify({importe: Math.abs(d), moneda: "EUR", viaje: v.id, cat: "otros", src: "web",
+      reparto: d < 0 ? "pago" : "cobro", nota: d < 0 ? `Pago a ${R.pareja}` : `${R.pareja} me paga`})});
+    await cargar();
+    toast("Apuntado: estáis en paz");
+  } catch (e) {
+    if (e.message !== "401") $("#estado").textContent = "No se ha apuntado";
+  }
+}
+
+// ---------- ingresos: lo que entra aparte del sueldo ----------
+function ingresos() {
+  const l = R.ingresos || [], c = $("#ings");
+  $("#n-ings").textContent = l.length ? "+" + eur(suma(l)) : "";
+  c.replaceChildren();
+  if (!l.length) {
+    c.append(el("p", "vacio", "Bizums de la familia, lo que te devuelven de una cena… Apúntalo arriba con «Ingreso» o «Me devuelven», o mándale la captura del banco al bot."));
+    return;
+  }
+  for (const i of [...l].sort((a, b) => b.dia.localeCompare(a.dia) || b.id.localeCompare(a.id))) {
+    const b = el("button", "mov"), t = el("span", "t");
+    b.style.setProperty("--c", i.tipo === "devuelve" ? color(i.cat) : "var(--acento)");
+    b.setAttribute("aria-expanded", ingresoAbierto === i.id);
+    t.append(el("b", null, i.nota || i.comercio || (i.tipo === "devuelve" ? "Te devuelven" : "Ingreso")),
+             el("small", null, [fechaTxt(i.dia), i.tipo === "devuelve" ? `te devuelven de ${catN(i.cat)}` : "ingreso extra", ORIGEN[i.src]]
+                                .filter(Boolean).join(" · ")));
+    b.append(el("i"), t, el("span", "v", "+" + eur(i.importe)));
+    b.onclick = () => { ingresoAbierto = ingresoAbierto === i.id ? null : i.id; ingresos(); };
+    c.append(b);
+    const suyo = S.ingresos.find(x => x.id === i.id);   // R trae copias: se edita el de S, que es el que se guarda
+    if (ingresoAbierto === i.id && suyo) c.append(editorIngreso(suyo));
+  }
+}
+
+function editorIngreso(i) {
+  const f = el("form", "edita");
+  f.innerHTML = `
+    <div class="fila2">
+      <input class="c-campo" name="importe" inputmode="decimal" aria-label="Importe">
+      <input class="c-campo" type="date" name="dia" aria-label="Día">
+    </div>
+    <select class="c-campo" name="tipo" aria-label="Qué es">
+      <option value="extra">Ingreso extra</option><option value="devuelve">Me devuelven de un gasto</option>
+    </select>
+    <select class="c-campo" name="cat" aria-label="De qué categoría"></select>
+    <input class="c-campo" name="nota" placeholder="De quién o de qué" maxlength="120" aria-label="Nota">
+    <div class="acciones">
+      <button type="button" class="c-btn peligro" name="borrar">Borrar</button>
+      <button class="c-btn pri">Guardar</button>
+    </div>`;
+  f.importe.value = i.importe.toFixed(2).replace(".", ",");
+  f.dia.value = i.dia;
+  f.tipo.value = i.tipo;
+  f.nota.value = i.nota || i.comercio;
+  f.cat.append(...S.cats.map(c => new Option(c.n, c.id, false, c.id === i.cat)));
+  const ver = () => { f.cat.hidden = f.tipo.value !== "devuelve"; };
+  ver();
+  f.tipo.onchange = ver;
+  f.onsubmit = e => {
+    e.preventDefault();
+    const imp = num(f.importe.value);
+    if (!(imp > 0)) return f.importe.focus();
+    Object.assign(i, {importe: imp, dia: f.dia.value || i.dia, tipo: f.tipo.value, cat: f.tipo.value === "devuelve" ? f.cat.value : "",
+                      nota: f.nota.value.trim(), comercio: f.nota.value.trim() ? "" : i.comercio});
+    ingresoAbierto = null;
+    guardar();
+  };
+  f.borrar.onclick = () => {
+    S.ingresos = S.ingresos.filter(x => x !== i);
+    ingresoAbierto = null;
+    guardar("Borrado");
+    toast(`Borrado: +${eur(i.importe)}`, () => { S.ingresos.push(i); guardar("Recuperado"); });
+  };
+  return f;
+}
+
+// ---------- recurrentes: lo que se repite (semana, mes, año), con su próximo cargo; confirmar o ignorar ----------
+const CADA = {semana: "cada semana", mes: "cada mes", "año": "cada año"};
+function subs() {
+  const l = R.recurrentes || R.suscripciones || [], cuentan = l.filter(s => s.estado !== "no");
+  const mes = cuentan.reduce((a, s) => a + s.al_mes, 0);
+  $("#n-sus").textContent = cuentan.length ? `${eur(mes)} al mes · ${eur0(mes * 12)} al año` : "";
+  $("#sus").replaceChildren(...(l.length ? l.map(s => {
+    const f = el("div", "mov" + (s.estado === "no" ? " ignorado" : ""));
+    f.style.setProperty("--c", color(s.cat));
+    const t = el("span", "t"), b = el("b", null, s.n);
+    if (s.estado === "si") b.append(el("span", "rec-estado", "✓ confirmado"));
+    t.append(b, el("small", null, s.estado === "no" ? "Ignorado: no cuenta en el total"
+      : `${CADA[s.cada] || "cada " + s.cada} · próximo cargo: ${s.proximo === HOY ? "hoy" : corta(s.proximo)}`
+        + (s.cada !== "mes" ? ` · ${eur(s.al_mes)} al mes` : "")));
+    const bs = el("span", "bs");
+    const boton = (txt, estado, titulo) => {
+      const x = el("button", "c-btn mini", txt);
+      x.type = "button";
+      x.title = titulo;
+      x.onclick = () => marcaRecurrente(s.clave, estado);
+      return x;
+    };
+    if (s.estado) bs.append(boton("Deshacer", "", "Volver a como lo detecta Gastos"));
+    else bs.append(boton("Confirmar", "si", "Sí, se cobra solo"), boton("Ignorar", "no", "No es un gasto recurrente"));
+    f.append(el("i"), t, el("span", "v", eur(s.importe)), bs);
+    return f;
+  }) : [el("p", "vacio", "Cuando un cargo se repita en el mismo sitio cada semana, mes o año, saldrá aquí con la fecha del siguiente.")]));
+}
+
+async function marcaRecurrente(clave, estado) {
+  try {
+    await api("/api/recurrente", {method: "POST", body: JSON.stringify({clave, estado})});
+    toast(estado === "si" ? "Confirmado" : estado === "no" ? "Ignorado: ya no cuenta" : "Como lo detecta Gastos");
+    await cargar();
+  } catch (e) { if (e.message !== "401") $("#estado").textContent = "No se ha guardado"; }
+}
+
+// ---------- reglas de categoría: las propone el servidor, las aceptas tú, se aplican solas a lo nuevo ----------
+function reglas() {
+  const c = $("#reglas");
+  c.replaceChildren();
+  const props = [...(para ? [para] : []), ...REG.propuestas.filter(p => !para || p.txt !== para.txt)];
+  for (const p of props) c.append(propuestaFila(p, p === para));
+  for (const [i, r] of REG.reglas.entries()) {
+    const f = el("div", "regla");
+    f.style.setProperty("--c", color(r.cat));
+    const t = el("span", "t", `«${r.txt}» → ${catN(r.cat)}`);
+    t.append(el("small", null, `${r.encajan} gasto${r.encajan === 1 ? "" : "s"} encajan · prioridad ${i + 1}`));
+    const bs = el("span", "bs");
+    const boton = (txt, fn, etq) => { const x = el("button", "c-btn mini", txt); x.type = "button"; x.onclick = fn; x.setAttribute("aria-label", etq); return x; };
+    if (i) bs.append(boton("↑", () => ordena(i, -1), `Subir la prioridad de «${r.txt}»`));
+    if (i < REG.reglas.length - 1) bs.append(boton("↓", () => ordena(i, 1), `Bajar la prioridad de «${r.txt}»`));
+    bs.append(boton("Aplicar", () => accion("/api/regla/aplica", {id: r.id}, x => `${x.aplicados} gasto${x.aplicados === 1 ? "" : "s"} cambiado${x.aplicados === 1 ? "" : "s"}`),
+                    `Aplicar «${r.txt}» a los gastos anteriores`),
+              boton("Borrar", () => accion("/api/regla/borra", {id: r.id}, () => "Regla borrada"), `Borrar la regla «${r.txt}»`));
+    f.append(el("i"), t, bs);
+    c.append(f);
+  }
+  $("#n-reglas").textContent = REG.reglas.length ? String(REG.reglas.length) : "";
+  if (!c.children.length) c.append(el("p", "vacio", "Cuando corrijas la categoría de un gasto o se repita un comercio, te propondré una regla: «si dice mercadona → Súper»."));
+}
+
+function propuestaFila(p, nueva) {
+  const f = el("div", "regla prop");
+  f.style.setProperty("--c", color(p.cat));
+  const t = el("span", "t");
+  const txt = el("input", "c-campo");
+  Object.assign(txt, {value: p.txt, maxLength: 40});
+  txt.setAttribute("aria-label", "Texto que buscar en el concepto");
+  txt.style.cssText = "width:9em;min-height:32px;display:inline-block";
+  const sel = el("select", "c-campo");
+  sel.append(...S.cats.map(c => new Option(c.n, c.id, false, c.id === p.cat)));
+  sel.setAttribute("aria-label", "Categoría");
+  sel.style.cssText = "display:inline-block;width:auto";
+  t.append(document.createTextNode(nueva ? "¿Siempre así? Si el concepto contiene " : "Propuesta: si el concepto contiene "), txt,
+           document.createTextNode(" → "), sel);
+  t.append(el("small", null, `${p.encajan} gasto${p.encajan === 1 ? "" : "s"} encajan` + (p.ejemplos.length ? ` (${p.ejemplos.join(", ")})` : "")));
+  const bs = el("span", "bs");
+  const boton = (texto, cls, fn) => { const x = el("button", "c-btn mini " + cls, texto); x.type = "button"; x.onclick = fn; return x; };
+  const acepta = aplicar => accion("/api/regla", {txt: txt.value, cat: sel.value, id: p.cambia || "", aplicar},
+    x => "Regla guardada" + (aplicar ? ` y aplicada a ${x.aplicados} gasto${x.aplicados === 1 ? "" : "s"}` : ""), true);
+  if (p.cambiarian) bs.append(boton(`Aceptar y aplicar a ${p.cambiarian} anterior${p.cambiarian === 1 ? "" : "es"}`, "pri", () => acepta(true)));
+  bs.append(boton(p.cambiarian ? "Solo a los nuevos" : "Aceptar", p.cambiarian ? "" : "pri", () => acepta(false)),
+            boton("No, gracias", "", () => accion("/api/regla/rechaza", {txt: p.txt}, () => "No te la vuelvo a proponer", true)));
+  f.append(el("i"), t, bs);
+  return f;
+}
+
+async function accion(ruta, cuerpo, texto, quitaPara) {
+  try {
+    const x = await api(ruta, {method: "POST", body: JSON.stringify(cuerpo)});
+    if (quitaPara) para = null;
+    toast(texto(x));
+    await cargar();   // las reglas cambian gastos en el servidor: S tiene que venir fresco antes del próximo PUT
+  } catch (e) { if (e.message !== "401") $("#estado").textContent = "No se ha guardado: " + e.message.slice(0, 80); }
+}
+
+const ordena = (i, paso) => {
+  const ids = REG.reglas.map(r => r.id);
+  [ids[i], ids[i + paso]] = [ids[i + paso], ids[i]];
+  accion("/api/reglas/orden", {ids}, () => "Prioridad cambiada");
+};
+
+// ---------- flujo del ciclo: de lo que entra (o lo gastado) a cada categoría, con bandas como el de Sure ----------
+const SVGNS = "http://www.w3.org/2000/svg";
+const sv = (t, at) => { const e = document.createElementNS(SVGNS, t); for (const k in at) e.setAttribute(k, at[k]); return e; };
+
+function datosFlujo() {
+  let l = R.cats.filter(c => c.gastado > 0).map(c => ({ids: [c.id], n: c.n, v: c.gastado, c: color(c.id)}));
+  if (R.aparte) l.push({ids: ["_hucha"], n: "Hucha de viajes", v: R.aparte, c: "var(--acento)"});
+  l.sort((a, b) => b.v - a.v);
+  const gastado = l.reduce((a, x) => a + x.v, 0);
+  // las pequeñas (menos del 4 % o más allá de la 7.ª) se juntan en «Otros», con la categoría Otros si la hay
+  const peque = l.filter((x, i) => i >= 7 || x.v < gastado * .04 || x.ids[0] === "otros");
+  if (peque.length > 1) {
+    l = l.filter(x => !peque.includes(x));
+    l.push({ids: peque.flatMap(x => x.ids), n: "Otros", v: peque.reduce((a, x) => a + x.v, 0), c: color("otros"), otros: peque.map(x => x.n)});
+  }
+  const entra = R.ingreso ? R.ingreso + (R.extra || 0) : 0, queda = entra - gastado;
+  if (entra && queda > 0) l.push({ids: ["_queda"], n: R.actual ? "Te queda" : "Ahorro", v: queda, c: "var(--tenue)"});
+  return {l, entra, gastado, queda, izq: entra && queda >= 0 ? entra : gastado};
+}
+
+function flujo() {
+  const d = datosFlujo(), caja = $("#flujo");
+  $("#flujo-tit").textContent = d.entra && d.queda >= 0 ? "Adónde va lo que entra" : "Adónde va lo gastado";
+  $("#flujo-total").textContent = (d.entra && d.queda >= 0 ? "Ingresos " : "Gastado ") + eur0(d.izq);
+  $("#flujo-pie").textContent = d.entra && d.queda < 0 ? `Gastas ${eur(-d.queda)} más de lo que entra este ciclo.`
+    : d.entra ? `${eur0(d.gastado)} gastados (${Math.round(d.gastado * 100 / d.izq)} %). Toca una banda para ver sus movimientos.` : "Toca una banda para ver sus movimientos.";
+  if (!d.l.length) { caja.replaceChildren(el("p", "vacio", "Nada que repartir en este ciclo.")); return; }
+  // cada banda tiene su hueco (al menos 30 px para su nombre e importe): las etiquetas nunca se pisan
+  const W = 420, bx = 12, x1 = 196, hueco = 8, minimo = 32;
+  const totalH = Math.max(200, d.l.length * 40), k = (totalH - hueco * (d.l.length - 1)) / d.izq;
+  const alturas = d.l.map(x => Math.max(2, x.v * k)), slots = alturas.map(h => Math.max(h, minimo));
+  const H = slots.reduce((a, s) => a + s, 0) + hueco * (d.l.length - 1);
+  const svg = sv("svg", {viewBox: `0 0 ${W} ${H}`, role: "img",
+    "aria-label": `Flujo del ciclo: ${d.l.map(x => `${x.n} ${eur0(x.v)}`).join(", ")}`});
+  const izqH = alturas.reduce((a, h) => a + h, 0), izq0 = (H - izqH) / 2;
+  svg.append(sv("rect", {x: 0, y: izq0, width: bx, height: izqH, rx: 3, fill: "var(--texto)", opacity: .8}));
+  let yIzq = izq0, ySlot = 0;
+  d.l.forEach((x, i) => {
+    const h = alturas[i], yDer = ySlot + (slots[i] - h) / 2, xm = (bx + x1) / 2;
+    const g = sv("g", {class: flujoSel ? (flujoSel === x.ids.join() ? "viva" : "apagada") : ""});
+    g.style.setProperty("--c", x.c);
+    const p = sv("path", {class: "banda crece", d: `M${bx},${yIzq} C${xm},${yIzq} ${xm},${yDer} ${x1},${yDer} L${x1},${yDer + h} C${xm},${yDer + h} ${xm},${yIzq + h} ${bx},${yIzq + h} Z`});
+    p.style.animationDelay = `${i * 60}ms`;
+    const cy = ySlot + slots[i] / 2;
+    const nom = sv("text", {x: x1 + 16, y: cy - 2}), val = sv("text", {class: "v", x: x1 + 16, y: cy + 14});
+    nom.textContent = x.n;
+    val.textContent = `${eur(x.v)} · ${Math.round(x.v * 100 / d.izq)} %`;
+    g.append(p, sv("rect", {class: "nodo", x: x1, y: yDer, width: 10, height: h, rx: 2}), nom, val);
+    if (x.otros) { const tt = sv("title", {}); tt.textContent = x.otros.join(", "); g.append(tt); }
+    const real = x.ids.filter(id => !id.startsWith("_"));
+    g.onclick = () => {
+      flujoSel = flujoSel === x.ids.join() ? null : x.ids.join();
+      filtro = flujoSel && real.length === 1 ? real[0] : null;
+      flujo(); movimientos(); categorias(R.actual ? R.hechos / R.dias : null);
+      if (filtro) $("#movs").scrollIntoView({behavior: "smooth", block: "start"});
+    };
+    svg.append(g);
+    yIzq += h;
+    ySlot += slots[i] + hueco;
+  });
+  caja.replaceChildren(svg);
+  tabla("#t-flujo", ["Destino", "Importe", "%"], d.l.map(x => [x.n, eur(x.v), Math.round(x.v * 100 / d.izq) + " %"]));
 }
 
 // ---------- gráficas (Chart.js) ----------
@@ -652,13 +1208,25 @@ $("#f-nuevo").onsubmit = async e => {
   if (!(imp > 0)) return f.importe.focus();
   btn.disabled = true;
   try {
+    if (tipoNuevo !== "gasto") {   // dinero que entra: un ingreso extra o lo que te devuelven de algo
+      const r = await api("/api/ingreso", {method: "POST", body: JSON.stringify({
+        importe: imp, tipo: tipoNuevo, cat: catNueva, nota: f.nota.value.trim(), dia: f.dia.value || HOY, src: "web"})});
+      f.importe.value = "";
+      f.nota.value = "";
+      catNueva = "";
+      ref = r.ingreso.dia;
+      await cargar();
+      return toast(r.texto.split("\n")[0], () => { S.ingresos = S.ingresos.filter(x => x.id !== r.ingreso.id); guardar("Quitado"); });
+    }
     // por el mismo camino que el atajo: el servidor adivina la categoría y avisa si te pasas
     const r = await api("/api/gasto", {method: "POST", body: JSON.stringify({
-      importe: imp, cat: catNueva, nota: f.nota.value.trim(), dia: f.dia.value || HOY, src: "web"})});
+      importe: imp, cat: catNueva, nota: f.nota.value.trim(), dia: f.dia.value || HOY, src: "web",
+      moneda: f.moneda.hidden ? "" : f.moneda.value})});
     f.importe.value = "";
     f.nota.value = "";
     catNueva = "";
     ref = r.gasto.dia;
+    para = r.propuesta || null;
     await cargar();
     anima.nueva($(`.mov[data-id="${r.gasto.id}"]`));
     toast([r.texto.split("\n")[0], ...(r.avisos || [])].join(" · "),
@@ -673,6 +1241,7 @@ $("#f-nuevo").onsubmit = async e => {
 $("#prev").onclick = () => { ref = masDias(R.inicio, -1); filtro = abierto = null; cargar(true); };
 $("#next").onclick = () => { ref = masDias(R.fin, 1); filtro = abierto = null; cargar(true); };
 $("#b-presu").onclick = () => { editaPresu = !editaPresu; categorias(R.actual ? R.hechos / R.dias : null); };
+$("#b-viaje").onclick = () => { nuevoViaje = !nuevoViaje; viajes(); if (nuevoViaje) $("#f-viaje-sitio input").focus(); };
 
 $("#f-clave").onsubmit = async e => {
   e.preventDefault();
@@ -684,7 +1253,7 @@ $("#f-clave").onsubmit = async e => {
   if (r && r.ok) { inp.value = ""; await cargar(); }
   else puerta(true, r && r.status === 401 ? "Contraseña incorrecta" : "No se pudo conectar");
 };
-addEventListener("visibilitychange", () => !document.hidden && !abierto && !editaPresu && cargar());
+addEventListener("visibilitychange", () => !document.hidden && !abierto && !editaPresu && !nuevoViaje && !viajeAbierto && !ingresoAbierto && cargar());
 
 cargar();
 </script>

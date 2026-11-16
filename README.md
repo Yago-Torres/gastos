@@ -19,7 +19,10 @@ presupuestos por categoría. Corre en una Raspberry Pi.
 - **Apuntar rápido** desde la web, desde un atajo de iOS (`POST /api/gasto`) o desde un bot de
   Telegram, que también entiende fotos de tickets y capturas de la app del banco (se salta lo ya apuntado
   y pregunta lo dudoso).
-- **Fijos** (casa, suscripciones) y la comida de la semana, que se lee de la app de comida.
+- **Fijos** (casa, suscripciones) desde lo que pagas de verdad, y aviso de suscripciones que se repiten.
+- **Reglas de categoría** que aprende de lo que corriges y se aplican solas a lo que entra.
+- **Viajes** aparte del ciclo, con su presupuesto, una hucha que se aparta cada ciclo, otra moneda y,
+  si se comparte con la pareja, las cuentas de quién debe a quién.
 - **Varias personas, mismo código:** cada instancia arranca con su propio `.env` y sus datos aparte.
 
 ## Cómo está hecho
@@ -42,7 +45,7 @@ GASTOS_PASS=una-clave GASTOS_SECRET=$(openssl rand -hex 16) uv run uvicorn main:
 | `GASTOS_DB` | Ruta del `data.json`. |
 | `GASTOS_INGRESO`, `GASTOS_COBRO` | Ingreso del ciclo y día de cobro. |
 | `GASTOS_NOMBRE` | Nombre que sale en el título (para una segunda instancia). |
-| `GASTOS_COMIDA` | `data.json` de la app de comida (opcional). |
+| `GASTOS_PAREJA`, `GASTOS_PAREJA_DB` | Nombre y `data.json` de la otra instancia, para los viajes compartidos (opcional). |
 | `TELEGRAM_TOKEN`, `TELEGRAM_USER_ID` | Avisos por Telegram (opcional). |
 
 Pruebas: `uv run python test_gastos.py`.
