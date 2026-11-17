@@ -368,3 +368,494 @@ body:has(nav.c-dock):not(:has(.app)) { padding-bottom: calc(108px + env(safe-are
 .c-voz { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--linea); background: var(--carta); color: var(--texto);
          display: grid; place-items: center; flex: none; margin-left: 6px; padding: 0; }
 .c-voz svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ===================================================================================================
+   Hardware — la carcasa de aparato (Ajustes → Aparato → Hardware). Fuente: ~/estilo/hardware.css.
+   aplica.sh la pega detrás de calma.css en la copia de cada app. TODO cuelga de html[data-aparato="hardware"]
+   (lo pone calma.js), así que con Calma no cambia nada.
+   La idea (elegida el 16/11 en el probador): una calculadora o instrumento de laboratorio de los 70 —plástico
+   beige, pantallas LCD verdes, teclas de goma que se hunden, papel de impresora— con los vúmetros de aguja y la
+   barra de dinero en cristal ámbar de un receptor de audio. Colores de la carcasa: los del tema (--fondo, --carta,
+   --acento salen de calma.js); los materiales fijos (LCD, teclas, papel, cristal ámbar) son --hw-*.
+   Solo CSS, gradientes y SVG en línea. Las dos letras de pantalla van en /fuentes y solo se bajan con este aparato.
+   =================================================================================================== */
+@font-face { font-family: "Share Tech Mono"; font-weight: 400; font-display: swap; src: url("/fuentes/share-tech-mono.woff2?v=1") format("woff2"); }
+@font-face { font-family: "VT323"; font-weight: 400; font-display: swap; src: url("/fuentes/vt323.woff2?v=1") format("woff2"); }
+
+html[data-aparato="hardware"] {
+  --hw-lcd: #B8C2A3; --hw-lcd-texto: #1B2213; --hw-lcd-suave: #3C4632; --hw-lcd-linea: rgba(27, 34, 19, .2); --hw-bisel: #2B2723;
+  --hw-tecla: #4A433B; --hw-tecla-2: #332D27; --hw-tecla-borde: #1D1915; --hw-tecla-texto: #F2EAD6;
+  --hw-clara: #F4EFE2; --hw-clara-2: #D9D1BD; --hw-clara-borde: #9B927D; --hw-clara-texto: #2A261F;
+  --hw-papel: #FBFAF5; --hw-papel-texto: #24221D; --hw-papel-linea: rgba(0, 0, 0, .12); --hw-papel-rojo: #B0301C;
+  --hw-ambar-fondo: #140D06; --hw-ambar: #FFB54A; --hw-ambar-suave: #D29444; --hw-ambar-tenue: rgba(255, 181, 74, .16);
+  --hw-led: #3FAE49; --hw-led-off: #9A9483; --hw-rojo: #D6452A;
+  --hw-carril: #1D1915; --hw-carril-texto: #E4DCC8;
+  --hw-relieve: rgba(255, 255, 255, .55); --hw-hundido: rgba(0, 0, 0, .10);
+  --f-lcd: "Share Tech Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --f-ambar: "VT323", "Share Tech Mono", ui-monospace, monospace;
+  --hw-tornillo: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10'%3E%3Cdefs%3E%3CradialGradient id='g' cx='.35' cy='.3' r='.8'%3E%3Cstop offset='0' stop-color='%23fff'/%3E%3Cstop offset='.5' stop-color='%23b4ad9c'/%3E%3Cstop offset='1' stop-color='%235c5649'/%3E%3C/radialGradient%3E%3C/defs%3E%3Ccircle cx='5' cy='5' r='4.4' fill='url(%23g)' stroke='%23332e26' stroke-opacity='.55' stroke-width='.6'/%3E%3Cpath d='M2.6 3.8 6.2 7.4M3.8 2.6 7.4 6.2' stroke='%23332e26' stroke-width='.9' stroke-linecap='round'/%3E%3C/svg%3E");
+  --sombra: inset 0 0 0 1px var(--hw-hundido), inset 0 2px 4px rgba(0, 0, 0, .06), 0 1px 0 var(--hw-relieve);
+  --velo: 100%;
+  --franja: var(--hw-tecla-2);
+}
+html[data-aparato="hardware"][data-modo="oscuro"] {
+  --hw-lcd: #0F2420; --hw-lcd-texto: #8FF0CF; --hw-lcd-suave: #63BC9F; --hw-lcd-linea: rgba(143, 240, 207, .2); --hw-bisel: #0B0B0A;
+  --hw-tecla: #3D3B38; --hw-tecla-2: #2B2927; --hw-tecla-borde: #0A0A09; --hw-tecla-texto: #ECE6D7;
+  --hw-clara: #5A5650; --hw-clara-2: #45423D; --hw-clara-borde: #1A1917; --hw-clara-texto: #F4EFE2;
+  --hw-papel: #D8D4C6; --hw-papel-texto: #1F1D18; --hw-papel-linea: rgba(0, 0, 0, .14); --hw-papel-rojo: #A12A17;
+  --hw-led-off: #3D3A35;
+  --hw-relieve: rgba(255, 255, 255, .05); --hw-hundido: rgba(0, 0, 0, .45);
+  --sombra: inset 0 0 0 1px rgba(0, 0, 0, .5), inset 0 2px 5px rgba(0, 0, 0, .35), 0 1px 0 var(--hw-relieve);
+  --franja: #0B0B0A;
+}
+
+/* ---------- carcasa: plástico con un grano de puntos finísimo ---------- */
+html[data-aparato="hardware"] body {
+  background: radial-gradient(circle at 1px 1px, var(--hw-hundido) .7px, transparent 1px) 0 0 / 4px 4px, var(--fondo);
+}
+html[data-aparato="hardware"] h1 { font-weight: 800 !important; font-stretch: 78%; text-transform: uppercase; letter-spacing: .01em; }
+html[data-aparato="hardware"] .c-num { font-family: var(--f-lcd); letter-spacing: 0; }
+
+/* ---------- cartas: paneles hundidos en la carcasa, con dos tornillos arriba ---------- */
+html[data-aparato="hardware"] .c-carta {
+  background: var(--hw-tornillo) 7px 7px / 10px no-repeat, var(--hw-tornillo) right 7px top 7px / 10px no-repeat,
+              linear-gradient(180deg, color-mix(in srgb, var(--carta) 92%, var(--fondo)), var(--carta));
+  border: 0; box-shadow: var(--sombra);
+}
+/* el título del panel, serigrafiado: versalitas condensadas */
+html[data-aparato="hardware"] .c-carta :is(h2, h3):first-of-type,
+html[data-aparato="hardware"] .c-eti {
+  font-family: var(--fuente); font-size: 12px; font-weight: 650; font-stretch: 80%; letter-spacing: .14em; text-transform: uppercase; color: var(--texto);
+}
+html[data-aparato="hardware"] .c-eti { color: var(--suave); font-size: 11px; }
+
+/* ---------- teclas: de goma, se hunden al pulsar ---------- */
+html[data-aparato="hardware"] .c-btn {
+  --k: var(--hw-clara); --k2: var(--hw-clara-2); --kb: var(--hw-clara-borde);
+  border: 0; border-radius: var(--r-s) var(--r-s) calc(var(--r-s) + 3px) calc(var(--r-s) + 3px);
+  background: linear-gradient(180deg, var(--k), var(--k2)); color: var(--hw-clara-texto); font-weight: 600;
+  box-shadow: 0 0 0 1px var(--kb), inset 0 1px 0 rgba(255, 255, 255, .35), 0 3px 0 var(--kb), 0 5px 7px rgba(0, 0, 0, .2);
+  transform: translateY(0); margin-bottom: 3px;
+}
+html[data-aparato="hardware"] .c-btn:hover:not(:disabled) { background: linear-gradient(180deg, var(--k), var(--k2)); filter: brightness(1.04); }
+html[data-aparato="hardware"] .c-btn:active:not(:disabled), html[data-aparato="hardware"] .c-btn[aria-pressed="true"] {
+  transform: translateY(3px); box-shadow: 0 0 0 1px var(--kb), inset 0 2px 3px rgba(0, 0, 0, .25), 0 0 0 var(--kb), 0 1px 2px rgba(0, 0, 0, .2);
+}
+html[data-aparato="hardware"] .c-btn.pri { --k: var(--acento); --k2: color-mix(in srgb, var(--acento) 80%, #000); --kb: color-mix(in srgb, var(--acento) 45%, #000); color: var(--acento-texto); }
+html[data-aparato="hardware"] .c-btn.peligro { color: var(--hw-rojo); }
+html[data-aparato="hardware"][data-modo="oscuro"] .c-btn.peligro { color: #FF8A73; }
+/* en oscuro, la tecla elegida se enciende del acento: dos grises oscuros no se distinguen */
+html[data-aparato="hardware"][data-modo="oscuro"] .c-btn[aria-pressed="true"]:not(.pri) { --k: var(--acento); --k2: color-mix(in srgb, var(--acento) 80%, #000);
+  --kb: color-mix(in srgb, var(--acento) 45%, #000); color: var(--acento-texto); }
+html[data-aparato="hardware"] .c-btn.mini { border-radius: 5px 5px 7px 7px; font-size: 12px; font-weight: 650; letter-spacing: .04em; }
+html[data-aparato="hardware"] .c-btn[aria-pressed="true"]:not(.pri) { --k: var(--hw-tecla); --k2: var(--hw-tecla-2); --kb: var(--hw-tecla-borde); color: var(--hw-tecla-texto);
+  background: linear-gradient(180deg, var(--k), var(--k2)); border-color: transparent; }
+@media (prefers-reduced-motion: no-preference) {
+  html[data-aparato="hardware"] .c-btn { transition: transform .06s, box-shadow .06s, filter .15s; }
+}
+
+/* ---------- campos: una pantalla LCD donde se escribe (16 px: iOS no hace zoom) ---------- */
+html[data-aparato="hardware"] .c-campo {
+  border: 0; border-radius: 4px; background: var(--hw-lcd); color: var(--hw-lcd-texto); font-family: var(--f-lcd); font-size: 16px;
+  box-shadow: inset 0 2px 3px rgba(0, 0, 0, .35), 0 0 0 3px var(--hw-bisel), 0 0 0 4px rgba(0, 0, 0, .25); margin: 4px;
+}
+html[data-aparato="hardware"] .c-campo::placeholder { color: var(--hw-lcd-suave); opacity: .8; }
+html[data-aparato="hardware"] .c-campo:focus { background: var(--hw-lcd); border: 0; box-shadow: inset 0 2px 3px rgba(0, 0, 0, .35), 0 0 0 3px var(--hw-bisel), 0 0 0 5px var(--acento); }
+html[data-aparato="hardware"] select.c-campo { font-family: var(--fuente); }
+
+/* ---------- etiquetas: un recuadro de LCD pequeñito ---------- */
+html[data-aparato="hardware"] .c-chip {
+  border-radius: 3px; background: var(--hw-lcd); color: var(--hw-lcd-texto); font-family: var(--f-lcd); font-weight: 400;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, .35), 0 0 0 1.5px var(--hw-bisel);
+}
+html[data-aparato="hardware"] .c-chip.ok::before, html[data-aparato="hardware"] .c-chip.mal::before, html[data-aparato="hardware"] .c-chip.ojo::before {
+  content: ""; width: 6px; height: 6px; border-radius: 50%; flex: none; background: var(--hw-led); box-shadow: 0 0 5px var(--hw-led);
+}
+html[data-aparato="hardware"] .c-chip.mal::before { background: var(--hw-rojo); box-shadow: 0 0 5px var(--hw-rojo); }
+html[data-aparato="hardware"] .c-chip.ojo::before { background: var(--hw-ambar); box-shadow: 0 0 5px var(--hw-ambar); }
+
+/* ---------- control segmentado: un interruptor deslizante sobre su carril ---------- */
+html[data-aparato="hardware"] .c-seg { border-radius: 5px; background: var(--hw-carril); box-shadow: inset 0 2px 4px #000, 0 1px 0 var(--hw-relieve); padding: 3px; gap: 3px; }
+html[data-aparato="hardware"] .c-seg button { border-radius: 3px; color: var(--hw-carril-texto); font-weight: 650; font-size: 12.5px; letter-spacing: .06em; text-transform: uppercase; font-stretch: 85%; }
+html[data-aparato="hardware"] .c-seg button[aria-selected="true"], html[data-aparato="hardware"] .c-seg button[aria-current="true"] {
+  background: repeating-linear-gradient(90deg, var(--hw-clara) 0 3px, var(--hw-clara-2) 3px 5px); color: var(--hw-clara-texto); box-shadow: 0 2px 2px rgba(0, 0, 0, .5);
+}
+
+/* ---------- barra: la del dinero del receptor, segmentos ámbar en cristal ahumado ---------- */
+html[data-aparato="hardware"] .c-barra {
+  height: 14px; border-radius: 3px; padding: 3px; overflow: hidden;
+  background: repeating-linear-gradient(90deg, var(--hw-ambar-tenue) 0 5px, transparent 5px 7px) content-box, var(--hw-ambar-fondo);
+  box-shadow: inset 0 1px 3px #000, 0 0 0 2px var(--hw-bisel), 0 1px 0 var(--hw-relieve);
+}
+html[data-aparato="hardware"] .c-barra > i { border-radius: 0; background: repeating-linear-gradient(90deg, var(--hw-ambar) 0 5px, transparent 5px 7px);
+  filter: drop-shadow(0 0 3px rgba(255, 160, 40, .6)); }
+html[data-aparato="hardware"] .c-barra.pasada > i { background: repeating-linear-gradient(90deg, #FF5A3C 0 5px, transparent 5px 7px); filter: drop-shadow(0 0 3px rgba(255, 70, 40, .6)); }
+
+/* ---------- pantallas: LCD verde (dentro de cualquier panel, class="hw-lcd") y cristal ámbar (class="hw-ambar") ---------- */
+html[data-aparato="hardware"] .hw-lcd {
+  position: relative; border-radius: 4px; padding: 10px 12px; background: var(--hw-lcd); color: var(--hw-lcd-texto); font-family: var(--f-lcd);
+  box-shadow: inset 0 2px 3px rgba(0, 0, 0, .35), 0 0 0 5px var(--hw-bisel), 0 0 0 6px rgba(0, 0, 0, .3); margin: 6px;
+}
+html[data-aparato="hardware"] .hw-ambar {
+  position: relative; border-radius: 6px; padding: 8px; background: var(--hw-ambar-fondo); color: var(--hw-ambar); font-family: var(--f-ambar);
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, .6), inset 0 0 0 1px #000, 0 0 0 3px var(--hw-bisel), 0 1px 0 var(--hw-relieve); text-shadow: 0 0 6px rgba(255, 160, 40, .45);
+  overflow: hidden;
+}
+html[data-aparato="hardware"] .hw-ambar::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(160deg, rgba(255, 255, 255, .1), transparent 40%); }
+/* el vúmetro (calma.vu): aguja, escala y su lectura */
+.hw-vu { display: block; text-align: center; min-width: 0; }
+.hw-vu svg { display: block; width: 100%; max-width: 240px; height: auto; margin: 0 auto; }
+.hw-vu .hw-vu-valor, .hw-vu .hw-vu-que { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hw-vu .hw-vu-valor { font: 400 26px/1 var(--f-ambar); margin-top: 2px; font-variant-numeric: tabular-nums; }
+.hw-vu .hw-vu-que { font: 400 15px/1.1 var(--f-ambar); letter-spacing: .1em; color: var(--hw-ambar-suave); text-transform: uppercase; }
+@media (prefers-reduced-motion: no-preference) { .hw-vu .hw-aguja { transition: transform .9s cubic-bezier(.3, 1.4, .5, 1); } }
+
+/* LED de estado (class="hw-led", .on) */
+.hw-led { display: inline-block; flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--hw-led-off); box-shadow: inset 0 1px 1px rgba(0, 0, 0, .4), 0 1px 0 var(--hw-relieve); }
+.hw-led.on { background: radial-gradient(circle at 35% 35%, rgba(255, 255, 255, .55) 0 1px, var(--hw-led) 2px); box-shadow: 0 0 6px var(--hw-led), 0 0 12px color-mix(in srgb, var(--hw-led) 50%, transparent); }
+
+/* ---------- menú de abajo: una botonera de teclas con su LED ---------- */
+html[data-aparato="hardware"] nav.c-dock { height: auto; padding: 9px 9px 8px; gap: 5px; border-radius: 12px;
+  background: var(--hw-tornillo) 4px 4px / 8px no-repeat, var(--hw-tornillo) right 4px top 4px / 8px no-repeat,
+              linear-gradient(180deg, color-mix(in srgb, var(--fondo) 85%, #000), var(--fondo));
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, .3), 0 10px 26px rgba(0, 0, 0, .35), inset 0 1px 0 var(--hw-relieve); }
+html[data-aparato="hardware"] nav.c-dock .c-goo { display: none; }
+html[data-aparato="hardware"] .c-dock a { height: 50px; gap: 2px; border-radius: 6px 6px 9px 9px; color: var(--hw-tecla-texto); padding-top: 4px; margin-bottom: 3px;
+  background: linear-gradient(180deg, var(--hw-tecla), var(--hw-tecla-2));
+  box-shadow: 0 0 0 1px var(--hw-tecla-borde), inset 0 1px 0 rgba(255, 255, 255, .18), 0 3px 0 var(--hw-tecla-borde), 0 4px 6px rgba(0, 0, 0, .25); }
+html[data-aparato="hardware"] .c-dock a::before { content: ""; position: absolute; top: 4px; left: 50%; width: 5px; height: 5px; margin-left: -2.5px; border-radius: 50%;
+  background: rgba(0, 0, 0, .45); box-shadow: 0 1px 0 rgba(255, 255, 255, .1); }
+html[data-aparato="hardware"] .c-dock a span { font-size: 8.5px; font-weight: 650; letter-spacing: .07em; text-transform: uppercase; font-stretch: 80%; }
+html[data-aparato="hardware"] .c-dock a:hover { color: #fff; }
+html[data-aparato="hardware"] .c-dock a[aria-current="page"] { color: #fff; transform: translateY(3px);
+  box-shadow: 0 0 0 1px var(--hw-tecla-borde), inset 0 2px 4px rgba(0, 0, 0, .45), 0 0 0 var(--hw-tecla-borde); }
+html[data-aparato="hardware"] .c-dock a[aria-current="page"]::before { background: var(--acento); box-shadow: 0 0 6px var(--acento), 0 0 10px var(--acento); }
+html[data-aparato="hardware"] .c-dock a[aria-current="page"] svg { transform: none; color: inherit; }
+html[data-aparato="hardware"] .c-dock svg { width: 19px; height: 19px; margin-top: 4px; }
+@media (min-width: 600px) { html[data-aparato="hardware"] .c-dock a span { font-size: 9.5px; } }
+html[data-aparato="hardware"] body:has(nav.c-dock) .app { padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)) !important; }
+
+/* ---------- aviso: una tira de pantalla fluorescente ---------- */
+html[data-aparato="hardware"] .c-toast { border-radius: 8px; background: #0C0C0B; color: var(--hw-lcd-texto); font-family: var(--f-lcd);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .3), 0 0 0 3px var(--hw-bisel), inset 0 0 0 1px #000; }
+html[data-aparato="hardware"] .c-toast { --hw-lcd-texto: #8FF0CF; }
+html[data-aparato="hardware"] .c-toast button { border-radius: 4px 4px 6px 6px; box-shadow: 0 2px 0 color-mix(in srgb, var(--acento) 45%, #000); }
+html[data-aparato="hardware"] .c-isla-real .c-toast { border-radius: 30px; }
+
+/* ---------- puerta, hoja, voz ---------- */
+html[data-aparato="hardware"] .c-puerta > form { border-radius: 14px; background: var(--hw-tornillo) 8px 8px / 10px no-repeat, var(--hw-tornillo) right 8px top 8px / 10px no-repeat, var(--carta);
+  box-shadow: var(--sombra), 0 20px 50px rgba(0, 0, 0, .25); }
+html[data-aparato="hardware"] .c-hoja { border-radius: 16px; background: var(--hw-tornillo) 8px 8px / 10px no-repeat, var(--hw-tornillo) right 8px top 8px / 10px no-repeat,
+    linear-gradient(180deg, var(--carta), var(--fondo)); -webkit-backdrop-filter: none; backdrop-filter: none;
+  border: 0; box-shadow: 0 0 0 1px rgba(0, 0, 0, .3), inset 0 1px 0 var(--hw-relieve), 0 24px 70px rgba(0, 0, 0, .4); }
+html[data-aparato="hardware"] .c-h-cab h2 { text-transform: uppercase; font-stretch: 80%; letter-spacing: .08em; font-size: 15px; }
+html[data-aparato="hardware"] .c-pil { border: 0; border-radius: 6px 6px 9px 9px; background: linear-gradient(180deg, var(--hw-clara), var(--hw-clara-2)); color: var(--hw-clara-texto);
+  box-shadow: 0 0 0 1px var(--hw-clara-borde), 0 3px 0 var(--hw-clara-borde); margin-bottom: 3px; }
+html[data-aparato="hardware"] .c-pil small { color: inherit; opacity: .75; }
+html[data-aparato="hardware"] .c-pil[aria-pressed="true"] { background: linear-gradient(180deg, var(--acento), color-mix(in srgb, var(--acento) 80%, #000)); color: var(--acento-texto);
+  transform: translateY(3px); box-shadow: 0 0 0 1px color-mix(in srgb, var(--acento) 45%, #000), inset 0 2px 3px rgba(0, 0, 0, .25); }
+html[data-aparato="hardware"] :is(.c-cal, .c-rueda) { border-radius: 4px; background: var(--hw-lcd); color: var(--hw-lcd-texto); font-family: var(--f-lcd);
+  box-shadow: inset 0 2px 3px rgba(0, 0, 0, .35), 0 0 0 4px var(--hw-bisel); margin: 4px; }
+html[data-aparato="hardware"] .c-cal-rej i, html[data-aparato="hardware"] .c-cal-rej button.pasado { color: var(--hw-lcd-suave); }
+html[data-aparato="hardware"] .c-cal-rej button.hoy { box-shadow: inset 0 0 0 1.5px var(--hw-lcd-texto); color: var(--hw-lcd-texto); }
+html[data-aparato="hardware"] .c-cal-rej button[aria-pressed="true"] { background: var(--hw-lcd-texto); color: var(--hw-lcd); }
+html[data-aparato="hardware"] .c-cal-cab button { color: var(--hw-lcd-texto); }
+html[data-aparato="hardware"] .c-rueda::before { background: rgba(0, 0, 0, .08); border: 1px solid var(--hw-lcd-linea); box-shadow: none; }
+html[data-aparato="hardware"] .c-rueda .c-tambor div { color: var(--hw-lcd-suave); font-weight: 400; }
+html[data-aparato="hardware"] .c-rueda .c-tambor div.sel { color: var(--hw-lcd-texto); }
+html[data-aparato="hardware"] .c-voz { border: 0; background: linear-gradient(180deg, var(--hw-tecla), var(--hw-tecla-2)); color: var(--hw-tecla-texto);
+  box-shadow: 0 0 0 1px var(--hw-tecla-borde), 0 3px 0 var(--hw-tecla-borde); }
+html[data-aparato="hardware"] .c-edita-barra { border-radius: 10px; background: var(--hw-tecla-2); color: var(--hw-tecla-texto); }
+html[data-aparato="hardware"] .c-edita-bloque { border-radius: 6px; background: var(--hw-tecla-2); }
+html[data-aparato="hardware"] .c-edita-bloque button { color: var(--hw-tecla-texto); border-radius: 4px; }
+
+/* interruptores de iOS (<input type="checkbox" switch>): una palanca */
+html[data-aparato="hardware"] input[type="checkbox"][switch] { accent-color: var(--acento); }
+
+/* ===================================================================================================
+   Solarpunk — la carcasa «Postal» (Ajustes → Aparato → Solarpunk). Fuente: ~/estilo/solar.css.
+   aplica.sh la pega detrás de calma.css y hardware.css. TODO cuelga de html[data-aparato="solar"] (lo pone
+   calma.js, que además elige la foto de cada página en html[data-foto]), así que con Calma no cambia nada.
+   La idea (elegida el 17/11 en el probador): cada página se abre con una foto de arquitectura con plantas a
+   pantalla completa y el título encima; los datos van en una hoja que sube por encima, como en Mapas.
+   Cartas blancas muy redondas, títulos en Fraunces, hábitos con un brote que se rellena, menú de cristal.
+   Las fotos (/fotos/*.webp, ~/estilo/fotos) son de Wikimedia Commons: su licencia pide el crédito, que va
+   en pequeño en la esquina de la foto (FOTOS en calma.js y CREDITOS.md).
+   =================================================================================================== */
+html[data-aparato="solar"] {
+  --sol-hoja: var(--fondo);
+  --sol-carta: color-mix(in srgb, var(--carta) 96%, #fff);
+  --sol-sombra: 0 1px 2px rgba(20, 40, 25, .05), 0 8px 24px -16px rgba(20, 40, 25, .25);
+  --sol-radio: 24px;
+  --sol-alto: clamp(230px, 34vh, 380px);
+  --sol-velo: linear-gradient(180deg, rgba(0, 0, 0, .28), rgba(0, 0, 0, 0) 32%, rgba(4, 18, 9, .72));
+  --velo: 100%;
+}
+html[data-aparato="solar"][data-modo="oscuro"] {
+  --sol-carta: var(--carta);
+  --sol-sombra: 0 1px 2px rgba(0, 0, 0, .3), 0 10px 26px -16px rgba(0, 0, 0, .6);
+  --sol-velo: linear-gradient(180deg, rgba(0, 0, 0, .4), rgba(0, 0, 0, .05) 32%, rgba(2, 10, 5, .82));
+}
+html[data-aparato="solar"][data-foto="nube"] { --sol-foto: url("/fotos/nube.webp"); --sol-credito: "Cloud Forest, Singapur · Basile Morin, CC BY-SA 4.0"; }
+html[data-aparato="solar"][data-foto="terrazas"] { --sol-foto: url("/fotos/terrazas.webp"); --sol-credito: "Parkroyal, Singapur · Jorge Cortell, CC BY 3.0"; }
+html[data-aparato="solar"][data-foto="sendero"] { --sol-foto: url("/fotos/sendero.webp"); --sol-credito: "Oasia, Singapur · 100pss, CC BY-SA 4.0"; }
+html[data-aparato="solar"][data-foto="arboles"] { --sol-foto: url("/fotos/arboles.webp"); --sol-credito: "Supertree Grove · Mustang Joe, CC0"; }
+html[data-aparato="solar"][data-foto="estanque"] { --sol-foto: url("/fotos/estanque.webp"); --sol-credito: "Gardens by the Bay · Dietmar Rabich, CC BY-SA 4.0"; }
+
+html[data-aparato="solar"] body { overflow-x: clip; background: var(--sol-hoja); }
+html[data-aparato="solar"] #c-fondo, html[data-aparato="solar"] #cielo { display: none; }
+
+/* ---------- la portada: la cabecera de cada página es la foto ---------- */
+html[data-aparato="solar"] .app > header.top { position: relative; z-index: 0; isolation: isolate; min-height: var(--sol-alto);
+  align-content: flex-end; align-items: flex-end; padding: 60px 4px 48px; color: #fff; }
+html[data-aparato="solar"] .app > header.top::before { content: ""; position: absolute; z-index: -2; top: -220px; bottom: 0; left: calc(50% - 50vw); width: 100vw;
+  background: var(--sol-velo), var(--sol-foto, linear-gradient(160deg, #3D6B47, #1C3324)) center 60% / cover no-repeat; }
+/* el borde de la hoja: sube por encima de la foto con su asa */
+html[data-aparato="solar"] .app > header.top::after { content: ""; position: absolute; z-index: -1; bottom: -1px; left: calc(50% - 50vw); width: 100vw; height: 30px;
+  border-radius: 30px 30px 0 0; background: radial-gradient(20px 2.5px at 50% 11px, var(--linea) 98%, transparent) no-repeat, var(--sol-hoja); }
+html[data-aparato="solar"] .app > header.top h1 { color: #fff; font-family: "Fraunces", var(--fuente-titulos, Georgia), serif; font-weight: 400 !important;
+  font-size: clamp(34px, 9vw, 46px); line-height: 1.02; letter-spacing: -.02em; text-shadow: 0 1px 16px rgba(0, 0, 0, .3); flex-basis: 100%; }
+html[data-aparato="solar"] .app > header.top h1::after { content: var(--sol-credito, ""); position: absolute; right: 2px; bottom: 36px; font: 400 9.5px/1 var(--fuente);
+  letter-spacing: 0; color: rgba(255, 255, 255, .72); text-shadow: 0 1px 2px rgba(0, 0, 0, .7); pointer-events: none; }
+html[data-aparato="solar"] .app > header.top :is(span, p, small, b, .c-eti, #fecha, #fecha b) { color: rgba(255, 255, 255, .92); }
+html[data-aparato="solar"] .app > header.top a:not(.c-btn), html[data-aparato="solar"] .app > header.top .engranaje { color: #fff; }
+/* botones y mandos de la cabecera: cristal sobre la foto */
+html[data-aparato="solar"] .app > header.top :is(.c-btn, .c-chip, .pill, button, select, .c-seg) { color: #fff; background: rgba(255, 255, 255, .16); border-color: rgba(255, 255, 255, .28);
+  backdrop-filter: blur(10px) saturate(1.3); -webkit-backdrop-filter: blur(10px) saturate(1.3); }
+html[data-aparato="solar"] .app > header.top .c-btn.pri { background: #fff; color: #18231B; border-color: #fff; }
+html[data-aparato="solar"] .app > header.top .c-seg button { color: rgba(255, 255, 255, .85); }
+html[data-aparato="solar"] .app > header.top .c-seg button:is([aria-selected="true"], [aria-current="true"]) { background: #fff; color: #18231B; }
+
+/* limpiar no tiene .app > header.top: su título (h1.app) hace de portada y .page, de hoja */
+html[data-aparato="solar"] body > h1.app { position: relative; z-index: 0; isolation: isolate; margin: 0; min-height: var(--sol-alto); display: flex; align-items: flex-end;
+  padding: 60px 4px 48px; color: #fff; font-family: "Fraunces", Georgia, serif; font-weight: 400; font-size: clamp(34px, 9vw, 46px); text-shadow: 0 1px 16px rgba(0, 0, 0, .3); }
+html[data-aparato="solar"] body > h1.app::before { content: ""; position: absolute; z-index: -2; top: -220px; bottom: 0; left: calc(50% - 50vw); width: 100vw;
+  background: var(--sol-velo), var(--sol-foto) center 60% / cover no-repeat; }
+html[data-aparato="solar"] body > h1.app::after { content: ""; position: absolute; z-index: -1; bottom: -1px; left: calc(50% - 50vw); width: 100vw; height: 30px;
+  border-radius: 30px 30px 0 0; background: radial-gradient(20px 2.5px at 50% 11px, var(--linea) 98%, transparent) no-repeat, var(--sol-hoja); }
+html[data-aparato="solar"] body > h1.app + * { position: relative; }
+html[data-aparato="solar"] body > h1.app + *::before { content: var(--sol-credito, ""); position: absolute; right: 2px; top: -48px; font: 400 9.5px/1 var(--fuente);
+  color: rgba(255, 255, 255, .72); text-shadow: 0 1px 2px rgba(0, 0, 0, .7); pointer-events: none; }
+
+/* ---------- cartas, botones y campos ---------- */
+html[data-aparato="solar"] .c-carta { background: var(--sol-carta); border: 0; border-radius: var(--sol-radio); box-shadow: var(--sol-sombra);
+  backdrop-filter: none; -webkit-backdrop-filter: none; }
+html[data-aparato="solar"] .c-carta h2, html[data-aparato="solar"] h2.c-eti { letter-spacing: .02em; }
+html[data-aparato="solar"] .c-btn { border-radius: 999px; }
+html[data-aparato="solar"] .c-campo { border-radius: 999px; background: var(--carta-2); border-color: transparent; }
+html[data-aparato="solar"] textarea.c-campo { border-radius: 18px; }
+html[data-aparato="solar"] .c-chip { border-radius: 999px; }
+html[data-aparato="solar"] .c-seg { border-radius: 18px; }
+html[data-aparato="solar"] .c-seg button { border-radius: 14px; }
+html[data-aparato="solar"] .c-barra { height: 8px; }
+html[data-aparato="solar"] .c-barra > i { background: linear-gradient(90deg, var(--acento), color-mix(in srgb, var(--acento) 45%, #E8A93A)); }
+html[data-aparato="solar"] .c-barra.pasada > i { background: var(--peligro); }
+/* arcos de sol (calma.arco): hábitos, pasos y sueño */
+.sol-arco { text-align: center; min-width: 0; }
+.sol-arco svg { display: block; width: 100%; max-width: 120px; margin: 0 auto; }
+.sol-arco b { display: block; margin-top: -4px; font: 600 20px/1.1 "Fraunces", var(--fuente-titulos, Georgia), serif; font-variant-numeric: tabular-nums; color: var(--texto); }
+.sol-arco small { display: block; font-size: 12px; color: var(--suave); }
+@media (prefers-reduced-motion: no-preference) { .sol-arco-lleno { transition: stroke-dasharray .9s cubic-bezier(.3, 1.2, .5, 1); } }
+
+/* ---------- el menú: una hoja de cristal con la sección en una píldora ---------- */
+html[data-aparato="solar"] nav.c-dock { height: auto; padding: 6px; border-radius: 26px; gap: 2px;
+  background: color-mix(in srgb, var(--carta) 80%, transparent); backdrop-filter: blur(20px) saturate(1.4); -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  box-shadow: 0 0 0 1px var(--linea), 0 12px 30px -10px rgba(0, 0, 0, .35); }
+html[data-aparato="solar"] nav.c-dock .c-goo { display: none; }
+html[data-aparato="solar"] .c-dock a { height: 52px; border-radius: 20px; color: var(--suave); gap: 2px; }
+html[data-aparato="solar"] .c-dock a:hover { color: var(--texto); }
+html[data-aparato="solar"] .c-dock a[aria-current="page"] { color: var(--acento); background: var(--acento-suave); }
+html[data-aparato="solar"] .c-dock a[aria-current="page"] svg { transform: none; color: inherit; }
+html[data-aparato="solar"] .c-dock svg { width: 21px; height: 21px; }
+
+/* ---------- avisos, hojas y puerta ---------- */
+html[data-aparato="solar"] .c-toast { border-radius: 22px; }
+
+@media (prefers-reduced-motion: no-preference) {
+  html[data-aparato="solar"] .app > header.top::before { animation: sol-foto 1.2s cubic-bezier(.2, .8, .2, 1) both; }
+  @keyframes sol-foto { from { opacity: 0; transform: scale(1.04); } }
+}
+
+/* ===================================================================================================
+   Plano — la carcasa de plano técnico (Ajustes → Aparato → Plano). Fuente: ~/estilo/plano.css.
+   aplica.sh la pega detrás de calma.css. TODO cuelga de html[data-aparato="plano"]: con Calma no cambia nada.
+   La idea (17/11, elegida por Claude con carta blanca): cada página es una hoja de un plano de ingeniería.
+   En claro, la copia impresa (papel blanco con tinta azul); en oscuro, el cianotipo de siempre (papel azul de
+   Prusia con líneas blancas). Rejilla milimetrada, cajetín con el título, marcas de registro en las esquinas
+   de cada pieza, cotas en vez de barras, rayado en vez de relleno y numeración de lista de materiales.
+   Solo CSS (gradientes y contadores). Letra: la del tema (Space Grotesk) y la mono de títulos (JetBrains Mono).
+   =================================================================================================== */
+html[data-aparato="plano"] {
+  --pl-papel: #F6F9FD; --pl-tinta: #1B4F9C; --pl-tinta-2: #4F79B8; --pl-rejilla: rgba(27, 79, 156, .07); --pl-rejilla-2: rgba(27, 79, 156, .14);
+  --pl-relleno: rgba(27, 79, 156, .06); --pl-rojo: #C2362B;
+  --pl-mono: var(--fuente-titulos, "JetBrains Mono"), ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --fondo: var(--pl-papel) !important; --texto: #12305E !important; --suave: #4F6A93 !important; --tenue: #8299BB !important; --linea: rgba(27, 79, 156, .3) !important;
+  --acento: var(--pl-tinta) !important; --acento-texto: var(--pl-papel) !important; --acento-suave: rgba(27, 79, 156, .1) !important; --carta-2: rgba(27, 79, 156, .06) !important;
+  --velo: 0% !important;
+  --carta: var(--pl-papel) !important; --carta-luz: var(--pl-papel) !important; --borde: var(--linea) !important;
+}
+html[data-aparato="plano"][data-modo="oscuro"] {
+  --pl-papel: #123B70; --pl-tinta: #EAF2FF; --pl-tinta-2: #A9C4EC; --pl-rejilla: rgba(234, 242, 255, .06); --pl-rejilla-2: rgba(234, 242, 255, .13);
+  --pl-relleno: rgba(234, 242, 255, .07); --pl-rojo: #FF8A7A;
+  --texto: #EAF2FF !important; --suave: #B5CBEA !important; --tenue: #7F9CC6 !important; --linea: rgba(234, 242, 255, .3) !important;
+  --acento-texto: #123B70 !important; --acento-suave: rgba(234, 242, 255, .12) !important; --carta-2: rgba(234, 242, 255, .07) !important;
+  --peligro: #FF8A7A !important; --aviso: #FFD27A !important;
+}
+html[data-aparato="plano"] body {
+  background-color: var(--pl-papel);
+  background-image: linear-gradient(var(--pl-rejilla-2) 1px, transparent 1px), linear-gradient(90deg, var(--pl-rejilla-2) 1px, transparent 1px),
+    linear-gradient(var(--pl-rejilla) 1px, transparent 1px), linear-gradient(90deg, var(--pl-rejilla) 1px, transparent 1px);
+  background-size: 80px 80px, 80px 80px, 16px 16px, 16px 16px; background-position: -1px -1px;
+}
+html[data-aparato="plano"] #c-fondo, html[data-aparato="plano"] #cielo { display: none; }
+
+/* ---------- el cajetín: la cabecera de cada página ---------- */
+html[data-aparato="plano"] .app > header.top, html[data-aparato="plano"] body > h1.app {
+  position: relative; margin-top: 18px; padding: 26px 14px 12px; border: 2px solid var(--pl-tinta); outline: 1px solid var(--pl-tinta); outline-offset: 3px;
+  background: var(--pl-papel); color: var(--texto); }
+html[data-aparato="plano"] .app > header.top::before, html[data-aparato="plano"] body > h1.app::before {
+  content: "HOJA Nº 17 · ESC 1:1 · COTAS EN UNIDADES DEL DÍA"; position: absolute; left: 0; right: 0; top: 0; padding: 4px 10px; border-bottom: 1px solid var(--pl-tinta);
+  font: 500 9.5px/1.2 var(--pl-mono); letter-spacing: .08em; color: var(--pl-tinta-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+html[data-aparato="plano"] .app > header.top h1, html[data-aparato="plano"] body > h1.app { font-family: var(--pl-mono); font-weight: 700 !important; text-transform: uppercase;
+  letter-spacing: .02em; font-size: clamp(22px, 6.4vw, 30px); color: var(--pl-tinta); padding-right: 56px; }
+html[data-aparato="plano"] body > h1.app { display: block; margin: 18px 0 18px; }
+
+/* ---------- piezas: las cartas, con marcas de registro en las esquinas ---------- */
+html[data-aparato="plano"] .c-carta { position: relative; background: color-mix(in srgb, var(--pl-papel) 82%, transparent); border: 1.5px solid var(--pl-tinta); border-radius: 0;
+  box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; }
+html[data-aparato="plano"] .c-carta::after { content: ""; position: absolute; inset: -7px; pointer-events: none;
+  background:
+    linear-gradient(var(--pl-tinta), var(--pl-tinta)) 0 6px / 12px 1px no-repeat, linear-gradient(var(--pl-tinta), var(--pl-tinta)) 6px 0 / 1px 12px no-repeat,
+    linear-gradient(var(--pl-tinta), var(--pl-tinta)) 100% 6px / 12px 1px no-repeat, linear-gradient(var(--pl-tinta), var(--pl-tinta)) calc(100% - 6px) 0 / 1px 12px no-repeat,
+    linear-gradient(var(--pl-tinta), var(--pl-tinta)) 0 calc(100% - 6px) / 12px 1px no-repeat, linear-gradient(var(--pl-tinta), var(--pl-tinta)) 6px 100% / 1px 12px no-repeat,
+    linear-gradient(var(--pl-tinta), var(--pl-tinta)) 100% calc(100% - 6px) / 12px 1px no-repeat, linear-gradient(var(--pl-tinta), var(--pl-tinta)) calc(100% - 6px) 100% / 1px 12px no-repeat; }
+html[data-aparato="plano"] .c-carta h2, html[data-aparato="plano"] h2 { font-family: var(--pl-mono); font-weight: 700; text-transform: uppercase; letter-spacing: .06em;
+  font-size: 13px; color: var(--pl-tinta); }
+html[data-aparato="plano"] .c-carta h2::before { content: "▸ "; }
+html[data-aparato="plano"] .c-eti { font-family: var(--pl-mono); text-transform: uppercase; letter-spacing: .05em; font-size: 10.5px; color: var(--suave); }
+
+/* ---------- mandos ---------- */
+html[data-aparato="plano"] .c-btn { border-radius: 0; border: 1.5px solid var(--pl-tinta); background: transparent; color: var(--pl-tinta);
+  font-family: var(--pl-mono); font-size: 12.5px; letter-spacing: .04em; text-transform: uppercase; }
+html[data-aparato="plano"] .c-btn:hover:not(:disabled) { background: var(--pl-relleno); }
+html[data-aparato="plano"] .c-btn.pri { background: var(--pl-tinta); color: var(--pl-papel); }
+html[data-aparato="plano"] .c-btn[aria-pressed="true"] { background: var(--pl-tinta); color: var(--pl-papel); }
+html[data-aparato="plano"] .c-btn.mini { border-radius: 0; }
+html[data-aparato="plano"] .c-campo { border-radius: 0; border: 0; border-bottom: 1.5px dashed var(--pl-tinta); background: var(--pl-relleno); color: var(--texto); }
+html[data-aparato="plano"] .c-campo:focus { border-bottom-style: solid; background: var(--pl-relleno); }
+html[data-aparato="plano"] .c-chip { border-radius: 0; border: 1px solid currentColor; background: transparent; font-family: var(--pl-mono); font-size: 11.5px; }
+html[data-aparato="plano"] .c-seg { border-radius: 0; padding: 0; gap: 0; background: transparent; border: 1.5px solid var(--pl-tinta); }
+html[data-aparato="plano"] .c-seg button { border-radius: 0; color: var(--pl-tinta); font-family: var(--pl-mono); text-transform: uppercase; font-size: 12px; letter-spacing: .04em; }
+html[data-aparato="plano"] .c-seg button + button { border-left: 1px solid var(--pl-tinta); }
+html[data-aparato="plano"] .c-seg button:is([aria-selected="true"], [aria-current="true"]) { background: var(--pl-tinta); color: var(--pl-papel); box-shadow: none; }
+/* barras: rayado en vez de relleno, con su cota encima */
+html[data-aparato="plano"] .c-barra { height: 12px; border-radius: 0; border: 1px solid var(--pl-tinta); background: transparent; }
+html[data-aparato="plano"] .c-barra > i { border-radius: 0; background: repeating-linear-gradient(-45deg, var(--pl-tinta) 0 1.5px, transparent 1.5px 5px); border-right: 1.5px solid var(--pl-tinta); }
+html[data-aparato="plano"] .c-barra.pasada > i { background: repeating-linear-gradient(-45deg, var(--pl-rojo) 0 1.5px, transparent 1.5px 5px); }
+
+/* ---------- el menú: la fila del cajetín, con la hoja actual invertida ---------- */
+html[data-aparato="plano"] nav.c-dock { height: auto; gap: 0; border: 2px solid var(--pl-tinta); outline: 1px solid var(--pl-tinta); outline-offset: 3px; border-radius: 0;
+  background: var(--pl-papel); box-shadow: 0 0 0 7px var(--pl-papel); }
+html[data-aparato="plano"] nav.c-dock .c-goo { display: none; }
+html[data-aparato="plano"] .c-dock a { height: 54px; color: var(--pl-tinta); font-family: var(--pl-mono); font-size: 8.5px; letter-spacing: .04em; text-transform: uppercase; }
+html[data-aparato="plano"] .c-dock a + a { border-left: 1px solid var(--pl-tinta); }
+html[data-aparato="plano"] .c-dock a:hover { color: var(--pl-tinta); background: var(--pl-relleno); }
+html[data-aparato="plano"] .c-dock a[aria-current="page"] { background: var(--pl-tinta); color: var(--pl-papel); }
+html[data-aparato="plano"] .c-dock a[aria-current="page"] svg { transform: none; color: inherit; }
+html[data-aparato="plano"] .c-dock svg { width: 19px; height: 19px; stroke-width: 1.5; }
+
+html[data-aparato="plano"] .c-toast { border-radius: 0; border: 1.5px solid var(--pl-tinta); }
+
+/* ---------- cota (calma.cota): una medida con flechas, rayado hasta el valor y el número en medio ---------- */
+.pl-cota { display: grid; gap: 4px; min-width: 0; font-family: var(--pl-mono, ui-monospace), monospace; color: var(--pl-tinta, currentColor); }
+.pl-cota .pl-que { display: flex; justify-content: space-between; gap: 8px; font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--suave); }
+.pl-cota .pl-que b { font-size: 15px; letter-spacing: 0; color: var(--pl-tinta, currentColor); font-weight: 700; }
+.pl-cota .pl-regla { position: relative; height: 22px; border-left: 1px solid currentColor; border-right: 1px solid currentColor; }
+.pl-cota .pl-regla::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; border-top: 1px solid currentColor; }
+.pl-cota .pl-regla::after { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 5px; opacity: .55;
+  background: repeating-linear-gradient(90deg, currentColor 0 1px, transparent 1px 10%); }
+.pl-cota .pl-lleno { position: absolute; left: 0; top: 4px; bottom: 4px; width: var(--p); border-right: 2px solid currentColor;
+  background: repeating-linear-gradient(-45deg, currentColor 0 1.5px, transparent 1.5px 5px); opacity: .9; }
+.pl-cota .pl-lleno.pasado { color: var(--pl-rojo, #C2362B); }
+@media (prefers-reduced-motion: no-preference) { .pl-cota .pl-lleno { animation: pl-traza .9s cubic-bezier(.3, .8, .3, 1) both; } @keyframes pl-traza { from { width: 0; } } }
+
+/* ===================================================================================================
+   Conserje — la carcasa de hotel de época (Ajustes → Aparato → Conserje). Fuente: ~/estilo/conserje.css.
+   aplica.sh la pega detrás de calma.css. TODO cuelga de html[data-aparato="conserje"]: con Calma no cambia nada.
+   La idea (17/11, elegida por Claude con carta blanca): el vestíbulo de un gran hotel de montaña de los años 30
+   visto por un cine muy simétrico. Paredes de rayas rosa pálido, todo centrado, marcos dobles de granate y oro,
+   rótulos en versalitas espaciadas, los hábitos como llaves de habitación colgadas de su tablero, las cifras del
+   día en medallones dorados y el menú en una placa de latón. En oscuro, el mismo hotel de noche (ciruela y oro).
+   Solo CSS y contadores. Letra: la del tema (DM Sans) y Fraunces para los rótulos.
+   =================================================================================================== */
+html[data-aparato="conserje"] {
+  --cj-pared: #F3DCDA; --cj-pared-2: #EFD2D0; --cj-carta: #FFF8EF; --cj-granate: #7E2440; --cj-oro: #B88A3E; --cj-oro-claro: #E2C27E;
+  --cj-placa: #6B1E37; --cj-placa-texto: #F6E2B8;
+  --cj-titulo: var(--fuente-titulos, "Fraunces"), Georgia, serif;
+  --fondo: var(--cj-pared) !important; --carta: var(--cj-carta) !important; --texto: #3A1B26 !important; --suave: #7B5560 !important; --tenue: #A88C93 !important; --linea: rgba(126, 36, 64, .2) !important;
+  --acento: var(--cj-granate) !important; --acento-texto: #FFF4E2 !important; --acento-suave: #F4D8DC !important; --carta-2: #F7E9E2 !important;
+  --velo: 100% !important;
+  --carta-luz: var(--cj-carta) !important; --borde: var(--linea) !important;
+}
+html[data-aparato="conserje"][data-modo="oscuro"] {
+  --cj-pared: #22111A; --cj-pared-2: #27141E; --cj-carta: #301A25; --cj-granate: #E58AA4; --cj-oro: #D9B36A; --cj-oro-claro: #F2D69A;
+  --cj-placa: #4A1A2C; --cj-placa-texto: #F2D69A;
+  --texto: #F6E6EA !important; --suave: #CDAAB5 !important; --tenue: #92717C !important; --linea: rgba(229, 138, 164, .22) !important;
+  --acento-texto: #2A0F1B !important; --acento-suave: #48223A !important; --carta-2: #3A2130 !important;
+}
+html[data-aparato="conserje"] body { background: repeating-linear-gradient(90deg, var(--cj-pared) 0 22px, var(--cj-pared-2) 22px 44px); }
+html[data-aparato="conserje"] #c-fondo, html[data-aparato="conserje"] #cielo { display: none; }
+
+/* ---------- la cabecera: un rótulo centrado entre dos filetes con su estrella ---------- */
+html[data-aparato="conserje"] .app > header.top { justify-content: center; text-align: center; padding: 22px 6px 10px; }
+html[data-aparato="conserje"] .app > header.top > * { margin-left: 0; margin-right: 0; }
+html[data-aparato="conserje"] .app > header.top h1, html[data-aparato="conserje"] body > h1.app { flex-basis: 100%; text-align: center; font-family: var(--cj-titulo);
+  font-weight: 500 !important; text-transform: uppercase; letter-spacing: .16em; font-size: clamp(22px, 6.6vw, 32px); color: var(--cj-granate); line-height: 1.15; padding-inline: 48px; }
+html[data-aparato="conserje"] .app > header.top h1::before, html[data-aparato="conserje"] body > h1.app::before {
+  content: "✦  GRAN HOTEL DEL DÍA  ✦"; display: block; margin-bottom: 8px; font: 600 10px/1 var(--fuente); letter-spacing: .32em; color: var(--cj-oro); }
+html[data-aparato="conserje"] .app > header.top h1::after, html[data-aparato="conserje"] body > h1.app::after {
+  content: ""; display: block; width: min(260px, 70%); height: 7px; margin: 10px auto 0;
+  background: linear-gradient(var(--cj-oro), var(--cj-oro)) 0 50% / calc(50% - 10px) 1px no-repeat, linear-gradient(var(--cj-oro), var(--cj-oro)) 100% 50% / calc(50% - 10px) 1px no-repeat,
+    radial-gradient(circle, var(--cj-oro) 3px, transparent 3.5px) 50% 50% / 7px 7px no-repeat; }
+html[data-aparato="conserje"] body > h1.app { margin: 10px 0 20px; }
+
+/* ---------- cartas: marco doble, granate por fuera y oro por dentro ---------- */
+html[data-aparato="conserje"] .c-carta { background: var(--cj-carta); border: 1.5px solid var(--cj-granate); border-radius: 2px;
+  box-shadow: inset 0 0 0 4px var(--cj-carta), inset 0 0 0 5px var(--cj-oro), 0 6px 0 -2px color-mix(in srgb, var(--cj-granate) 22%, transparent);
+  backdrop-filter: none; -webkit-backdrop-filter: none; }
+html[data-aparato="conserje"] .c-carta h2 { font-family: var(--cj-titulo); text-transform: uppercase; letter-spacing: .14em; font-weight: 500; font-size: 14px; color: var(--cj-granate); }
+html[data-aparato="conserje"] .c-eti { text-transform: uppercase; letter-spacing: .12em; font-size: 10.5px; font-weight: 600; color: var(--suave); }
+
+/* ---------- mandos: botones de timbre ---------- */
+html[data-aparato="conserje"] .c-btn { border-radius: 999px; border: 1.5px solid var(--cj-granate); background: transparent; color: var(--cj-granate);
+  text-transform: uppercase; letter-spacing: .1em; font-size: 12.5px; font-weight: 600; }
+html[data-aparato="conserje"] .c-btn:hover:not(:disabled) { background: var(--acento-suave); }
+html[data-aparato="conserje"] .c-btn.pri, html[data-aparato="conserje"] .c-btn[aria-pressed="true"] { background: var(--cj-granate); color: var(--acento-texto);
+  box-shadow: inset 0 0 0 2px var(--cj-granate), inset 0 0 0 3px var(--cj-oro-claro); }
+html[data-aparato="conserje"] .c-campo { border-radius: 2px; border: 1px solid var(--cj-oro); background: color-mix(in srgb, var(--cj-carta) 70%, var(--cj-pared)); }
+html[data-aparato="conserje"] .c-campo:focus { border-color: var(--cj-granate); }
+html[data-aparato="conserje"] .c-chip { border-radius: 999px; text-transform: uppercase; letter-spacing: .08em; font-size: 10.5px; font-weight: 700; }
+html[data-aparato="conserje"] .c-seg { border-radius: 999px; background: transparent; border: 1.5px solid var(--cj-granate); padding: 3px; }
+html[data-aparato="conserje"] .c-seg button { border-radius: 999px; text-transform: uppercase; letter-spacing: .1em; font-size: 11.5px; font-weight: 600; color: var(--cj-granate); }
+html[data-aparato="conserje"] .c-seg button:is([aria-selected="true"], [aria-current="true"]) { background: var(--cj-granate); color: var(--acento-texto); box-shadow: none; }
+html[data-aparato="conserje"] .c-barra { height: 10px; border-radius: 0; background: transparent; border: 1px solid var(--cj-oro); padding: 1px; }
+html[data-aparato="conserje"] .c-barra > i { border-radius: 0; background: linear-gradient(90deg, var(--cj-granate), color-mix(in srgb, var(--cj-granate) 70%, var(--cj-oro))); }
+
+/* ---------- el menú: una placa de latón con la habitación actual en oro ---------- */
+html[data-aparato="conserje"] nav.c-dock { height: auto; padding: 6px; gap: 3px; border-radius: 14px; background: var(--cj-placa);
+  box-shadow: inset 0 0 0 1.5px var(--cj-oro), inset 0 0 0 4px var(--cj-placa), inset 0 0 0 5px color-mix(in srgb, var(--cj-oro) 60%, transparent), 0 12px 26px -10px rgba(40, 5, 20, .5); }
+html[data-aparato="conserje"] nav.c-dock .c-goo { display: none; }
+html[data-aparato="conserje"] .c-dock a { height: 52px; border-radius: 9px; color: var(--cj-placa-texto); text-transform: uppercase; letter-spacing: .06em; font-size: 8.5px; font-weight: 600; }
+html[data-aparato="conserje"] .c-dock a:hover { color: #fff; }
+html[data-aparato="conserje"] .c-dock a[aria-current="page"] { background: linear-gradient(180deg, var(--cj-oro-claro), var(--cj-oro)); color: #3A1020; }
+html[data-aparato="conserje"] .c-dock a[aria-current="page"] svg { transform: none; color: inherit; }
+html[data-aparato="conserje"] .c-dock svg { width: 19px; height: 19px; }
+
+html[data-aparato="conserje"] .c-toast { border-radius: 2px; box-shadow: inset 0 0 0 1px var(--cj-oro); }
+
+/* ---------- medallón (calma.medalla): un aro dorado que se cierra, la cifra en el centro y su rótulo ---------- */
+.cj-medalla { display: grid; justify-items: center; gap: 6px; min-width: 0; text-align: center; }
+.cj-medalla svg { width: 100%; max-width: 104px; display: block; }
+.cj-medalla .cj-cifra { font: 500 19px/1 var(--cj-titulo, Georgia); fill: var(--texto); }
+.cj-medalla small { font-size: 10px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--suave); }
+@media (prefers-reduced-motion: no-preference) { .cj-medalla .cj-aro { transition: stroke-dasharray 1s cubic-bezier(.3, 1.1, .5, 1); } }

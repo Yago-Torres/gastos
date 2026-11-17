@@ -19,6 +19,9 @@ const calma = (() => {
     if (h) { const n = parseInt(h[1], 16); return `rgba(${n >> 16}, ${(n >> 8) & 255}, ${n & 255}, ${Math.min(1, k).toFixed(3)})`; }
     return c;
   };
+  const FOTOS = {hoy: ["nube", "estanque"], todo: ["nube", "estanque"], pendientes: ["terrazas", "arboles"], gastos: ["sendero", "estanque"],
+    salud: ["sendero", "arboles"], carrera: ["sendero", "estanque"], entreno: ["terrazas", "arboles"], ajustes: ["nube", "arboles"],
+    documentos: ["terrazas", "estanque"], limpieza: ["terrazas", "arboles"]};
   function pintaTema() {
     if (!tema || !tema.claro) return;
     const oscuro = tema.modo === "oscuro" || (tema.modo !== "claro" && oscuroSistema.matches);
@@ -27,6 +30,11 @@ const calma = (() => {
     for (const [k, x] of Object.entries(tema.comun)) raiz.style.setProperty(k, x);
     raiz.style.colorScheme = tema.modo === "sistema" ? "" : (oscuro ? "dark" : "light");
     raiz.dataset.modo = oscuro ? "oscuro" : "claro";
+    // la carcasa (Ajustes → Aparato): hardware.css cuelga todo de html[data-aparato="hardware"]; Calma no lleva atributo
+    if (tema.aparato && tema.aparato !== "calma") raiz.dataset.aparato = tema.aparato; else delete raiz.dataset.aparato;
+    // Solarpunk (solar.css): cada página abre con su foto, una de día y otra de noche (los créditos van en el CSS)
+    if (tema.aparato === "solar") raiz.dataset.foto = (FOTOS[document.title.trim().toLowerCase()] || FOTOS.hoy)[oscuro ? 1 : 0];
+    else delete raiz.dataset.foto;
     for (const m of document.querySelectorAll('meta[name="theme-color"]')) m.content = v["--fondo"];
     dispatchEvent(new Event("calma-tema"));
   }
@@ -80,7 +88,8 @@ const calma = (() => {
       "--ascii": conAlfa(n.ascii, k * .5), "--ascii-vivo": conAlfa(a.acento, (claro ? .45 : .4) * Math.min(1.4, k)),
       "--peligro": f.peligro, "--peligro-suave": f.peligro_suave, "--aviso": f.aviso, "--aviso-suave": f.aviso_suave,
     });
-    return {modo: el.modo || "sistema", fondo: fo.id, intensidad: k,
+    const aparato = (cat.aparatos || []).some(x => x.id === el.aparato) ? el.aparato : "calma";
+    return {modo: el.modo || "sistema", fondo: fo.id, intensidad: k, aparato,
             claro: lado(g.claro, g.ac.claro, cat.fijos.claro, true), oscuro: lado(g.oscuro, g.ac.oscuro, cat.fijos.oscuro, false),
             comun: {"--gota": g.ac.gota, "--gota-texto": g.ac.gota_texto, "--r": es.carta + "px", "--r-s": es.boton + "px", "--r-xs": es.celda + "px",
                     "--fuente": pila(fu), "--fuente-titulos": pila(ti)}};
@@ -719,7 +728,50 @@ const calma = (() => {
     c.style.setProperty("--y", e.clientY - r.top + "px");
   }, {passive: true});
 
-  return {transicion, cuenta, fiesta, vibra, onda, perfil, ponPerfil, saludo, ocupado, entrePaginas,
+  /* Vúmetro de aguja (aparato hardware): frac 0-1 es el objetivo; la zona roja, pasarse. Devuelve el HTML, para
+     meterlo donde la página quiera (Hoy, Salud, Gastos). Con «reducir movimiento» la aguja no se balancea. */
+  function vu(frac, valor, que, etiqueta = "VU") {
+    const r = 62, cx = 80, cy = 80, rad = g => g * Math.PI / 180, x = g => (cx + r * Math.sin(rad(g))).toFixed(1), y = g => (cy - r * Math.cos(rad(g))).toFixed(1);
+    const a = -50 + Math.max(0, Math.min(1.25, Number(frac) || 0)) * 80;   // 0 → -50°, objetivo → +30°, el resto, rojo
+    const marcas = Array.from({length: 11}, (_, i) => {
+      const g = -50 + i * 10, r2 = i % 5 ? 56 : 52;
+      return `<line x1="${x(g)}" y1="${y(g)}" x2="${(cx + r2 * Math.sin(rad(g))).toFixed(1)}" y2="${(cy - r2 * Math.cos(rad(g))).toFixed(1)}" stroke="${g > 30 ? "#E2412F" : "currentColor"}" stroke-width="${i % 5 ? 1 : 2}"/>`;
+    }).join("");
+    return `<div class="hw-ambar hw-vu" role="img" aria-label="${que}: ${valor}"><svg viewBox="0 0 160 86" aria-hidden="true">
+      <path d="M${x(-50)} ${y(-50)} A${r} ${r} 0 0 1 ${x(30)} ${y(30)}" fill="none" stroke="currentColor" stroke-opacity=".5"/>
+      <path d="M${x(30)} ${y(30)} A${r} ${r} 0 0 1 ${x(50)} ${y(50)}" fill="none" stroke="#E2412F" stroke-width="3"/>${marcas}
+      <text x="80" y="46" text-anchor="middle" font-size="14" fill="currentColor" opacity=".7" font-family="VT323, monospace">${etiqueta}</text>
+      <g class="hw-aguja" style="transform-origin: 80px 82px; transform: rotate(${a.toFixed(1)}deg)"><line x1="80" y1="82" x2="80" y2="18" stroke="#FF3D2A" stroke-width="1.6"/></g>
+      <circle cx="80" cy="82" r="5" fill="#222" stroke="currentColor" stroke-opacity=".4"/></svg>
+      <div class="hw-vu-valor">${valor}</div><div class="hw-vu-que">${que}</div></div>`;
+  }
+  /* Arco de sol (aparato solar): medio círculo que se llena hasta el objetivo (frac 1). Devuelve el HTML. */
+  function arco(frac, valor, que, color = "var(--acento)") {
+    const L = Math.PI * 40, p = Math.max(0, Math.min(1, Number(frac) || 0));
+    return `<div class="sol-arco" role="img" aria-label="${que}: ${valor}"><svg viewBox="0 0 100 56" aria-hidden="true">
+      <path d="M10 50a40 40 0 0 1 80 0" fill="none" stroke="var(--carta-2)" stroke-width="9" stroke-linecap="round"/>
+      <path class="sol-arco-lleno" d="M10 50a40 40 0 0 1 80 0" fill="none" stroke="${color}" stroke-width="9" stroke-linecap="round" stroke-dasharray="${(L * p).toFixed(1)} ${L.toFixed(1)}"/></svg>
+      <b>${valor}</b><small>${que}</small></div>`;
+  }
+  /* Cota (aparato plano): una medida de plano con el rayado hasta el valor; frac 1 = el objetivo. */
+  function cota(frac, valor, que) {
+    const f = Math.max(0, Number(frac) || 0);
+    return `<div class="pl-cota" role="img" aria-label="${que}: ${valor}"><div class="pl-que"><span>${que}</span><b>${valor}</b></div>
+      <div class="pl-regla" aria-hidden="true"><i class="pl-lleno${f > 1 ? " pasado" : ""}" style="--p:${(Math.min(1, f) * 100).toFixed(1)}%"></i></div></div>`;
+  }
+  /* Medallón (aparato conserje): aro dorado que se cierra hasta el objetivo, con la cifra dentro. */
+  function medalla(frac, valor, que) {
+    const L = 2 * Math.PI * 40, p = Math.max(0, Math.min(1, Number(frac) || 0));
+    return `<div class="cj-medalla" role="img" aria-label="${que}: ${valor}"><svg viewBox="0 0 100 100" aria-hidden="true">
+      <circle cx="50" cy="50" r="47" fill="none" stroke="var(--cj-granate)" stroke-width="1.2"/>
+      <circle cx="50" cy="50" r="40" fill="none" stroke="color-mix(in srgb, var(--cj-oro) 25%, transparent)" stroke-width="6"/>
+      <circle class="cj-aro" cx="50" cy="50" r="40" fill="none" stroke="var(--cj-oro)" stroke-width="6" stroke-dasharray="${(L * p).toFixed(1)} ${L.toFixed(1)}" transform="rotate(-90 50 50)"/>
+      <circle cx="50" cy="50" r="33" fill="none" stroke="var(--cj-granate)" stroke-width=".8" stroke-dasharray="1.5 2.5"/>
+      <text class="cj-cifra" x="50" y="56" text-anchor="middle">${valor}</text></svg><small>${que}</small></div>`;
+  }
+  const aparato = () => raiz.dataset.aparato || "calma";
+
+  return {transicion, cuenta, fiesta, vibra, onda, perfil, ponPerfil, saludo, ocupado, entrePaginas, vu, arco, cota, medalla, aparato,
           ponApariencia, pideCatalogo, calculaTema, genera, aOklch, deOklch, editaPantalla, pantalla, grupos, guardaDisposicion,
           tema: () => tema, disposicionGuardada: () => disposicionLista};
 })();

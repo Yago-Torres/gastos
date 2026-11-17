@@ -14,11 +14,11 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Gastos">
 <link rel="preload" href="/fuentes/instrument-sans-normal-latin.woff2?v=1" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="/calma.css?v=f18e764d">
+<link rel="stylesheet" href="/calma.css?v=efb64faa">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-<script src="/calma.js?v=f18e764d"></script>
+<script src="/calma.js?v=efb64faa"></script>
 <script src="/anime-4.5.0.min.js"></script>
-<script src="/anima.js?v=f18e764d"></script>
+<script src="/anima.js?v=efb64faa"></script>
 <style>
   /* Estilo Calma: tokens y componentes en /calma.css (fuente: ~/estilo). Aquí solo lo de gastos. */
   body { padding: 16px; padding-bottom: calc(28px + env(safe-area-inset-bottom, 0px)); }
@@ -168,6 +168,19 @@
   .rec-estado { font-size: var(--t-etiqueta); color: var(--suave); margin-left: 6px; }
   .mov.ignorado { opacity: .5; }
   .edita { grid-template-columns: minmax(0, 1fr); }   /* sin esto, una línea larga ensancha el formulario más que la pantalla */
+
+  /* ---------- aparato hardware (la carcasa común está en hardware.css): el resumen, en el cristal ámbar de un receptor ---------- */
+  [data-aparato="hardware"] section[aria-label="Resumen del ciclo"] { margin: 4px; background: var(--hw-ambar-fondo); color: var(--hw-ambar); border-radius: 8px;
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, .6), inset 0 0 0 1px #000, 0 0 0 4px var(--hw-bisel), 0 1px 0 var(--hw-relieve); text-shadow: 0 0 6px rgba(255, 160, 40, .4); }
+  [data-aparato="hardware"] section[aria-label="Resumen del ciclo"] :is(.eti-sup, .bajo, .tres small) { color: var(--hw-ambar-suave); font-family: var(--f-ambar); font-size: 17px; }
+  [data-aparato="hardware"] section[aria-label="Resumen del ciclo"] .bajo.mal { color: #FF6A4C; }
+  [data-aparato="hardware"] section[aria-label="Resumen del ciclo"] .total { font-family: var(--f-ambar); font-weight: 400; font-size: 56px; letter-spacing: 0; }
+  [data-aparato="hardware"] section[aria-label="Resumen del ciclo"] .c-barra { box-shadow: inset 0 1px 3px #000; background-color: #000; }
+  [data-aparato="hardware"] section[aria-label="Resumen del ciclo"] .barra-ritmo .marca { background: #FF3D2A; opacity: 1; box-shadow: 0 0 6px #FF3D2A; }
+  [data-aparato="hardware"] section[aria-label="Resumen del ciclo"] .tres div { background: rgba(255, 181, 74, .06); border-radius: 3px; box-shadow: inset 0 0 0 1px rgba(255, 181, 74, .18); }
+  [data-aparato="hardware"] section[aria-label="Resumen del ciclo"] .tres b { font-family: var(--f-ambar); font-weight: 400; font-size: 26px; }
+  [data-aparato="hardware"] section[aria-label="Resumen del ciclo"] .tres b.mal { color: #FF6A4C; }
+  [data-aparato="hardware"] .redondo { border-radius: 6px 6px 9px 9px; }
 </style>
 <body>
 

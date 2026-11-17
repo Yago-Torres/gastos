@@ -9,7 +9,8 @@
   "titulos": "instrument",
   "esquinas": "suaves",
   "fondo": "sutil",
-  "paleta": "hormigon"
+  "paleta": "hormigon",
+  "aparato": "calma"
  },
  "temas": [
   {
@@ -24,7 +25,8 @@
    "fondo": "sutil",
    "modo": "sistema",
    "decoracion": "ascii",
-   "sonido": "campanas"
+   "sonido": "campanas",
+   "aparato": "calma"
   },
   {
    "id": "shibuya",
@@ -38,7 +40,8 @@
    "fondo": "sutil",
    "modo": "sistema",
    "decoracion": "washi",
-   "sonido": "madera"
+   "sonido": "madera",
+   "aparato": "calma"
   },
   {
    "id": "kioto",
@@ -52,7 +55,8 @@
    "fondo": "apagado",
    "modo": "oscuro",
    "decoracion": "kintsugi",
-   "sonido": "bambu"
+   "sonido": "bambu",
+   "aparato": "calma"
   },
   {
    "id": "sakura",
@@ -66,7 +70,8 @@
    "fondo": "sutil",
    "modo": "sistema",
    "decoracion": "petalos",
-   "sonido": "campanas"
+   "sonido": "campanas",
+   "aparato": "calma"
   },
   {
    "id": "calma",
@@ -80,7 +85,8 @@
    "fondo": "normal",
    "modo": "sistema",
    "decoracion": "ascii",
-   "sonido": "campanas"
+   "sonido": "campanas",
+   "aparato": "calma"
   },
   {
    "id": "terminal",
@@ -94,7 +100,8 @@
    "fondo": "presente",
    "modo": "oscuro",
    "decoracion": "barrido",
-   "sonido": "8bit"
+   "sonido": "8bit",
+   "aparato": "calma"
   },
   {
    "id": "prensa",
@@ -108,7 +115,8 @@
    "fondo": "apagado",
    "modo": "claro",
    "decoracion": "papel",
-   "sonido": "clic"
+   "sonido": "clic",
+   "aparato": "calma"
   },
   {
    "id": "fiordo",
@@ -122,7 +130,8 @@
    "fondo": "sutil",
    "modo": "sistema",
    "decoracion": "curvas",
-   "sonido": "bambu"
+   "sonido": "bambu",
+   "aparato": "calma"
   },
   {
    "id": "cafe",
@@ -136,7 +145,8 @@
    "fondo": "sutil",
    "modo": "sistema",
    "decoracion": "manchas",
-   "sonido": "madera"
+   "sonido": "madera",
+   "aparato": "calma"
   },
   {
    "id": "bauhaus",
@@ -150,7 +160,8 @@
    "fondo": "apagado",
    "modo": "claro",
    "decoracion": "formas",
-   "sonido": "clic"
+   "sonido": "clic",
+   "aparato": "calma"
   },
   {
    "id": "miami",
@@ -164,7 +175,8 @@
    "fondo": "normal",
    "modo": "oscuro",
    "decoracion": "rejilla-neon",
-   "sonido": "sintetizador"
+   "sonido": "sintetizador",
+   "aparato": "calma"
   },
   {
    "id": "matcha",
@@ -178,7 +190,8 @@
    "fondo": "sutil",
    "modo": "sistema",
    "decoracion": "manchas",
-   "sonido": "campanas"
+   "sonido": "campanas",
+   "aparato": "calma"
   },
   {
    "id": "lavanda",
@@ -192,7 +205,8 @@
    "fondo": "sutil",
    "modo": "sistema",
    "decoracion": "manchas",
-   "sonido": "campanas"
+   "sonido": "campanas",
+   "aparato": "calma"
   },
   {
    "id": "medianoche",
@@ -206,7 +220,8 @@
    "fondo": "sutil",
    "modo": "oscuro",
    "decoracion": "estrellas",
-   "sonido": "campanas"
+   "sonido": "campanas",
+   "aparato": "calma"
   },
   {
    "id": "braun",
@@ -220,7 +235,8 @@
    "fondo": "apagado",
    "modo": "claro",
    "decoracion": "rejilla-fina",
-   "sonido": "clic"
+   "sonido": "clic",
+   "aparato": "calma"
   },
   {
    "id": "bosque",
@@ -234,7 +250,8 @@
    "fondo": "normal",
    "modo": "sistema",
    "decoracion": "curvas",
-   "sonido": "madera"
+   "sonido": "madera",
+   "aparato": "calma"
   },
   {
    "id": "arena",
@@ -248,7 +265,8 @@
    "fondo": "sutil",
    "modo": "sistema",
    "decoracion": "manchas",
-   "sonido": "madera"
+   "sonido": "madera",
+   "aparato": "calma"
   },
   {
    "id": "grafito",
@@ -262,7 +280,68 @@
    "fondo": "presente",
    "modo": "oscuro",
    "decoracion": "ascii",
-   "sonido": "8bit"
+   "sonido": "8bit",
+   "aparato": "calma"
+  },
+  {
+   "id": "solar",
+   "nombre": "Solarpunk",
+   "vibra": "Ciudades con jardines: fotos de arquitectura verde, cartas blancas y serif amable.",
+   "base": "#F3F1E8",
+   "acento": "#2D7A46",
+   "fuente": "instrument",
+   "titulos": "fraunces",
+   "esquinas": "redondas",
+   "fondo": "apagado",
+   "modo": "sistema",
+   "decoracion": "petalos",
+   "sonido": "madera",
+   "aparato": "solar"
+  },
+  {
+   "id": "plano",
+   "nombre": "Plano",
+   "vibra": "Un plano de ingeniería: tinta azul sobre papel milimetrado; de noche, cianotipo.",
+   "base": "#F6F9FD",
+   "acento": "#1B4F9C",
+   "fuente": "space-grotesk",
+   "titulos": "jetbrains",
+   "esquinas": "rectas",
+   "fondo": "apagado",
+   "modo": "sistema",
+   "decoracion": "rejilla-fina",
+   "sonido": "clic",
+   "aparato": "plano"
+  },
+  {
+   "id": "conserje",
+   "nombre": "Conserje",
+   "vibra": "Un gran hotel de los años 30: rayas rosa, granate, oro y todo centrado.",
+   "base": "#F3DCDA",
+   "acento": "#7E2440",
+   "fuente": "dm-sans",
+   "titulos": "fraunces",
+   "esquinas": "rectas",
+   "fondo": "apagado",
+   "modo": "sistema",
+   "decoracion": "formas",
+   "sonido": "campanas",
+   "aparato": "conserje"
+  },
+  {
+   "id": "hardware",
+   "nombre": "juno1980",
+   "vibra": "Plástico beige, pantallas LCD y teclas que se hunden. Una calculadora de los 70.",
+   "base": "#E9E3D3",
+   "acento": "#E8641E",
+   "fuente": "instrument",
+   "titulos": "instrument",
+   "esquinas": "suaves",
+   "fondo": "apagado",
+   "modo": "sistema",
+   "decoracion": "rejilla-fina",
+   "sonido": "clic",
+   "aparato": "hardware"
   }
  ],
  "sugerencias": {
@@ -2760,5 +2839,27 @@
    "aviso": "#E8B04A",
    "aviso_suave": "#3D3119"
   }
- }
+ },
+ "aparatos": [
+  {
+   "id": "calma",
+   "nombre": "Calma"
+  },
+  {
+   "id": "hardware",
+   "nombre": "juno1980"
+  },
+  {
+   "id": "solar",
+   "nombre": "Solarpunk"
+  },
+  {
+   "id": "plano",
+   "nombre": "Plano"
+  },
+  {
+   "id": "conserje",
+   "nombre": "Conserje"
+  }
+ ]
 }
