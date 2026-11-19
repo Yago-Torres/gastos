@@ -89,7 +89,7 @@ viejos = m.AJUSTES
 m.AJUSTES = {"ingreso": 0.0, "dia_cobro": 1}
 e = m.clean({"gastos": [{"id": "a", "dia": "2026-09-10", "importe": 30, "cat": "fuera"},
                         {"id": "b", "dia": "2026-08-10", "importe": 50, "cat": "fuera"}]})
-assert e["ajustes"] == {"ingreso": 0.0, "dia_cobro": 1, "hucha": 0, "hucha_desde": ""}, e["ajustes"]
+assert e["ajustes"] == {"ingreso": 0.0, "dia_cobro": 1, "hucha": 0, "hucha_desde": "", "inversion": 0, "inversion_desde": ""}, e["ajustes"]
 s = m.sugeridos(e, _d(2026, 10, 15))
 assert s["fuera"] == {"importe": 40, "por": "lo que gastas de media al mes"} and s["super"]["importe"] == 0, s
 r = m.resumen(e, hoy=_d(2026, 10, 15))
@@ -97,6 +97,26 @@ assert (r["inicio"], r["fin"]) == ("2026-10-01", "2026-10-31"), (r["inicio"], r[
 assert any("lo que gastas de media, 40,00 €" in i["texto"] for i in r["insights"]), r["insights"]
 assert not any("ahorr" in i["texto"] for i in r["insights"]), r["insights"]
 m.AJUSTES = viejos
+
+# presupuesto de inversión: un fijo del ciclo (lo previsto, o lo aportado si fue más), leído de inversiones.json
+import json as _json
+from pathlib import Path as _P
+_inv = _P(tempfile.mkdtemp()) / "inversiones.json"
+_inv.write_text(_json.dumps({"operaciones": [
+    {"fecha": "2026-10-03", "tipo": "compra", "cantidad": 2, "precio": 50, "comision": 1},
+    {"fecha": "2026-10-20", "tipo": "venta", "cantidad": 1, "precio": 30, "comision": 1},
+    {"fecha": "2026-09-03", "tipo": "compra", "cantidad": 10, "precio": 50, "comision": 1}]}))
+viejo_inv, m.INVERSIONES = m.INVERSIONES, _inv
+e = m.clean({"cats": [{"id": "super", "n": "Súper", "presu": 100}], "ajustes": {"ingreso": 1000, "dia_cobro": 1, "inversion": 150, "inversion_desde": "2026-10-01"},
+             "gastos": [{"id": "a", "dia": "2026-10-05", "importe": 40, "cat": "super"}]})
+assert m.aportado(_d(2026, 10, 1), _d(2026, 10, 31)) == 72 and m.invertido_en(e, _d(2026, 9, 1)) == 0
+r = m.resumen(e, hoy=_d(2026, 10, 28))
+assert r["inversion"] == {"presu": 150, "aportado": 72, "cuenta": 150, "desde": "2026-10-01"}, r["inversion"]
+assert r["total"] == 190 and r["presu"] == 250 and r["aparte"] == 0 and r["fijos"] == 150, (r["total"], r["presu"])
+assert any("Te quedan 78,00 € por invertir" in i["texto"] and i["nivel"] == "ojo" for i in r["insights"]), r["insights"]
+e["ajustes"]["inversion"] = 50   # aportó más de lo previsto: cuenta lo aportado
+assert m.resumen(e, hoy=_d(2026, 10, 28))["inversion"]["cuenta"] == 72
+m.INVERSIONES = viejo_inv
 
 # una instancia con nombre (una segunda) lo pone en la página; la principal se queda igual
 h = '<title>Gastos</title><meta name="apple-mobile-web-app-title" content="Gastos"><h1>Gastos</h1>'

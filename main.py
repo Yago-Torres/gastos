@@ -210,6 +210,9 @@ def aviso_viaje(v, antes, despues):
 # lo que paga; el reparto de cada gasto dice de quién es.
 PAREJA = os.getenv("GASTOS_PAREJA") or ""
 PAREJA_DB = Path(os.getenv("GASTOS_PAREJA_DB") or "/no/existe")
+# Inversiones de todo (inversiones.json, solo lectura): lo comprado en cada ciclo cuenta contra el presupuesto de inversión.
+# Sin la variable (otra instancia), el presupuesto vale igual pero lo aportado no se sabe.
+INVERSIONES = Path(os.getenv("GASTOS_INVERSIONES") or "/no/existe")
 REPARTOS = {"medias", "mio", "suyo", "pago", "cobro"}   # pago: le pago a la pareja para saldar; cobro: me paga
 MONEDAS = {"EUR": "€", "GBP": "£", "USD": "$", "CHF": "CHF", "SEK": "kr", "NOK": "kr", "DKK": "kr", "CZK": "Kč",
            "PLN": "zł", "HUF": "Ft", "JPY": "¥", "MAD": "DH"}
@@ -369,6 +372,7 @@ def clean(state):
     except (TypeError, ValueError):
         cobro = AJUSTES["dia_cobro"]
     hucha = real(a.get("hucha"), 0, 100000) or 0
+    inversion = real(a.get("inversion"), 0, 100000) or 0
     # reglas de categoría (las acepta el usuario; el orden es la prioridad) y lo que ya dijo que no
     vistos, reglas = set(), []
     for r in lst(state.get("reglas"))[:200]:
@@ -382,7 +386,10 @@ def clean(state):
             "ingresos": sorted(ingresos, key=lambda x: (x["dia"], x["id"])),
             "ajustes": {"ingreso": real(a.get("ingreso"), 0, 1000000) or AJUSTES["ingreso"], "dia_cobro": cobro,
                         # cuánto se aparta cada ciclo para viajes, y desde cuándo (0 = sin hucha)
-                        "hucha": hucha, "hucha_desde": (day(a.get("hucha_desde")) or date.today().isoformat()) if hucha else ""},
+                        "hucha": hucha, "hucha_desde": (day(a.get("hucha_desde")) or date.today().isoformat()) if hucha else "",
+                        # lo que se dedica a invertir cada ciclo, desde cuándo (0 = sin presupuesto de inversión)
+                        "inversion": inversion,
+                        "inversion_desde": (day(a.get("inversion_desde")) or date.today().isoformat()) if inversion else ""},
             "reglas": reglas, "rechazadas": rechazadas,
             # recurrentes que el usuario confirmó (si) o ignoró (no), por clave_cargo()
             "recurrentes": {str(k)[:60]: v for k, v in list(marcas.items())[:500] if v in ("si", "no") and str(k).strip()}}
@@ -483,6 +490,38 @@ def aparte_en(estado, ini):
     """Lo que el ciclo que empieza en ini aparta para viajes: un fijo más del ciclo, desde que hay hucha."""
     a = estado["ajustes"]
     return a["hucha"] if a["hucha"] and ini >= ciclo(date.fromisoformat(a["hucha_desde"]), a["dia_cobro"])[0] else 0
+
+
+def aportado(ini, fin):
+    """Lo metido en inversiones (compras menos ventas, con comisiones) entre ini y fin. None si no hay de dónde leerlo."""
+    try:
+        ops = json.loads(INVERSIONES.read_text("utf-8")).get("operaciones") or []
+    except (OSError, ValueError, AttributeError):
+        return None
+    total = 0.0
+    for o in ops:
+        if not isinstance(o, dict) or not (ini.isoformat() <= str(o.get("fecha"))[:10] <= fin.isoformat()):
+            continue
+        try:
+            bruto = float(o.get("cantidad") or 0) * float(o.get("precio") or 0)
+            com = float(o.get("comision") or 0)
+        except (TypeError, ValueError):
+            continue
+        total += bruto + com if o.get("tipo") == "compra" else -(bruto - com) if o.get("tipo") == "venta" else 0
+    return round(total, 2)
+
+
+def invertido_en(estado, ini):
+    """Lo que el ciclo que empieza en ini dedica a invertir: el presupuesto, o lo aportado si fue más. Un fijo del ciclo,
+    como la hucha: el dinero sale de la cuenta aunque no sea un gasto."""
+    a = estado["ajustes"]
+    if not a["inversion"] or ini < ciclo(date.fromisoformat(a["inversion_desde"]), a["dia_cobro"])[0]:
+        return 0
+    return max(a["inversion"], aportado(ini, ciclo(ini, a["dia_cobro"])[1]) or 0)
+
+
+def fijos_en(estado, ini):
+    return round(aparte_en(estado, ini) + invertido_en(estado, ini), 2)
 
 
 def hucha(estado, hoy):
@@ -683,7 +722,8 @@ def resumen(estado, ref=None, hoy=None):
     pini, pfin = ciclo(ini - timedelta(days=1), cobro)
     previo = entre(estado, pini, pfin)
     # la hucha de viajes es un fijo del ciclo: cuenta en el total desde el día de cobro
-    aparte, aparte_previo = aparte_en(todo_, ini), aparte_en(todo_, pini)
+    aparte, aparte_previo = fijos_en(todo_, ini), fijos_en(todo_, pini)
+    hucha_ciclo, inv_presu = aparte_en(todo_, ini), todo_["ajustes"]["inversion"]
     serie_previa = [round(x + aparte_previo, 2) for x in acumulado(previo, pini, (pfin - pini).days + 1)]
     sug = sugeridos(estado, hoy)
     frac = hechos / dias
@@ -702,7 +742,7 @@ def resumen(estado, ref=None, hoy=None):
     historico, f = [], fin
     for _ in range(6):
         i, ff = ciclo(f, cobro)
-        historico.append({"inicio": i.isoformat(), "fin": ff.isoformat(), "total": round(suma(entre(estado, i, ff)) + aparte_en(todo_, i), 2)})
+        historico.append({"inicio": i.isoformat(), "fin": ff.isoformat(), "total": round(suma(entre(estado, i, ff)) + fijos_en(todo_, i), 2)})
         f = i - timedelta(days=1)
     historico.reverse()
 
@@ -711,7 +751,10 @@ def resumen(estado, ref=None, hoy=None):
         "inicio": ini.isoformat(), "fin": fin.isoformat(), "dias": dias, "hechos": hechos,
         "actual": ini <= hoy <= fin,
         "total": round(suma(del_ciclo) + aparte, 2),
-        "aparte": aparte,
+        "aparte": hucha_ciclo,   # la hucha de viajes de este ciclo (la inversión va en «inversion»)
+        "fijos": aparte,
+        "inversion": {"presu": inv_presu, "aportado": aportado(ini, fin), "cuenta": invertido_en(todo_, ini),
+                      "desde": todo_["ajustes"]["inversion_desde"]} if inv_presu or INVERSIONES.exists() else None,
         "ingresos": [i for i in todo_["ingresos"] if ini.isoformat() <= i["dia"] <= fin.isoformat()],
         "extra": suma([i for i in todo_["ingresos"] if i["tipo"] == "extra" and ini.isoformat() <= i["dia"] <= fin.isoformat()]),
         "presu": round(sum(c["presu"] for c in estado["cats"]) + aparte, 2) if any(c["presu"] for c in estado["cats"]) else 0,
@@ -764,7 +807,9 @@ def insights(r, del_ciclo, hoy):
         # la proyección ya lleva lo apartado para viajes (eso no es ahorro); los ingresos extra suman a lo que cobras
         ahorro = r["ingreso"] + r["extra"] - r["proyeccion"]
         pct = round(ahorro * 100 / (r["ingreso"] + r["extra"]))
-        y_viajes = f", con {eur(r['aparte'])} apartados para viajes" if r["aparte"] else ""
+        apartes = ([f"{eur(r['aparte'])} apartados para viajes"] if r["aparte"] else []) + \
+                  ([f"{eur(r['inversion']['cuenta'])} invertidos"] if r["inversion"] and r["inversion"]["cuenta"] else [])
+        y_viajes = (", aparte de " if r["inversion"] and r["inversion"]["cuenta"] else ", con ") + " y ".join(apartes) if apartes else ""
         out.append(("ok" if pct >= 20 else "ojo" if pct >= 0 else "mal",
                     f"A este ritmo cerrarás el ciclo en {eur(r['proyeccion'])}"
                     + (f" y ahorrarás {eur(ahorro)} ({pct} %){y_viajes}." if ahorro >= 0 else f": {eur(-ahorro)} más de lo que cobras{y_viajes}.")))
@@ -779,6 +824,11 @@ def insights(r, del_ciclo, hoy):
         if r["suscripciones"]:
             al_mes = sum(s["al_mes"] for s in r["suscripciones"])
             out.append(("info", f"Gastos que se repiten: {len(r['suscripciones'])}, {eur(al_mes)} al mes ({eur(al_mes * 12)} al año)."))
+        if (inv := r["inversion"]) and inv["presu"] and inv["aportado"] is not None:
+            falta = round(inv["presu"] - inv["aportado"], 2)
+            out.append(("ok", f"Ya has invertido {eur(inv['aportado'])} este ciclo, de {eur(inv['presu'])} previstos.") if falta <= 0 else
+                       ("ojo" if quedan <= 5 else "info",
+                        f"Te quedan {eur(falta)} por invertir este ciclo (llevas {eur(inv['aportado'])} de {eur(inv['presu'])})."))
         if r["hucha"] and r["hucha"]["saldo"] < 0:
             out.append(("info", f"La hucha de viajes está en {eur(r['hucha']['saldo'])}: "
                                 f"vuelve a cero en {r['hucha']['ciclos_a_cero']} ciclo{'s' if r['hucha']['ciclos_a_cero'] > 1 else ''}."))

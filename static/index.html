@@ -64,6 +64,8 @@
   .cat { display: grid; grid-template-columns: 10px minmax(0, 1fr) auto; gap: 6px 10px; align-items: center;
          width: 100%; text-align: left; background: none; border: 0; border-radius: var(--r-s); padding: 9px 8px; }
   button.cat:hover { background: var(--carta-2); }
+  a.cat { color: inherit; text-decoration: none; }
+  a.cat:hover { background: var(--carta-2); }
   .cat[aria-pressed="true"] { background: var(--acento-suave); }
   .cat > i { width: 10px; height: 10px; border-radius: 50%; background: var(--c); }
   .cat .n { font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -72,6 +74,12 @@
   .cat .sub { grid-column: 2 / -1; font-size: var(--t-pequeno); margin-top: -4px; }
   .cat .barra-ritmo { grid-column: 2 / -1; }
   .cat .c-barra { height: 6px; }
+  /* «Presupuestos»: nombre y límite se editan; la ✕ quita la categoría (sus gastos pasan a Otros) */
+  .cat.edita { grid-template-columns: 10px minmax(0, 1fr) 96px auto; }
+  .cat.edita .c-campo { min-width: 0; }
+  .cat .quita { border: 0; background: none; color: var(--tenue); font-size: 18px; line-height: 1; padding: 6px; cursor: pointer; border-radius: 8px; }
+  .cat .quita:hover { color: var(--mal, var(--texto)); background: var(--carta-2); }
+  .cat.nueva { grid-template-columns: 10px minmax(0, 1fr) 96px auto; }
   .cat .c-barra > i { background: var(--c); }
   .cat .c-barra.pasada > i { background: var(--peligro); }
   .cat .c-chip { font-size: var(--t-etiqueta); padding: 1px 7px; margin-left: 6px; vertical-align: 1px; }
@@ -439,6 +447,7 @@ function pinta() {
       + (R.actual ? ` · ${quedan} día${quedan === 1 ? "" : "s"}` : "")
     : `${R.n} gasto${R.n === 1 ? "" : "s"} · sin presupuesto`;
   if (R.aparte) bajo.textContent += ` · incluye ${eur0(R.aparte)} para viajes`;
+  if (R.inversion && R.inversion.cuenta) bajo.textContent += ` · ${eur0(R.inversion.cuenta)} para invertir`;
   bajo.classList.toggle("mal", !!R.presu && R.total > R.presu);
   $("#barra-total").hidden = !R.presu;
   barra($("#barra-total"), R.total, R.presu, ritmo);
@@ -492,9 +501,13 @@ function categorias(ritmo) {
   cats.replaceChildren();
   for (const c of R.cats) {
     if (!c.gastado && !c.presu && !editaPresu) continue;
-    const fila = el(editaPresu ? "div" : "button", "cat");
+    const fila = el(editaPresu ? "div" : "button", editaPresu ? "cat edita" : "cat");
     fila.style.setProperty("--c", color(c.id));
-    const n = el("span", "n", c.n);
+    const n = editaPresu ? Object.assign(el("input", "c-campo n"), {value: c.n, maxLength: 40}) : el("span", "n", c.n);
+    if (editaPresu) {
+      n.setAttribute("aria-label", `Nombre de la categoría ${c.n}`);
+      n.onchange = () => { const v = n.value.trim(); if (!v) { n.value = c.n; return; } S.cats.find(x => x.id === c.id).n = v; guardar(`Ahora se llama ${v}`); };
+    }
     if (!editaPresu && c.estado !== "ok")
       n.append(el("span", "c-chip " + (c.estado === "pasado" ? "mal" : "ojo"), c.estado === "pasado" ? "pasado" : "ojo"));
     fila.append(el("i"), n);
@@ -504,7 +517,11 @@ function categorias(ritmo) {
                           placeholder: c.sugerido ? String(c.sugerido) : "sin límite"});
       inp.setAttribute("aria-label", `Presupuesto de ${c.n} por ciclo`);
       inp.onchange = () => { S.cats.find(x => x.id === c.id).presu = num(inp.value) || 0; guardar(); };
-      fila.append(inp, el("span", "sub", c.sugerido ? `Sugerido ${eur0(c.sugerido)}: ${c.por}` : c.por));
+      const quita = el("button", "quita", "✕");
+      Object.assign(quita, {type: "button", title: `Quitar ${c.n}`});
+      quita.setAttribute("aria-label", `Quitar la categoría ${c.n}`);
+      quita.onclick = () => quitaCat(c);
+      fila.append(inp, quita, el("span", "sub", c.sugerido ? `Sugerido ${eur0(c.sugerido)}: ${c.por}` : c.por));
     } else {
       fila.setAttribute("aria-pressed", filtro === c.id);
       fila.onclick = () => { filtro = filtro === c.id ? null : c.id; movimientos(); categorias(ritmo); };
@@ -523,6 +540,19 @@ function categorias(ritmo) {
     }
     cats.append(fila);
   }
+  if (editaPresu) cats.append(filaNuevaCat());
+  if (R.inversion && (R.inversion.presu || R.inversion.aportado) && !editaPresu) {   // lo que sale a invertir: un fijo, como la hucha
+    const iv = R.inversion, ap = iv.aportado || 0, fila = el("a", "cat");
+    fila.href = "/inversiones.html#planes";
+    fila.style.setProperty("--c", "var(--serie-8, var(--acento))");
+    const v = el("span", "v", eur(ap));
+    if (iv.presu) v.append(el("small", null, " / " + eur0(iv.presu)));
+    fila.append(el("i"), el("span", "n", "Inversión"), v);
+    if (iv.presu) { const b = el("div", "barra-ritmo"); barra(b, ap, iv.presu, null); fila.append(b); }
+    fila.append(el("span", "sub", iv.aportado == null ? "Previsto para invertir este ciclo."
+      : ap >= iv.presu ? "Invertido este ciclo (de Inversiones)." : `Te quedan ${eur(iv.presu - ap)} por invertir este ciclo.`));
+    cats.append(fila);
+  }
   if (R.aparte && !editaPresu) {   // lo que este ciclo pone para viajes: un fijo más, aunque no sea una categoría
     const fila = el("div", "cat");
     fila.style.setProperty("--c", "var(--acento)");
@@ -534,21 +564,64 @@ function categorias(ritmo) {
   $("#b-presu").textContent = editaPresu ? "Hecho" : "Presupuestos";
 }
 
+// categorías: crear, renombrar y quitar (lo que tenía la quitada pasa a la de por defecto, Otros; el servidor lo hace en clean())
+const slug = s => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 20) || "cat";
+function filaNuevaCat() {
+  const fila = el("form", "cat nueva"), n = el("input", "c-campo"), presu = el("input", "c-campo"), b = el("button", "c-btn mini", "Añadir");
+  Object.assign(n, {placeholder: "Categoría nueva", maxLength: 40, required: true});
+  Object.assign(presu, {placeholder: "sin límite", inputMode: "decimal"});
+  n.setAttribute("aria-label", "Nombre de la categoría nueva"); presu.setAttribute("aria-label", "Su presupuesto por ciclo");
+  fila.style.setProperty("--c", "var(--tenue)");
+  fila.append(el("i"), n, presu, b);
+  fila.onsubmit = e => {
+    e.preventDefault();
+    const nombre = n.value.trim();
+    if (!nombre) return;
+    if (S.cats.length >= 30) { toast("Como mucho 30 categorías"); return; }
+    if (S.cats.some(c => c.n.toLowerCase() === nombre.toLowerCase())) { toast(`Ya tienes «${nombre}»`); return; }
+    let id = slug(nombre), k = 2;
+    while (S.cats.some(c => c.id === id)) id = `${slug(nombre).slice(0, 17)}-${k++}`;
+    // antes de Otros, que es la de por defecto y queda al final
+    const i = S.cats.findIndex(c => c.id === "otros");
+    S.cats.splice(i < 0 ? S.cats.length : i, 0, {id, n: nombre, presu: num(presu.value) || 0});
+    guardar(`Categoría nueva: ${nombre}`);
+  };
+  return fila;
+}
+function quitaCat(c) {
+  if (S.cats.length <= 1) { toast("Tiene que quedar al menos una"); return; }
+  const destino = c.id === "otros" ? S.cats.filter(x => x.id !== c.id).at(-1) : (S.cats.find(x => x.id === "otros") || S.cats.filter(x => x.id !== c.id).at(-1));
+  const n = S.gastos.filter(g => g.cat === c.id).length + (S.ingresos || []).filter(i => i.cat === c.id).length;
+  const reglas = (S.reglas || []).filter(x => x.cat === c.id).length;
+  if (!confirm(`¿Quitar «${c.n}»?` + (n ? `\n\nSus ${n} movimientos pasan a «${destino.n}».` : "") + (reglas ? `\nSe borran ${reglas} regla${reglas > 1 ? "s" : ""} que mandaban ahí.` : ""))) return;
+  const antes = structuredClone({cats: S.cats, gastos: S.gastos, ingresos: S.ingresos, reglas: S.reglas});
+  for (const g of S.gastos) if (g.cat === c.id) g.cat = destino.id;
+  for (const i of S.ingresos || []) if (i.cat === c.id) i.cat = destino.id;
+  S.reglas = (S.reglas || []).filter(x => x.cat !== c.id);
+  S.cats = S.cats.filter(x => x.id !== c.id);
+  if (filtro === c.id) filtro = null;
+  guardar(`Quitada: ${c.n}`);
+  toast(`Quitada «${c.n}»`, () => { Object.assign(S, antes); guardar(`«${c.n}» ha vuelto`); });
+}
+
 function ajustes() {
   const f = el("div", "ajustes");
   const presuTotal = S.cats.reduce((a, c) => a + c.presu, 0);
-  const ahorro = S.ajustes.ingreso - presuTotal - (S.ajustes.hucha || 0);
+  const ahorro = S.ajustes.ingreso - presuTotal - (S.ajustes.hucha || 0) - (S.ajustes.inversion || 0);
   f.innerHTML = `
     <label>Cobras al mes<input class="c-campo" name="ingreso" inputmode="decimal" placeholder="vacío si varía"></label>
     <label>Día de cobro<input class="c-campo" name="dia" type="number" min="1" max="31"></label>
+    <label>Para invertir cada ciclo<input class="c-campo" name="inversion" inputmode="decimal" placeholder="nada"></label>
     <div class="fila-btn"><button class="c-btn" type="button" name="sug">Usar sugeridos</button><span></span></div>`;
-  const [ing, dia] = f.querySelectorAll("input");
+  const [ing, dia, inv] = f.querySelectorAll("input");
+  inv.value = S.ajustes.inversion ? String(S.ajustes.inversion).replace(".", ",") : "";
+  inv.onchange = () => { S.ajustes.inversion = num(inv.value) || 0; guardar(S.ajustes.inversion ? `Inversión: ${eur0(S.ajustes.inversion)} cada ciclo` : "Sin presupuesto de inversión"); };
   ing.value = S.ajustes.ingreso ? String(S.ajustes.ingreso).replace(".", ",") : "";
   dia.value = S.ajustes.dia_cobro;
   f.querySelector("span").textContent = !S.ajustes.ingreso
     ? (presuTotal ? `Presupuesto ${eur0(presuTotal)} al ciclo` : `Los sugeridos son lo que gastas de media: ${eur0(R.sugerido_total)} al ciclo.`)
     : presuTotal
-    ? `Presupuesto ${eur0(presuTotal)} · ahorro objetivo ${eur0(ahorro)} (${Math.round(ahorro * 100 / S.ajustes.ingreso)} %)`
+    ? `Presupuesto ${eur0(presuTotal)}${S.ajustes.inversion ? ` + ${eur0(S.ajustes.inversion)} a invertir` : ""} · ahorro objetivo ${eur0(ahorro)} (${Math.round(ahorro * 100 / S.ajustes.ingreso)} %)`
     : `Los sugeridos dejan ${eur0(S.ajustes.ingreso - R.sugerido_total)} de ahorro al ciclo.`;
   // vacío = ingreso variable (sin sueldo fijo; si no, el servidor vuelve a su valor por defecto)
   ing.onchange = () => { S.ajustes.ingreso = num(ing.value) || 0; guardar(); };
@@ -1053,6 +1126,7 @@ const sv = (t, at) => { const e = document.createElementNS(SVGNS, t); for (const
 function datosFlujo() {
   let l = R.cats.filter(c => c.gastado > 0).map(c => ({ids: [c.id], n: c.n, v: c.gastado, c: color(c.id)}));
   if (R.aparte) l.push({ids: ["_hucha"], n: "Hucha de viajes", v: R.aparte, c: "var(--acento)"});
+  if (R.inversion && R.inversion.cuenta) l.push({ids: ["_inversion"], n: "Inversión", v: R.inversion.cuenta, c: "var(--serie-8, var(--acento))"});
   l.sort((a, b) => b.v - a.v);
   const gastado = l.reduce((a, x) => a + x.v, 0);
   // las pequeñas (menos del 4 % o más allá de la 7.ª) se juntan en «Otros», con la categoría Otros si la hay
