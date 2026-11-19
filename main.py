@@ -26,7 +26,7 @@ CATS = [("super", "Súper"), ("fuera", "Comer fuera"), ("ocio", "Ocio"), ("trans
 AJUSTES = {"ingreso": float(os.getenv("GASTOS_INGRESO", "1600")), "dia_cobro": int(os.getenv("GASTOS_COBRO", "28"))}
 EMPTY = {"cats": [{"id": i, "n": n, "presu": 0} for i, n in CATS], "gastos": [], "ajustes": dict(AJUSTES),
          "reglas": [], "rechazadas": [], "recurrentes": {}}
-SRCS = {"web", "atajo", "applepay", "bot", "ticket", "banco", "siri"}
+SRCS = {"web", "atajo", "applepay", "bot", "ticket", "banco", "siri", "correo"}
 
 # Cuánto debería gastar: 80 % en vivir y 20 % de ahorro (la regla 50/30/20 apretada a un
 # piso compartido). Los fijos se toman de lo que de verdad pagas en cuanto hay historial.
@@ -1012,12 +1012,27 @@ def apunta(a: dict = Body(...), gastos_sesion: str = Cookie(None), authorization
     if alertas:
         texto += "\n" + "\n".join(alertas)
         # lo que entra por el bot ya contesta en Telegram con este texto: no avisar dos veces
-        if g["src"] not in ("bot", "ticket", "banco"):
+        if g["src"] not in ("bot", "ticket", "banco", "correo"):
             telegram("\n".join(alertas))
     # elegida a mano y distinta de lo que saldría solo: se ofrece hacer regla (Tom y la web la enseñan)
     # (una nota larga, «tomate, carne y queso», no tiene una palabra que valga como regla)
     sugiere = propuesta_de(estado, g) if mano and (comercio or 0 < len(norma(nota).split()) <= 2) else None
     return {"texto": texto, "gasto": g, "avisos": alertas, "regla": regla["txt"] if regla else "", "propuesta": sugiere}
+
+
+@app.post("/api/gasto/borra")
+def borra_gasto(a: dict = Body(...), gastos_sesion: str = Cookie(None), authorization: str = Header(None)):
+    """Quita un gasto por su id (el botón «Quitar» de lo que el bot apuntó solo, p. ej. desde el correo)."""
+    exige(gastos_sesion, authorization)
+    gid = str(a.get("id") or "")
+    with cerrojo:
+        estado = lee()
+        g = next((x for x in estado["gastos"] if x["id"] == gid), None)
+        if not g:
+            raise HTTPException(404, "ese gasto ya no está")
+        estado["gastos"] = [x for x in estado["gastos"] if x["id"] != gid]
+        escribe(estado)
+    return {"ok": True, "gasto": g, "texto": f"Quitado: {eur(g['importe'])}" + (f" · {g['comercio'] or g['nota']}" if g["comercio"] or g["nota"] else "")}
 
 
 # ---------- reglas y recurrentes ----------
