@@ -213,6 +213,8 @@ PAREJA_DB = Path(os.getenv("GASTOS_PAREJA_DB") or "/no/existe")
 # Inversiones de todo (inversiones.json, solo lectura): lo comprado en cada ciclo cuenta contra el presupuesto de inversión.
 # Sin la variable (otra instancia), el presupuesto vale igual pero lo aportado no se sabe.
 INVERSIONES = Path(os.getenv("GASTOS_INVERSIONES") or "/no/existe")
+# Multas por hábitos fallados (multas.json de todo): suman a lo que toca invertir ese ciclo.
+MULTAS = Path(os.getenv("GASTOS_MULTAS") or "/no/existe")
 REPARTOS = {"medias", "mio", "suyo", "pago", "cobro"}   # pago: le pago a la pareja para saldar; cobro: me paga
 MONEDAS = {"EUR": "€", "GBP": "£", "USD": "$", "CHF": "CHF", "SEK": "kr", "NOK": "kr", "DKK": "kr", "CZK": "Kč",
            "PLN": "zł", "HUF": "Ft", "JPY": "¥", "MAD": "DH"}
@@ -511,13 +513,24 @@ def aportado(ini, fin):
     return round(total, 2)
 
 
+def multas_en(ini, fin):
+    """(euros, lista) de las multas de hábitos entre ini y fin; (0, []) si no hay de dónde leerlas."""
+    try:
+        l = [m for m in json.loads(MULTAS.read_text("utf-8")).get("multas") or []
+             if isinstance(m, dict) and ini.isoformat() <= str(m.get("dia")) <= fin.isoformat()]
+        return round(sum(float(m.get("euros") or 0) for m in l), 2), l
+    except (OSError, ValueError, AttributeError, TypeError):
+        return 0, []
+
+
 def invertido_en(estado, ini):
     """Lo que el ciclo que empieza en ini dedica a invertir: el presupuesto, o lo aportado si fue más. Un fijo del ciclo,
     como la hucha: el dinero sale de la cuenta aunque no sea un gasto."""
     a = estado["ajustes"]
     if not a["inversion"] or ini < ciclo(date.fromisoformat(a["inversion_desde"]), a["dia_cobro"])[0]:
         return 0
-    return max(a["inversion"], aportado(ini, ciclo(ini, a["dia_cobro"])[1]) or 0)
+    fin = ciclo(ini, a["dia_cobro"])[1]
+    return max(a["inversion"] + multas_en(ini, fin)[0], aportado(ini, fin) or 0)
 
 
 def fijos_en(estado, ini):
@@ -753,7 +766,9 @@ def resumen(estado, ref=None, hoy=None):
         "total": round(suma(del_ciclo) + aparte, 2),
         "aparte": hucha_ciclo,   # la hucha de viajes de este ciclo (la inversión va en «inversion»)
         "fijos": aparte,
-        "inversion": {"presu": inv_presu, "aportado": aportado(ini, fin), "cuenta": invertido_en(todo_, ini),
+        "inversion": {"presu": round(inv_presu + multas_en(ini, fin)[0], 2) if inv_presu else 0, "base": inv_presu,
+                      "multas": multas_en(ini, fin)[0], "n_multas": len(multas_en(ini, fin)[1]),
+                      "aportado": aportado(ini, fin), "cuenta": invertido_en(todo_, ini),
                       "desde": todo_["ajustes"]["inversion_desde"]} if inv_presu or INVERSIONES.exists() else None,
         "ingresos": [i for i in todo_["ingresos"] if ini.isoformat() <= i["dia"] <= fin.isoformat()],
         "extra": suma([i for i in todo_["ingresos"] if i["tipo"] == "extra" and ini.isoformat() <= i["dia"] <= fin.isoformat()]),
@@ -826,9 +841,10 @@ def insights(r, del_ciclo, hoy):
             out.append(("info", f"Gastos que se repiten: {len(r['suscripciones'])}, {eur(al_mes)} al mes ({eur(al_mes * 12)} al año)."))
         if (inv := r["inversion"]) and inv["presu"] and inv["aportado"] is not None:
             falta = round(inv["presu"] - inv["aportado"], 2)
-            out.append(("ok", f"Ya has invertido {eur(inv['aportado'])} este ciclo, de {eur(inv['presu'])} previstos.") if falta <= 0 else
+            de_multas = f" ({eur(inv['multas'])} son multas por hábitos)" if inv["multas"] else ""
+            out.append(("ok", f"Ya has invertido {eur(inv['aportado'])} este ciclo, de {eur(inv['presu'])} previstos{de_multas}.") if falta <= 0 else
                        ("ojo" if quedan <= 5 else "info",
-                        f"Te quedan {eur(falta)} por invertir este ciclo (llevas {eur(inv['aportado'])} de {eur(inv['presu'])})."))
+                        f"Te quedan {eur(falta)} por invertir este ciclo (llevas {eur(inv['aportado'])} de {eur(inv['presu'])}{de_multas})."))
         if r["hucha"] and r["hucha"]["saldo"] < 0:
             out.append(("info", f"La hucha de viajes está en {eur(r['hucha']['saldo'])}: "
                                 f"vuelve a cero en {r['hucha']['ciclos_a_cero']} ciclo{'s' if r['hucha']['ciclos_a_cero'] > 1 else ''}."))

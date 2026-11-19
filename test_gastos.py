@@ -111,7 +111,13 @@ e = m.clean({"cats": [{"id": "super", "n": "Súper", "presu": 100}], "ajustes": 
              "gastos": [{"id": "a", "dia": "2026-10-05", "importe": 40, "cat": "super"}]})
 assert m.aportado(_d(2026, 10, 1), _d(2026, 10, 31)) == 72 and m.invertido_en(e, _d(2026, 9, 1)) == 0
 r = m.resumen(e, hoy=_d(2026, 10, 28))
-assert r["inversion"] == {"presu": 150, "aportado": 72, "cuenta": 150, "desde": "2026-10-01"}, r["inversion"]
+assert r["inversion"] == {"presu": 150, "base": 150, "multas": 0, "n_multas": 0, "aportado": 72, "cuenta": 150, "desde": "2026-10-01"}, r["inversion"]
+_mul = _inv.with_name("multas.json")
+_mul.write_text(_json.dumps({"multas": [{"dia": "2026-10-05", "euros": 6}, {"dia": "2026-10-06", "euros": 1}, {"dia": "2026-09-30", "euros": 9}]}))
+viejo_mul, m.MULTAS = m.MULTAS, _mul
+ri = m.resumen(e, hoy=_d(2026, 10, 28))["inversion"]
+assert (ri["presu"], ri["multas"], ri["n_multas"], ri["cuenta"]) == (157, 7, 2, 157), ri
+m.MULTAS = viejo_mul
 assert r["total"] == 190 and r["presu"] == 250 and r["aparte"] == 0 and r["fijos"] == 150, (r["total"], r["presu"])
 assert any("Te quedan 78,00 € por invertir" in i["texto"] and i["nivel"] == "ojo" for i in r["insights"]), r["insights"]
 e["ajustes"]["inversion"] = 50   # aportó más de lo previsto: cuenta lo aportado

@@ -550,7 +550,8 @@ function categorias(ritmo) {
     fila.append(el("i"), el("span", "n", "Inversión"), v);
     if (iv.presu) { const b = el("div", "barra-ritmo"); barra(b, ap, iv.presu, null); fila.append(b); }
     fila.append(el("span", "sub", iv.aportado == null ? "Previsto para invertir este ciclo."
-      : ap >= iv.presu ? "Invertido este ciclo (de Inversiones)." : `Te quedan ${eur(iv.presu - ap)} por invertir este ciclo.`));
+      : ap >= iv.presu ? "Invertido este ciclo (de Inversiones)." : `Te quedan ${eur(iv.presu - ap)} por invertir este ciclo.`)
+      + (iv.multas ? ` Incluye ${eur(iv.multas)} de multas por ${iv.n_multas} hábito${iv.n_multas === 1 ? "" : "s"} sin hacer.` : ""));
     cats.append(fila);
   }
   if (R.aparte && !editaPresu) {   // lo que este ciclo pone para viajes: un fijo más, aunque no sea una categoría
