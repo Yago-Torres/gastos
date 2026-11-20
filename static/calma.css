@@ -79,8 +79,6 @@
   --serie-1: #2a78d6; --serie-2: #eb6834; --serie-3: #1baf7a; --serie-4: #eda100;
   --serie-5: #e87ba4; --serie-6: #008300; --serie-7: #6250d6; --serie-8: #e34948;
 
-  /* nombres de antes: los usa JS que pinta estilos en línea */
-  --ink: var(--texto); --bg: var(--carta); --acid: var(--acento); --red: var(--peligro);
 }
 
 @media (prefers-color-scheme: dark) {
